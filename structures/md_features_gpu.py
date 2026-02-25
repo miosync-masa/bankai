@@ -24,7 +24,7 @@ except ImportError:
     cp_cdist = None
 
 # Local imports
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 from ..core import GPUBackend, GPUMemoryManager
 
 logger = logging.getLogger('lambda3_gpu.structures.md_features')
