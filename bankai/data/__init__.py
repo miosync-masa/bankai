@@ -6,9 +6,10 @@ Provides access to bundled example datasets for testing and demonstration.
 """
 
 import json
-import numpy as np
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Any, Optional
+
+import numpy as np
 
 # サンプルデータのルートディレクトリ
 DATA_DIR = Path(__file__).parent
@@ -31,13 +32,13 @@ def chignolin_available() -> bool:
     return all((CHIGNOLIN_DIR / f).exists() for f in required)
 
 
-def load_chignolin() -> Dict[str, Any]:
+def load_chignolin() -> dict[str, Any]:
     if not chignolin_available():
         raise FileNotFoundError(
-            "Chignolin sample data not found. "
-            "Expected files in: {}\n"
-            "Run 'bankai example --generate' to create synthetic test data, "
-            "or place your own data files in the directory above.".format(CHIGNOLIN_DIR)
+            f"Chignolin sample data not found. "
+            f"Expected files in: {CHIGNOLIN_DIR}\n"
+            f"Run 'bankai example --generate' to create synthetic test data, "
+            f"or place your own data files in the directory above."
         )
 
     paths = {
@@ -65,7 +66,7 @@ def load_chignolin() -> Dict[str, Any]:
     return result
 
 
-def get_chignolin_paths() -> Dict[str, str]:
+def get_chignolin_paths() -> dict[str, str]:
     if not chignolin_available():
         raise FileNotFoundError(f"Chignolin sample data not found in: {CHIGNOLIN_DIR}")
 
@@ -86,7 +87,7 @@ def get_chignolin_paths() -> Dict[str, str]:
     return paths
 
 
-def generate_synthetic_chignolin(output_dir: Optional[str] = None) -> Dict[str, str]:
+def generate_synthetic_chignolin(output_dir: Optional[str] = None) -> dict[str, str]:
     out = Path(output_dir) if output_dir else CHIGNOLIN_DIR
     out.mkdir(parents=True, exist_ok=True)
 
