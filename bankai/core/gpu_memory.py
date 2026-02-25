@@ -46,7 +46,7 @@ else:
     NDArray = Union[np.ndarray, "cp.ndarray"] if HAS_GPU else np.ndarray
 
 # Logger setup - グローバルスコープで定義
-logger = logging.getLogger("lambda3_gpu.core.memory")
+logger = logging.getLogger("bankai.core.memory")
 
 # ===============================
 # Data Classes
