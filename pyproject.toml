@@ -160,6 +160,7 @@ ignore = [
     "E402",   # import not at top (intentional lazy imports)
     "E741",   # ambiguous variable name l
     "N802",   # _compute_lambda_F etc
+    "B007",   # unused loop control variable (enumerate pattern)
     "SIM102", # nested if → 可読性の好み
 ]
 
