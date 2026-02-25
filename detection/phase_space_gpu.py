@@ -27,7 +27,7 @@ except ImportError:
     HAS_GPU = False
     ArrayType = np.ndarray
 
-from ..types import NDArray
+from ..models import NDArray
 from ..core.gpu_utils import GPUBackend
 
 warnings.filterwarnings('ignore')
