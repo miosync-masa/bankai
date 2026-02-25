@@ -27,9 +27,7 @@ def _should_show_banner() -> bool:
         return False
     if not sys.stdout.isatty():
         return False
-    if "--no-banner" in sys.argv:
-        return False
-    return True
+    return "--no-banner" not in sys.argv
 
 
 def _gpu_status_line() -> str:
