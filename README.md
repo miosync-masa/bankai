@@ -1,6 +1,6 @@
-# Lambda³ GPU - High-Performance MD Trajectory Analysis 🚀
+BANKAI: A Sub-Picosecond Cascade Origin Identifier for GROMACS Trajectories
 
-Lambda³フレームワークの完全GPU実装版。MD軌道解析を10-50倍高速化！
+MD軌道解析を10-50倍高速化！
 
 ## 🌟 特徴
 
