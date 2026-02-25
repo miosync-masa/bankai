@@ -153,6 +153,9 @@ ignore = [
     "SIM108", # ternary operator
     "W293",  # blank line contains whitespace (CUDA kernel strings)
     "W291",  # trailing whitespace (same reason)
+    "N803",   # argument not lowercase (lambda_F, Q_lambda)
+    "N806",   # variable not lowercase (same)
+    "B009",   # getattr with constant (report generator pattern)
 ]
 
 [tool.ruff.lint.isort]
