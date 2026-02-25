@@ -15,7 +15,7 @@ import plotly.express as px
 from plotly.subplots import make_subplots
 
 from ..analysis.two_stage_analyzer_gpu import ResidueLevelAnalysis, TwoStageLambda3Result
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 
 
 class CausalityVisualizerGPU:
