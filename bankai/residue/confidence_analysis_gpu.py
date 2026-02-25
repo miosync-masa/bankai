@@ -622,7 +622,7 @@ class ConfidenceAnalyzerGPU(GPUBackend):
             統計量名 -> ConfidenceResult
         """
         if statistics is None:
-        statistics = ["mean", "std", "median"]
+            statistics = ["mean", "std", "median"]
         if n_bootstrap is None:
             n_bootstrap = self.n_bootstrap
 
