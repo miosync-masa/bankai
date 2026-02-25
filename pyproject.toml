@@ -109,9 +109,7 @@ Issues = "https://github.com/miosync-masa/bankai/issues"
 Changelog = "https://github.com/miosync-masa/bankai/blob/main/CHANGELOG.md"
 
 [project.scripts]
-bankai-run = "bankai.analysis.run_full_analysis:main"
-bankai-benchmark = "bankai.benchmarks.performance_tests:main"
-bankai-check-gpu = "bankai.utils.gpu_check:main"
+bankai = "bankai.cli:main"
 
 # === Build Configuration ===
 
