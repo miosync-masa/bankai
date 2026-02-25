@@ -488,7 +488,7 @@ def generate_maximum_report_from_results_v4(
 
                 # 正しいキー形式で探す
                 found_key = None
-                for key in two_stage_result.residue_analyses.keys():
+                for key in two_stage_result.residue_analyses:
                     key_str = str(key)
                     if key_str.startswith(f"top_{i:02d}_"):
                         found_key = key
