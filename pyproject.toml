@@ -158,6 +158,7 @@ ignore = [
     "B009",   # getattr with constant (report generator pattern)
     "E402",   # import not at top (intentional lazy imports)
     "E741",   # ambiguous variable name l
+    "SIM102", # nested if → 可読性の好み
 ]
 
 [tool.ruff.lint.isort]
