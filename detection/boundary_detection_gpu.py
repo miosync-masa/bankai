@@ -17,7 +17,7 @@ except ImportError:
     find_peaks = None
     HAS_CUDA = False
 
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 from ..core.gpu_utils import GPUBackend
 from ..core.gpu_kernels import (
     compute_local_fractal_dimension_kernel,
