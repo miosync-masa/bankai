@@ -8,11 +8,10 @@ Invoked via:
     $ python -m bankai [command] [options]
 """
 
-import sys
-import os
-import time
-import random
 import argparse
+import os
+import random
+import sys
 from typing import Optional
 
 from bankai import __version__, GPU_AVAILABLE, GPU_NAME, GPU_MEMORY, get_gpu_info
@@ -23,14 +22,11 @@ from bankai import __version__, GPU_AVAILABLE, GPU_NAME, GPU_MEMORY, get_gpu_inf
 
 def _should_show_banner() -> bool:
     """バナーを表示すべきか判定"""
-    if os.environ.get('BANKAI_NO_BANNER'):
+    if os.environ.get("BANKAI_NO_BANNER"):
         return False
     if not sys.stdout.isatty():
         return False
-    if '--no-banner' in sys.argv:
-        return False
-    return True
-
+    return "--no-banner" not in sys.argv
 
 def _gpu_status_line() -> str:
     """GPU状態の1行サマリ"""
