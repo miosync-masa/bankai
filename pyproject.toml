@@ -154,10 +154,12 @@ ignore = [
     "W293",  # blank line contains whitespace (CUDA kernel strings)
     "W291",  # trailing whitespace (same reason)
     "N803",   # argument not lowercase (lambda_F, Q_lambda)
+    "N805",   # first arg not self
     "N806",   # variable not lowercase (same)
     "B009",   # getattr with constant (report generator pattern)
     "E402",   # import not at top (intentional lazy imports)
     "E741",   # ambiguous variable name l
+    "N802",   # _compute_lambda_F etc
     "SIM102", # nested if → 可読性の好み
 ]
 
