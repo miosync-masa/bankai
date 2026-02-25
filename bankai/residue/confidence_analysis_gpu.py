@@ -601,7 +601,7 @@ class ConfidenceAnalyzerGPU(GPUBackend):
     def compute_confidence_intervals(
         self,
         data: np.ndarray,
-        statistics: list[str] = ["mean", "std", "median"],
+        statistics: list[str] | None = None,
         n_bootstrap: Optional[int] = None,
     ) -> dict[str, ConfidenceResult]:
         """
@@ -621,6 +621,8 @@ class ConfidenceAnalyzerGPU(GPUBackend):
         dict
             統計量名 -> ConfidenceResult
         """
+        if statistics is None:
+        statistics = ["mean", "std", "median"]
         if n_bootstrap is None:
             n_bootstrap = self.n_bootstrap
 
@@ -753,11 +755,13 @@ def permutation_test_gpu(
 
 def compute_confidence_intervals_gpu(
     data: np.ndarray,
-    statistics: list[str] = ["mean", "std"],
+    statistics: list[str] | None = None,
     n_bootstrap: int = 1000,
     confidence_level: float = 0.95,
     **kwargs,
 ) -> dict[str, ConfidenceResult]:
+    if statistics is None:
+        statistics = ["mean", "std"]
     """複数統計量の信頼区間計算のスタンドアロン関数"""
     analyzer = ConfidenceAnalyzerGPU(
         n_bootstrap=n_bootstrap, confidence_level=confidence_level, **kwargs
