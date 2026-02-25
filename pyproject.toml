@@ -175,7 +175,7 @@ disallow_untyped_defs = false  # GPU kernelは型付け困難
 ignore_missing_imports = true  # cupy等の外部ライブラリ
 
 [tool.pytest.ini_options]
-testpaths = ["test"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]
