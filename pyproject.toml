@@ -151,6 +151,8 @@ ignore = [
     "E501",   # line too long (blackが処理)
     "B905",   # zip strict
     "SIM108", # ternary operator
+    "W293",  # blank line contains whitespace (CUDA kernel strings)
+    "W291",  # trailing whitespace (same reason)
 ]
 
 [tool.ruff.lint.isort]
