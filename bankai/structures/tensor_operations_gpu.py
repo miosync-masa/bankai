@@ -287,7 +287,6 @@ class TensorOperationsGPU(GPUBackend):
 
         if batch_size is None:
             # メモリから自動決定
-            tensors[0].nbytes
             batch_size = self.memory_manager.estimate_batch_size(
                 tensors[0].shape, operations_multiplier=2.0
             )
