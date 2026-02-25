@@ -1,13 +1,5 @@
 """
 Lambda³ Structure Computation (GPU Version)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Lambda³構造の計算をGPUで超高速化！
-NO TIME, NO PHYSICS, ONLY STRUCTURE... but FASTER! 🚀
-
-⚡ 2025/01/16 環ちゃん完全修正版 v2
-- GPUBackend (core/utils.py) を正しく継承
-- self.xpは親クラスで初期化されるから安心！
 """
 
 import logging
