@@ -1,5 +1,5 @@
 """
-Lambda³ GPU - Setup Script
+bankai- Setup Script
 High-performance GPU implementation of Lambda³ framework
 Updated for CUDA 12.x compatibility
 """
@@ -128,23 +128,23 @@ elif sys.platform == 'darwin':
 
 # setup関数
 setup(
-    name='lambda3-gpu',
+    name='bankai',
     version=VERSION,
-    author='Lambda³ Project Team',
-    author_email='tamaki@miosync.inc',  # 環ちゃんのメール！
+    author='Masamichi iizumi',
+    author_email='m.iizumi@miosync.email',
     description='GPU-accelerated Lambda³ framework for MD trajectory analysis',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/lambda3-project/lambda3-gpu',
+    url='https://github.com/miosync-masa/bankai',
     project_urls={
-        'Bug Reports': 'https://github.com/lambda3-project/lambda3-gpu/issues',
-        'Source': 'https://github.com/lambda3-project/lambda3-gpu',
-        'Documentation': 'https://lambda3-gpu.readthedocs.io',
+        'Bug Reports': 'https://github.com/miosync-masa/bankai/issues',
+        'Source': 'https://github.com/miosync-masa/bankai',
+        'Documentation': '',
     },
     
     # パッケージ設定
     packages=find_packages(exclude=['tests', 'docs', 'examples']),
-    package_dir={'lambda3_gpu': 'lambda3_gpu'},
+    package_dir={'bankai': 'bankai'},
     
     # Pythonバージョン
     python_requires='>=3.8',
