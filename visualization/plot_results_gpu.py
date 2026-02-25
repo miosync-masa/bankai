@@ -17,7 +17,7 @@ import logging
 try:
     from ..analysis.md_lambda3_detector_gpu import MDLambda3Result
     from ..analysis.two_stage_analyzer_gpu import TwoStageLambda3Result, ResidueLevelAnalysis
-    from ..types import ArrayType, NDArray
+    from ..models import ArrayType, NDArray
 except ImportError:
     # スタンドアロンでも動作するように
     MDLambda3Result = Dict[str, Any]
