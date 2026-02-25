@@ -13,7 +13,7 @@ by 環ちゃん
 import numpy as np
 import logging
 from typing import Dict, List, Tuple, Optional, Union, Any, Callable, TYPE_CHECKING
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 
 # GPU imports
 try:
