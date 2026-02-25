@@ -2,10 +2,6 @@
 """
 Lambda³ GPU Quantum Validation Pipeline - Version 4.0
 ======================================================
-
-Lambda³統合型量子起源判定パイプライン
-構造変化の量子性を正しく評価する完全リファクタリング版
-
 Version: 4.0.0 - Complete Refactoring
 Authors: Lambda³ Team, 環ちゃん & ご主人さま 💕
 Date: 2024
@@ -29,19 +25,15 @@ try:
     from bankai.analysis.md_lambda3_detector_gpu import (
         MDConfig,
         MDLambda3DetectorGPU,
-        MDLambda3Result,
     )
 
     # Third Impact Analytics
     from bankai.analysis.third_impact_analytics import (
-        ThirdImpactAnalyzer,
-        ThirdImpactResult,
         run_third_impact_analysis,
     )
     from bankai.analysis.two_stage_analyzer_gpu import (
         ResidueAnalysisConfig,
         TwoStageAnalyzerGPU,
-        TwoStageLambda3Result,
     )
 
     # Version 4.0 imports
