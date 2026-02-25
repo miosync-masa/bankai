@@ -25,7 +25,7 @@ except ImportError:
 
 from ..analysis.md_lambda3_detector_gpu import MDLambda3DetectorGPU, MDConfig
 from ..analysis.two_stage_analyzer_gpu import TwoStageAnalyzerGPU, ResidueAnalysisConfig
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 
 @dataclass
 class BenchmarkResult:
