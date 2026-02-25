@@ -560,8 +560,6 @@ def run_quantum_validation_pipeline(
                     if r.atomic_network
                 ]
                 if patterns:
-                    from collections import Counter
-
                     pattern_counts = Counter(patterns)
                     logger.info(f"   Network patterns: {dict(pattern_counts)}")
 
