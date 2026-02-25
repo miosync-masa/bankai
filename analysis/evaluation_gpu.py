@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt
 from ..core.gpu_utils import GPUBackend
 from .md_lambda3_detector_gpu import MDLambda3Result
 from .two_stage_analyzer_gpu import TwoStageLambda3Result
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 
 
 @dataclass
