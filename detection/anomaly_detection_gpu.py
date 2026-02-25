@@ -17,7 +17,7 @@ except ImportError:
     cp = None
     HAS_CUPY = False
 
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 from ..core.gpu_utils import GPUBackend
 from ..core.gpu_kernels import anomaly_detection_kernel
 
