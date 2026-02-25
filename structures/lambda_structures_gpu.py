@@ -28,7 +28,7 @@ except ImportError as e:
     print(f"⚠️ CuPy not available: {e}")
 
 # Local imports - 正しいパスからインポート
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 from ..core.gpu_utils import GPUBackend  
 from ..core.gpu_memory import GPUMemoryManager
 
