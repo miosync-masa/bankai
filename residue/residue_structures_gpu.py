@@ -22,7 +22,7 @@ except ImportError:
     cp = None
 
 # Local imports
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 from ..core import GPUBackend, GPUMemoryManager, handle_gpu_errors
 
 # residue_com_kernelのインポート（エラー時はNone）
