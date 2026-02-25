@@ -1568,43 +1568,48 @@ def filter_causal_network_gpu(
 def build_propagation_paths_gpu(
     initiators: list[int], causal_links: list[NetworkLink], max_depth: int = 5
 ) -> list[list[int]]:
-    """伝播経路構築のスタンドアロン関数"""
-    # グラフ構築
+    """Build propagation paths from initiator residues through causal network.
+    
+    Traces strongest-first paths using DFS, scoring each path by
+    cumulative link strength. Returns paths sorted by total score.
+    """
     graph = defaultdict(list)
     for link in causal_links:
         graph[link.from_res].append((link.to_res, link.strength))
 
-    paths = []
+    scored_paths: list[tuple[list[int], float]] = []
 
-    def dfs(current: int, path: list[int], depth: int):
-        if depth >= max_depth:
-            paths.append(path.copy())
+    def dfs(current: int, path: list[int], depth: int, path_score: float):
+        if depth >= max_depth or current not in graph:
+            if len(path) > 1:
+                scored_paths.append((path.copy(), path_score))
             return
 
-        if current in graph:
-            # 強度でソートして探索
-            neighbors = sorted(graph[current], key=lambda x: x[1], reverse=True)
+        neighbors = sorted(graph[current], key=lambda x: x[1], reverse=True)
 
-            for neighbor, weight in neighbors[:3]:  # 上位3経路
-                if neighbor not in path:
-                    path.append(neighbor)
-                    dfs(neighbor, path, depth + 1)
-                    path.pop()
-        else:
-            paths.append(path.copy())
+        expanded = False
+        for neighbor, weight in neighbors[:3]:
+            if neighbor not in path:
+                expanded = True
+                path.append(neighbor)
+                dfs(neighbor, path, depth + 1, path_score + weight)
+                path.pop()
 
-    # 各開始点から探索
+        if not expanded and len(path) > 1:
+            scored_paths.append((path.copy(), path_score))
+
     for initiator in initiators:
-        dfs(initiator, [initiator], 0)
+        dfs(initiator, [initiator], 0, 0.0)
 
-    # 重複除去と長さでソート
+    # スコア順でソート、重複除去
+    scored_paths.sort(key=lambda x: x[1], reverse=True)
+
     unique_paths = []
-    seen = set()
-
-    for path in sorted(paths, key=len, reverse=True):
-        path_tuple = tuple(path)
-        if path_tuple not in seen and len(path) > 1:
-            seen.add(path_tuple)
+    seen: set[tuple[int, ...]] = set()
+    for path, _score in scored_paths:
+        key = tuple(path)
+        if key not in seen:
+            seen.add(key)
             unique_paths.append(path)
 
     return unique_paths
