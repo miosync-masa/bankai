@@ -19,7 +19,7 @@ except ImportError:
     gaussian_filter1d_gpu = None
 
 from .phase_space_gpu import PhaseSpaceAnalyzerGPU
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 from ..core.gpu_utils import GPUBackend
 from ..core.gpu_kernels import (
     anomaly_detection_kernel,
