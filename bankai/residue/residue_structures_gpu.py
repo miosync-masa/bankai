@@ -1,11 +1,7 @@
 """
 Residue-Level Lambda³ Structure Computation (GPU Version)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
 残基レベルのLambda³構造をGPUで計算！
-単一フレームイベント（量子もつれ）も正しく処理！💫
-
-by 環ちゃん - 完全修正版 v2
 """
 
 import logging
