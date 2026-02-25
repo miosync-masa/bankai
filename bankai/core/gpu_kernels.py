@@ -25,7 +25,7 @@ except ImportError:
     cp = None
     cuda = None
 
-logger = logging.getLogger("lambda3_gpu.core.kernels")
+logger = logging.getLogger("bankai.core.kernels")
 
 # ===============================
 # Kernel Code Templates
