@@ -18,7 +18,7 @@ except ImportError:
     HAS_CUDA = False
 
 from .phase_space_gpu import PhaseSpaceAnalyzerGPU
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 from ..core.gpu_utils import GPUBackend
 
 class ExtendedDetectorGPU(GPUBackend):
