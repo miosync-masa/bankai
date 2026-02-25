@@ -1,11 +1,5 @@
 """
 Tensor Operations for Lambda³ (GPU Version)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-汎用的なテンソル演算のGPU実装だよ〜！💕
-スライディングウィンドウとか、相関計算とか、なんでも速い！
-
-by 環ちゃん
 """
 
 import logging
@@ -42,7 +36,6 @@ logger = logging.getLogger("bankai.structures.tensor_operations")
 class TensorOperationsGPU(GPUBackend):
     """
     テンソル演算のGPU実装クラス
-    Lambda³で使う色んな演算を高速化するよ〜！
     """
 
     def __init__(self, memory_manager: Optional[GPUMemoryManager] = None, **kwargs):
