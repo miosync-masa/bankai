@@ -27,7 +27,7 @@ from ..residue.residue_network_gpu import ResidueNetworkGPU
 from ..residue.causality_analysis_gpu import CausalityAnalyzerGPU
 from ..residue.confidence_analysis_gpu import ConfidenceAnalyzerGPU
 from .md_lambda3_detector_gpu import MDLambda3Result
-from ..types import ArrayType, NDArray
+from ..models import ArrayType, NDArray
 
 warnings.filterwarnings('ignore')
 
