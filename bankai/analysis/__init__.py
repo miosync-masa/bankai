@@ -77,13 +77,13 @@ __all__ = [
     "run_quantum_validation_pipeline",
     # 🆕 最強レポート生成（v4.0）
     "generate_maximum_report_from_results_v4",
-    # 🆕 Topology Resolver 
-    'TopologyResolver',
-    'AtomInfo',
-    'create_resolver_from_pipeline',
-    'generate_resolved_report',
-    'save_resolved_json',
-    'resolve_report_text',
+    # 🆕 Topology Resolver
+    "TopologyResolver",
+    "AtomInfo",
+    "create_resolver_from_pipeline",
+    "generate_resolved_report",
+    "save_resolved_json",
+    "resolve_report_text",
 ]
 
 __version__ = "1.5.0"  # v4.0 + Third Impact対応メジャーアップデート！
