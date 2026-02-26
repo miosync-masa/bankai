@@ -33,7 +33,9 @@ bankai example
 # Or manually
 bankai analyze data/chignolin/trajectory_stable.npy \
                data/chignolin/metadata_stable.json \
-               data/chignolin/protein.npy
+               data/chignolin/protein.npy \
+               data/chignolin/5awl.pdb
+
 ```
 
 ## Citation
