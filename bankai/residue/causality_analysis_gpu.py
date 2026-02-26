@@ -3,8 +3,6 @@ Causality Analysis for Lambda³ (GPU Version)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 残基間の因果関係をGPUで高速解析！
-構造的因果性、Transfer Entropy、遅延相関とか全部できるよ〜！💕
-
 by 環ちゃん
 """
 
