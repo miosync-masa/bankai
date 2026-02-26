@@ -255,8 +255,9 @@ bankai/
 │   ├── gpu_utils.py         # Array operations, CPU/GPU dispatch
 │   └── gpu_patches.py       # CuPy compatibility patches
 ├── analysis/            # Main analysis engines
-│   ├── md_lambda3_detector_gpu.py   # Core Λ³ detector
-│   ├── two_stage_analyzer_gpu.py    # Two-stage (macro→residue) pipeline
+│   ├── md_lambda3_detector_gpu.py  # Core Λ³ detector
+│   ├── two_stage_analyzer_gpu.py   # Two-stage (macro→residue) pipeline
+│   ├── topology_resolver.py        # Atoms Name resolver
 │   ├── run_full_analysis.py        # End-to-end pipeline orchestrator
 │   ├── third_impact_analytics.py   # Advanced cascade analytics
 │   └── maximum_report_generator.py # Comprehensive report generation
