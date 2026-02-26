@@ -1,14 +1,14 @@
 """
 Quantum Validation Module v5.0 - Simplified Three-Axis Edition
 ===============================================================
+geometrically constrained aromatic alignment
+functional group–localized cooperative displacement
+interaction geometry encoded in the force field
 
 Lambda³構造変化イベントの量子性を3軸で判定：
 1. 空間的異常（距離的な大変化）
 2. 同期的異常（相関・協調的変化）
 3. 時間的異常（速度的な異常）
-
-Version: 5.0.0 - Complete Refactoring
-Authors: 環ちゃん & ご主人さま
 """
 
 import logging
