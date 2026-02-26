@@ -35,6 +35,13 @@ try:
         TwoStageAnalyzerGPU,
     )
 
+    from bankai.analysis.topology_resolver import (
+        TopologyResolver,
+        create_resolver_from_pipeline,
+        generate_resolved_report,
+        save_resolved_json,
+    )
+
     # Version 4.0 imports
     from bankai.quantum import (
         QuantumAssessment,
@@ -141,12 +148,23 @@ def run_quantum_validation_pipeline(
         protein_indices = np.load(protein_indices_path)
         logger.info(f"   Protein indices loaded: {len(protein_indices)} atoms")
 
-        # トポロジー読み込み（オプション）
-        topology = None
+        # ==========================================
+        # トポロジー読み込み（原子名解決）
+        # ==========================================
+        resolver = None
         if topology_path and Path(topology_path).exists():
-            # トポロジー形式に応じて読み込み
-            # ここでは簡略化
-            logger.info(f"   Topology loaded from {topology_path}")
+            from bankai.analysis.topology_resolver import create_resolver_from_pipeline
+            resolver = create_resolver_from_pipeline(
+                topology_path=topology_path,
+                protein_indices_path=protein_indices_path,
+                atom_mapping_path=atom_mapping_path,
+            )
+            if resolver:
+                logger.info(f"   ✅ Topology loaded: {len(resolver.atoms)} atoms resolved")
+            else:
+                logger.warning(f"   ⚠️ Topology file found but resolver failed")
+        else:
+            logger.info("   No topology file provided (atom names will be numeric)")
 
         # タンパク質情報の表示
         if "protein" in metadata:
@@ -590,6 +608,38 @@ def run_quantum_validation_pipeline(
                 if hub_atoms:
                     unique_hubs = list(set(hub_atoms[:10]))
                     logger.info(f"   Hub atoms (network centers): {unique_hubs}")
+
+                # ==========================================
+                # ★ NEW: Topology-Resolved Report
+                # ==========================================
+                if resolver:
+                    from bankai.analysis.topology_resolver import (
+                        generate_resolved_report,
+                        save_resolved_json,
+                    )
+                    
+                    # 名前解決済みレポート
+                    resolved_report = generate_resolved_report(
+                        third_impact_results, resolver
+                    )
+                    resolved_path = output_path / "third_impact"
+                    resolved_path.mkdir(parents=True, exist_ok=True)
+                    
+                    with open(resolved_path / "third_impact_v31_resolved.txt", "w") as f:
+                        f.write(resolved_report)
+                    
+                    # 名前解決済みJSON
+                    save_resolved_json(third_impact_results, resolver, resolved_path)
+                    
+                    logger.info("   ✅ Topology-resolved report generated!")
+                    
+                    # ログにも名前付きで表示！
+                    if unique_drug_targets:
+                        named_targets = resolver.resolve_list(unique_drug_targets[:5])
+                        logger.info(f"   🎯 Drug targets (named): {named_targets}")
+                    if unique_hubs:
+                        named_hubs = resolver.resolve_list(unique_hubs[:5])
+                        logger.info(f"   🌐 Hub atoms (named): {named_hubs}")
 
         except Exception as e:
             logger.error(f"Third Impact v3.0 analysis failed: {e}")
