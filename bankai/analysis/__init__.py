@@ -4,7 +4,6 @@ MD軌道の完全GPU化解析パイプライン
 Version 4.0 + Third Impact対応版
 """
 
-# 🆕🆕 最強レポート生成機能！（v4.0対応）
 from .maximum_report_generator import (
     generate_maximum_report_from_results_v4,
 )
@@ -13,6 +12,19 @@ from .md_lambda3_detector_gpu import MDConfig, MDLambda3DetectorGPU, MDLambda3Re
 # 🆕 フル解析パイプライン
 from .run_full_analysis import (
     run_quantum_validation_pipeline,
+)
+
+# 🔺 Third Impact Analytics
+from .third_impact_analytics import (
+    AtomicNetworkGPU,
+    AtomicNetworkLink,
+    AtomicNetworkResult,
+    AtomicQuantumTrace,
+    EventOrigin,
+    ResidueBridge,
+    ThirdImpactAnalyzer,
+    ThirdImpactResult,
+    run_third_impact_analysis,
 )
 
 # topology Atomic Nmae
@@ -25,23 +37,6 @@ from .topology_resolver import (
     resolve_report_text,
 )
 
-# 🔺 Third Impact Analytics
-from .third_impact_analytics import (
-    # ネットワーク解析（v3.0新機能！）
-    AtomicNetworkGPU,
-    AtomicNetworkLink,
-    AtomicNetworkResult,
-    # 原子レベル
-    AtomicQuantumTrace,
-    # 起源情報
-    EventOrigin,
-    ResidueBridge,
-    # メインクラス
-    ThirdImpactAnalyzer,
-    ThirdImpactResult,
-    # 実行関数
-    run_third_impact_analysis,
-)
 from .two_stage_analyzer_gpu import (
     ResidueAnalysisConfig,
     ResidueEvent,
@@ -73,7 +68,6 @@ __all__ = [
     "ResidueBridge",  # 追加！
     "EventOrigin",  # 追加！
     "run_third_impact_analysis",
-    
     # 評価
     "PerformanceEvaluatorGPU",
     "PerformanceMetrics",
