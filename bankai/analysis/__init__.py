@@ -29,14 +29,13 @@ from .third_impact_analytics import (
 
 # topology Atomic Nmae
 from .topology_resolver import (
-    TopologyResolver,
     AtomInfo,
+    TopologyResolver,
     create_resolver_from_pipeline,
     generate_resolved_report,
-    save_resolved_json,
     resolve_report_text,
+    save_resolved_json,
 )
-
 from .two_stage_analyzer_gpu import (
     ResidueAnalysisConfig,
     ResidueEvent,
