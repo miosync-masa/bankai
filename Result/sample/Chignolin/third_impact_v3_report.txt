@@ -1,0 +1,3697 @@
+
+================================================================================
+🔺 THIRD IMPACT ANALYSIS v3.0 - GPU Atomic Network Edition
+================================================================================
+
+EXECUTIVE SUMMARY
+-----------------
+Events Analyzed: 250
+Genesis Atoms Identified: 106
+Quantum Atoms Detected: 133
+Network Links Discovered: 245
+Residue Bridges Found: 0
+
+DETAILED ANALYSIS
+-----------------
+
+top_00_score_3.994_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: [13, 15, 16, 18]
+Network Hubs: [13, 15, 16, 18]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 6
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.844
+
+Drug Target Atoms: [15, 16, 18]
+
+Statistics:
+  μ_displacement: 0.774 Å
+  σ_displacement: 0.693 Å
+  Detection threshold: 2.852 Å
+
+top_00_score_3.994_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_00_score_3.994_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [80, 81, 82]
+Network Hubs: [80, 81, 82]
+
+Network Analysis:
+  Pattern: parallel
+  Sync Links: 3
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 1.000
+
+Drug Target Atoms: [80, 81, 82]
+
+Statistics:
+  μ_displacement: 1.120 Å
+  σ_displacement: 0.944 Å
+  Detection threshold: 3.952 Å
+
+top_00_score_3.994_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.120 Å
+  σ_displacement: 0.944 Å
+  Detection threshold: 3.952 Å
+
+top_00_score_3.994_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_01_score_3.950_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [15, 16]
+Network Hubs: [15, 16]
+
+Network Analysis:
+  Pattern: parallel
+  Sync Links: 1
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.731
+
+Drug Target Atoms: [16]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_01_score_3.950_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_01_score_3.950_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_01_score_3.950_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_01_score_3.950_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_02_score_3.936_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [13, 15, 16]
+Network Hubs: [13, 15, 16]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 3
+  Causal Links: 3
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.721
+
+Drug Target Atoms: [16]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_02_score_3.936_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_02_score_3.936_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_02_score_3.936_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_02_score_3.936_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_03_score_3.496_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.611
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_03_score_3.496_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_03_score_3.496_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.636
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_03_score_3.496_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: [94]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.779
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_03_score_3.496_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_04_score_3.439_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_04_score_3.439_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_04_score_3.439_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [81]
+Network Hubs: [81, 82, 78, 79]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 2
+  Causal Links: 4
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 1.000
+
+Drug Target Atoms: [81, 82, 79]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_04_score_3.439_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.631
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_04_score_3.439_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_05_score_3.409_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [13, 14, 15, 16, 17, 18]
+Network Hubs: [13, 14, 15, 16, 17]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 15
+  Causal Links: 15
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.872
+
+Drug Target Atoms: [15, 16, 18]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_05_score_3.409_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_05_score_3.409_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_05_score_3.409_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_05_score_3.409_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_06_score_3.269_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+Network Hubs: [16, 18]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 1
+  Causal Links: 1
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.695
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_06_score_3.269_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_06_score_3.269_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [78, 82]
+Network Hubs: [82, 81]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 1
+  Causal Links: 1
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.857
+
+Drug Target Atoms: [82, 81, 78]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_06_score_3.269_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.169 Å
+  σ_displacement: 0.930 Å
+  Detection threshold: 3.959 Å
+
+top_06_score_3.269_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_07_score_3.229_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: [15, 16]
+Network Hubs: [15, 16]
+
+Network Analysis:
+  Pattern: parallel
+  Sync Links: 1
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.643
+
+Statistics:
+  μ_displacement: 0.861 Å
+  σ_displacement: 0.702 Å
+  Detection threshold: 2.968 Å
+
+top_07_score_3.229_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.861 Å
+  σ_displacement: 0.702 Å
+  Detection threshold: 2.968 Å
+
+top_07_score_3.229_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.861 Å
+  σ_displacement: 0.702 Å
+  Detection threshold: 2.968 Å
+
+top_07_score_3.229_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.861 Å
+  σ_displacement: 0.702 Å
+  Detection threshold: 2.968 Å
+
+top_07_score_3.229_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.861 Å
+  σ_displacement: 0.702 Å
+  Detection threshold: 2.968 Å
+
+top_08_score_3.185_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [12, 13, 14, 15, 16, 17, 18]
+Network Hubs: [12, 13, 14, 15, 16]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 14
+  Causal Links: 16
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.990
+
+Drug Target Atoms: [13, 14, 15, 16, 17, 18]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_08_score_3.185_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_08_score_3.185_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [80, 81, 82]
+Network Hubs: [80, 81, 82, 78, 79]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 6
+  Causal Links: 10
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 1.000
+
+Drug Target Atoms: [81, 82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_08_score_3.185_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_08_score_3.185_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_09_score_3.102_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [15, 16]
+Network Hubs: [15, 16, 13]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 3
+  Causal Links: 3
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.753
+
+Drug Target Atoms: [16]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_09_score_3.102_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_09_score_3.102_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+Network Hubs: [78, 79, 81]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 2
+  Causal Links: 3
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.964
+
+Drug Target Atoms: [78, 81]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_09_score_3.102_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_09_score_3.102_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_10_score_3.034_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_10_score_3.034_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_10_score_3.034_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [78, 79, 81, 82]
+Network Hubs: [78, 79, 81, 82]
+
+Network Analysis:
+  Pattern: cascade
+  Sync Links: 1
+  Causal Links: 6
+  Async Links: 1
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 1.000
+
+Drug Target Atoms: [79]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_10_score_3.034_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_10_score_3.034_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_11_score_2.966_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.880 Å
+  σ_displacement: 0.532 Å
+  Detection threshold: 2.476 Å
+
+top_11_score_2.966_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.880 Å
+  σ_displacement: 0.532 Å
+  Detection threshold: 2.476 Å
+
+top_11_score_2.966_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [81]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.660
+
+Statistics:
+  μ_displacement: 0.880 Å
+  σ_displacement: 0.532 Å
+  Detection threshold: 2.476 Å
+
+top_11_score_2.966_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.880 Å
+  σ_displacement: 0.532 Å
+  Detection threshold: 2.476 Å
+
+top_11_score_2.966_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.880 Å
+  σ_displacement: 0.532 Å
+  Detection threshold: 2.476 Å
+
+top_12_score_2.933_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [12, 13, 14, 15, 16, 17, 18]
+Network Hubs: [12, 13, 14, 15, 16]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 21
+  Causal Links: 21
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 1.000
+
+Drug Target Atoms: [13, 14, 15, 16, 18]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_12_score_2.933_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_12_score_2.933_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+Network Hubs: [81, 82]
+
+Network Analysis:
+  Pattern: cascade
+  Sync Links: 0
+  Causal Links: 1
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.969
+
+Drug Target Atoms: [81, 82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_12_score_2.933_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_12_score_2.933_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_13_score_2.908_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.890 Å
+  σ_displacement: 0.542 Å
+  Detection threshold: 2.515 Å
+
+top_13_score_2.908_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.890 Å
+  σ_displacement: 0.542 Å
+  Detection threshold: 2.515 Å
+
+top_13_score_2.908_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.890 Å
+  σ_displacement: 0.542 Å
+  Detection threshold: 2.515 Å
+
+top_13_score_2.908_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: [93]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: tunneling
+Max Confidence: 0.874
+
+Drug Target Atoms: [93]
+
+Statistics:
+  μ_displacement: 0.890 Å
+  σ_displacement: 0.542 Å
+  Detection threshold: 2.515 Å
+
+top_13_score_2.908_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.890 Å
+  σ_displacement: 0.542 Å
+  Detection threshold: 2.515 Å
+
+top_14_score_2.878_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.892 Å
+  σ_displacement: 0.583 Å
+  Detection threshold: 2.640 Å
+
+top_14_score_2.878_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.892 Å
+  σ_displacement: 0.583 Å
+  Detection threshold: 2.640 Å
+
+top_14_score_2.878_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.892 Å
+  σ_displacement: 0.583 Å
+  Detection threshold: 2.640 Å
+
+top_14_score_2.878_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.892 Å
+  σ_displacement: 0.583 Å
+  Detection threshold: 2.640 Å
+
+top_14_score_2.878_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.892 Å
+  σ_displacement: 0.583 Å
+  Detection threshold: 2.640 Å
+
+top_15_score_2.863_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.917 Å
+  σ_displacement: 0.579 Å
+  Detection threshold: 2.654 Å
+
+top_15_score_2.863_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.917 Å
+  σ_displacement: 0.579 Å
+  Detection threshold: 2.654 Å
+
+top_15_score_2.863_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.917 Å
+  σ_displacement: 0.579 Å
+  Detection threshold: 2.654 Å
+
+top_15_score_2.863_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.917 Å
+  σ_displacement: 0.579 Å
+  Detection threshold: 2.654 Å
+
+top_15_score_2.863_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.917 Å
+  σ_displacement: 0.579 Å
+  Detection threshold: 2.654 Å
+
+top_16_score_2.838_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_16_score_2.838_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_16_score_2.838_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_16_score_2.838_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_16_score_2.838_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_17_score_2.809_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.345 Å
+  σ_displacement: 1.007 Å
+  Detection threshold: 4.365 Å
+
+top_17_score_2.809_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.345 Å
+  σ_displacement: 1.007 Å
+  Detection threshold: 4.365 Å
+
+top_17_score_2.809_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.345 Å
+  σ_displacement: 1.007 Å
+  Detection threshold: 4.365 Å
+
+top_17_score_2.809_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.345 Å
+  σ_displacement: 1.007 Å
+  Detection threshold: 4.365 Å
+
+top_17_score_2.809_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.345 Å
+  σ_displacement: 1.007 Å
+  Detection threshold: 4.365 Å
+
+top_18_score_2.785_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_18_score_2.785_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.896 Å
+  σ_displacement: 0.673 Å
+  Detection threshold: 2.915 Å
+
+top_18_score_2.785_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+Network Hubs: [78, 82]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 1
+  Causal Links: 1
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 1.000
+
+Drug Target Atoms: [82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_18_score_2.785_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_18_score_2.785_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_19_score_2.767_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.855 Å
+  σ_displacement: 0.655 Å
+  Detection threshold: 2.819 Å
+
+top_19_score_2.767_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.855 Å
+  σ_displacement: 0.655 Å
+  Detection threshold: 2.819 Å
+
+top_19_score_2.767_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.855 Å
+  σ_displacement: 0.655 Å
+  Detection threshold: 2.819 Å
+
+top_19_score_2.767_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.855 Å
+  σ_displacement: 0.655 Å
+  Detection threshold: 2.819 Å
+
+top_19_score_2.767_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.855 Å
+  σ_displacement: 0.655 Å
+  Detection threshold: 2.819 Å
+
+top_20_score_2.747_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_20_score_2.747_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_20_score_2.747_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.657
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_20_score_2.747_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: [92]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.645
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_20_score_2.747_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_21_score_2.725_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: [12, 13, 14, 15, 16, 17, 18]
+Network Hubs: [12, 13, 14, 15, 16]
+
+Network Analysis:
+  Pattern: parallel
+  Sync Links: 21
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 1.000
+
+Drug Target Atoms: [13, 15, 16, 18]
+
+Statistics:
+  μ_displacement: 1.270 Å
+  σ_displacement: 1.473 Å
+  Detection threshold: 5.688 Å
+
+top_21_score_2.725_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.270 Å
+  σ_displacement: 1.473 Å
+  Detection threshold: 5.688 Å
+
+top_21_score_2.725_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+Network Hubs: [81, 82]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 1
+  Causal Links: 1
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.896
+
+Drug Target Atoms: [81]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_21_score_2.725_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.270 Å
+  σ_displacement: 1.473 Å
+  Detection threshold: 5.688 Å
+
+top_21_score_2.725_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_22_score_2.705_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_22_score_2.705_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_22_score_2.705_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [80, 81, 82]
+Network Hubs: [80, 81, 82]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 3
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 1.000
+
+Drug Target Atoms: [81, 82]
+
+Statistics:
+  μ_displacement: 0.945 Å
+  σ_displacement: 0.596 Å
+  Detection threshold: 2.733 Å
+
+top_22_score_2.705_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.094 Å
+  σ_displacement: 0.587 Å
+  Detection threshold: 2.857 Å
+
+top_22_score_2.705_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.094 Å
+  σ_displacement: 0.587 Å
+  Detection threshold: 2.857 Å
+
+top_23_score_2.702_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [16]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.687
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_23_score_2.702_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_23_score_2.702_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: tunneling
+Max Confidence: 0.831
+
+Drug Target Atoms: [82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_23_score_2.702_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.716
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_23_score_2.702_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_24_score_2.671_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.077 Å
+  σ_displacement: 1.115 Å
+  Detection threshold: 4.423 Å
+
+top_24_score_2.671_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.077 Å
+  σ_displacement: 1.115 Å
+  Detection threshold: 4.423 Å
+
+top_24_score_2.671_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.077 Å
+  σ_displacement: 1.115 Å
+  Detection threshold: 4.423 Å
+
+top_24_score_2.671_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.077 Å
+  σ_displacement: 1.115 Å
+  Detection threshold: 4.423 Å
+
+top_24_score_2.671_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.077 Å
+  σ_displacement: 1.115 Å
+  Detection threshold: 4.423 Å
+
+top_25_score_2.659_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.992 Å
+  σ_displacement: 0.745 Å
+  Detection threshold: 3.228 Å
+
+top_25_score_2.659_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.992 Å
+  σ_displacement: 0.745 Å
+  Detection threshold: 3.228 Å
+
+top_25_score_2.659_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.992 Å
+  σ_displacement: 0.745 Å
+  Detection threshold: 3.228 Å
+
+top_25_score_2.659_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.992 Å
+  σ_displacement: 0.745 Å
+  Detection threshold: 3.228 Å
+
+top_25_score_2.659_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.992 Å
+  σ_displacement: 0.745 Å
+  Detection threshold: 3.228 Å
+
+top_26_score_2.627_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.557 Å
+  σ_displacement: 1.003 Å
+  Detection threshold: 4.568 Å
+
+top_26_score_2.627_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.557 Å
+  σ_displacement: 1.003 Å
+  Detection threshold: 4.568 Å
+
+top_26_score_2.627_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [79]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.657
+
+Statistics:
+  μ_displacement: 1.557 Å
+  σ_displacement: 1.003 Å
+  Detection threshold: 4.568 Å
+
+top_26_score_2.627_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.557 Å
+  σ_displacement: 1.003 Å
+  Detection threshold: 4.568 Å
+
+top_26_score_2.627_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.557 Å
+  σ_displacement: 1.003 Å
+  Detection threshold: 4.568 Å
+
+top_27_score_2.577_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.080 Å
+  σ_displacement: 0.912 Å
+  Detection threshold: 3.816 Å
+
+top_27_score_2.577_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.080 Å
+  σ_displacement: 0.912 Å
+  Detection threshold: 3.816 Å
+
+top_27_score_2.577_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.080 Å
+  σ_displacement: 0.912 Å
+  Detection threshold: 3.816 Å
+
+top_27_score_2.577_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.080 Å
+  σ_displacement: 0.912 Å
+  Detection threshold: 3.816 Å
+
+top_27_score_2.577_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.080 Å
+  σ_displacement: 0.912 Å
+  Detection threshold: 3.816 Å
+
+top_28_score_2.574_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: [13, 15, 16]
+Network Hubs: [13, 15, 16]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 3
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.859
+
+Drug Target Atoms: [15, 16]
+
+Statistics:
+  μ_displacement: 0.858 Å
+  σ_displacement: 0.761 Å
+  Detection threshold: 3.141 Å
+
+top_28_score_2.574_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.858 Å
+  σ_displacement: 0.761 Å
+  Detection threshold: 3.141 Å
+
+top_28_score_2.574_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [82]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.686
+
+Statistics:
+  μ_displacement: 0.858 Å
+  σ_displacement: 0.761 Å
+  Detection threshold: 3.141 Å
+
+top_28_score_2.574_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: [94]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.686
+
+Statistics:
+  μ_displacement: 0.858 Å
+  σ_displacement: 0.761 Å
+  Detection threshold: 3.141 Å
+
+top_28_score_2.574_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.858 Å
+  σ_displacement: 0.761 Å
+  Detection threshold: 3.141 Å
+
+top_29_score_2.564_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.994 Å
+  σ_displacement: 1.500 Å
+  Detection threshold: 6.493 Å
+
+top_29_score_2.564_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.994 Å
+  σ_displacement: 1.500 Å
+  Detection threshold: 6.493 Å
+
+top_29_score_2.564_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [82]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.691
+
+Statistics:
+  μ_displacement: 1.994 Å
+  σ_displacement: 1.500 Å
+  Detection threshold: 6.493 Å
+
+top_29_score_2.564_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.994 Å
+  σ_displacement: 1.500 Å
+  Detection threshold: 6.493 Å
+
+top_29_score_2.564_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.994 Å
+  σ_displacement: 1.500 Å
+  Detection threshold: 6.493 Å
+
+top_30_score_2.504_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: [13, 15, 16, 18]
+Network Hubs: [13, 15, 16, 18]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 6
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.831
+
+Drug Target Atoms: [13, 15, 16, 18]
+
+Statistics:
+  μ_displacement: 1.272 Å
+  σ_displacement: 0.862 Å
+  Detection threshold: 3.858 Å
+
+top_30_score_2.504_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.272 Å
+  σ_displacement: 0.862 Å
+  Detection threshold: 3.858 Å
+
+top_30_score_2.504_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.272 Å
+  σ_displacement: 0.862 Å
+  Detection threshold: 3.858 Å
+
+top_30_score_2.504_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.272 Å
+  σ_displacement: 0.862 Å
+  Detection threshold: 3.858 Å
+
+top_30_score_2.504_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.272 Å
+  σ_displacement: 0.862 Å
+  Detection threshold: 3.858 Å
+
+top_31_score_2.457_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_31_score_2.457_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_31_score_2.457_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [78, 79, 80, 82]
+Network Hubs: [78, 79, 80, 82]
+
+Network Analysis:
+  Pattern: cascade
+  Sync Links: 1
+  Causal Links: 6
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 1.000
+
+Drug Target Atoms: [78, 79, 80, 82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_31_score_2.457_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_31_score_2.457_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_32_score_2.444_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 2.447 Å
+  σ_displacement: 1.594 Å
+  Detection threshold: 7.229 Å
+
+top_32_score_2.444_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_32_score_2.444_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_32_score_2.444_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_32_score_2.444_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_33_score_2.420_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.975 Å
+  σ_displacement: 0.711 Å
+  Detection threshold: 3.109 Å
+
+top_33_score_2.420_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.975 Å
+  σ_displacement: 0.711 Å
+  Detection threshold: 3.109 Å
+
+top_33_score_2.420_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.975 Å
+  σ_displacement: 0.711 Å
+  Detection threshold: 3.109 Å
+
+top_33_score_2.420_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.975 Å
+  σ_displacement: 0.711 Å
+  Detection threshold: 3.109 Å
+
+top_33_score_2.420_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.975 Å
+  σ_displacement: 0.711 Å
+  Detection threshold: 3.109 Å
+
+top_34_score_2.419_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: [2]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.693
+
+Statistics:
+  μ_displacement: 0.584 Å
+  σ_displacement: 0.355 Å
+  Detection threshold: 1.648 Å
+
+top_34_score_2.419_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.584 Å
+  σ_displacement: 0.355 Å
+  Detection threshold: 1.648 Å
+
+top_34_score_2.419_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.584 Å
+  σ_displacement: 0.355 Å
+  Detection threshold: 1.648 Å
+
+top_34_score_2.419_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: [92]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.663
+
+Statistics:
+  μ_displacement: 0.584 Å
+  σ_displacement: 0.355 Å
+  Detection threshold: 1.648 Å
+
+top_34_score_2.419_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.584 Å
+  σ_displacement: 0.355 Å
+  Detection threshold: 1.648 Å
+
+top_35_score_2.386_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.724 Å
+  σ_displacement: 0.488 Å
+  Detection threshold: 2.189 Å
+
+top_35_score_2.386_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.724 Å
+  σ_displacement: 0.488 Å
+  Detection threshold: 2.189 Å
+
+top_35_score_2.386_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [82]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_jump
+Max Confidence: 1.000
+
+Drug Target Atoms: [82]
+
+Statistics:
+  μ_displacement: 0.724 Å
+  σ_displacement: 0.488 Å
+  Detection threshold: 2.189 Å
+
+top_35_score_2.386_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.724 Å
+  σ_displacement: 0.488 Å
+  Detection threshold: 2.189 Å
+
+top_35_score_2.386_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.724 Å
+  σ_displacement: 0.488 Å
+  Detection threshold: 2.189 Å
+
+top_36_score_2.362_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.857 Å
+  σ_displacement: 0.609 Å
+  Detection threshold: 2.685 Å
+
+top_36_score_2.362_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.857 Å
+  σ_displacement: 0.609 Å
+  Detection threshold: 2.685 Å
+
+top_36_score_2.362_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [78, 79, 81]
+Network Hubs: [78, 79, 81]
+
+Network Analysis:
+  Pattern: parallel
+  Sync Links: 3
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.913
+
+Drug Target Atoms: [78, 79, 81]
+
+Statistics:
+  μ_displacement: 0.857 Å
+  σ_displacement: 0.609 Å
+  Detection threshold: 2.685 Å
+
+top_36_score_2.362_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.857 Å
+  σ_displacement: 0.609 Å
+  Detection threshold: 2.685 Å
+
+top_36_score_2.362_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.857 Å
+  σ_displacement: 0.609 Å
+  Detection threshold: 2.685 Å
+
+top_37_score_2.329_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 3.370 Å
+  σ_displacement: 2.268 Å
+  Detection threshold: 10.174 Å
+
+top_37_score_2.329_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 3.370 Å
+  σ_displacement: 2.268 Å
+  Detection threshold: 10.174 Å
+
+top_37_score_2.329_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 3.370 Å
+  σ_displacement: 2.268 Å
+  Detection threshold: 10.174 Å
+
+top_37_score_2.329_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 3.370 Å
+  σ_displacement: 2.268 Å
+  Detection threshold: 10.174 Å
+
+top_37_score_2.329_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 3.370 Å
+  σ_displacement: 2.268 Å
+  Detection threshold: 10.174 Å
+
+top_38_score_2.313_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.248 Å
+  σ_displacement: 1.029 Å
+  Detection threshold: 4.335 Å
+
+top_38_score_2.313_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.248 Å
+  σ_displacement: 1.029 Å
+  Detection threshold: 4.335 Å
+
+top_38_score_2.313_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [82]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.716
+
+Statistics:
+  μ_displacement: 1.248 Å
+  σ_displacement: 1.029 Å
+  Detection threshold: 4.335 Å
+
+top_38_score_2.313_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.248 Å
+  σ_displacement: 1.029 Å
+  Detection threshold: 4.335 Å
+
+top_38_score_2.313_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.248 Å
+  σ_displacement: 1.029 Å
+  Detection threshold: 4.335 Å
+
+top_39_score_2.308_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.735 Å
+  σ_displacement: 0.435 Å
+  Detection threshold: 2.040 Å
+
+top_39_score_2.308_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.735 Å
+  σ_displacement: 0.435 Å
+  Detection threshold: 2.040 Å
+
+top_39_score_2.308_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.735 Å
+  σ_displacement: 0.435 Å
+  Detection threshold: 2.040 Å
+
+top_39_score_2.308_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.735 Å
+  σ_displacement: 0.435 Å
+  Detection threshold: 2.040 Å
+
+top_39_score_2.308_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.735 Å
+  σ_displacement: 0.435 Å
+  Detection threshold: 2.040 Å
+
+top_40_score_2.289_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.850 Å
+  σ_displacement: 1.081 Å
+  Detection threshold: 5.094 Å
+
+top_40_score_2.289_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.850 Å
+  σ_displacement: 1.081 Å
+  Detection threshold: 5.094 Å
+
+top_40_score_2.289_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.850 Å
+  σ_displacement: 1.081 Å
+  Detection threshold: 5.094 Å
+
+top_40_score_2.289_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: [92]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.763
+
+Statistics:
+  μ_displacement: 1.850 Å
+  σ_displacement: 1.081 Å
+  Detection threshold: 5.094 Å
+
+top_40_score_2.289_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.850 Å
+  σ_displacement: 1.081 Å
+  Detection threshold: 5.094 Å
+
+top_41_score_2.273_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_41_score_2.273_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_41_score_2.273_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_jump
+Max Confidence: 1.000
+
+Drug Target Atoms: [81]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_41_score_2.273_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_41_score_2.273_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_42_score_2.264_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: [13, 14, 15, 16, 18]
+Network Hubs: [13, 14, 15, 16, 18]
+
+Network Analysis:
+  Pattern: parallel
+  Sync Links: 10
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.938
+
+Drug Target Atoms: [15, 16]
+
+Statistics:
+  μ_displacement: 1.298 Å
+  σ_displacement: 1.140 Å
+  Detection threshold: 4.717 Å
+
+top_42_score_2.264_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.298 Å
+  σ_displacement: 1.140 Å
+  Detection threshold: 4.717 Å
+
+top_42_score_2.264_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.298 Å
+  σ_displacement: 1.140 Å
+  Detection threshold: 4.717 Å
+
+top_42_score_2.264_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.298 Å
+  σ_displacement: 1.140 Å
+  Detection threshold: 4.717 Å
+
+top_42_score_2.264_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.298 Å
+  σ_displacement: 1.140 Å
+  Detection threshold: 4.717 Å
+
+top_43_score_2.244_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.316 Å
+  σ_displacement: 0.958 Å
+  Detection threshold: 4.190 Å
+
+top_43_score_2.244_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.316 Å
+  σ_displacement: 0.958 Å
+  Detection threshold: 4.190 Å
+
+top_43_score_2.244_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: [79, 81]
+Network Hubs: [79, 81]
+
+Network Analysis:
+  Pattern: instantaneous
+  Sync Links: 1
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.826
+
+Drug Target Atoms: [79, 81]
+
+Statistics:
+  μ_displacement: 1.316 Å
+  σ_displacement: 0.958 Å
+  Detection threshold: 4.190 Å
+
+top_43_score_2.244_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.316 Å
+  σ_displacement: 0.958 Å
+  Detection threshold: 4.190 Å
+
+top_43_score_2.244_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.316 Å
+  σ_displacement: 0.958 Å
+  Detection threshold: 4.190 Å
+
+top_44_score_2.241_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [16]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.675
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_44_score_2.241_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_44_score_2.241_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [81]
+Network Hubs: [81, 82]
+
+Network Analysis:
+  Pattern: cascade
+  Sync Links: 0
+  Causal Links: 1
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.814
+
+Drug Target Atoms: [82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_44_score_2.241_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: [92]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: entanglement
+Max Confidence: 0.791
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_44_score_2.241_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.260 Å
+  σ_displacement: 0.769 Å
+  Detection threshold: 3.565 Å
+
+top_45_score_2.239_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.289 Å
+  σ_displacement: 0.827 Å
+  Detection threshold: 3.770 Å
+
+top_45_score_2.239_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.289 Å
+  σ_displacement: 0.827 Å
+  Detection threshold: 3.770 Å
+
+top_45_score_2.239_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.289 Å
+  σ_displacement: 0.827 Å
+  Detection threshold: 3.770 Å
+
+top_45_score_2.239_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.289 Å
+  σ_displacement: 0.827 Å
+  Detection threshold: 3.770 Å
+
+top_45_score_2.239_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 1.289 Å
+  σ_displacement: 0.827 Å
+  Detection threshold: 3.770 Å
+
+top_46_score_2.232_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: [13, 15, 16]
+Network Hubs: [13, 15, 16]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 3
+  Causal Links: 3
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.718
+
+Drug Target Atoms: [13]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_46_score_2.232_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_46_score_2.232_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [82]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 0
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.698
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_46_score_2.232_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: [93]
+Network Hubs: [93, 94]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 0
+  Causal Links: 0
+  Async Links: 1
+
+Quantum Signature: quantum_anomaly
+Max Confidence: 0.733
+
+Drug Target Atoms: [94]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_46_score_2.232_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_47_score_2.214_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_47_score_2.214_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_47_score_2.214_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [80, 81, 82]
+Network Hubs: [80, 81, 82]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 2
+  Causal Links: 3
+  Async Links: 0
+
+Quantum Signature: quantum_jump
+Max Confidence: 1.000
+
+Drug Target Atoms: [80, 81, 82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_47_score_2.214_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_47_score_2.214_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_48_score_2.211_res0 (propagation)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_48_score_2.211_res1 (propagation)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_48_score_2.211_res4 (propagation)
+=======================
+Target Residue: 4
+Genesis Atoms: [79, 80, 81, 82]
+Network Hubs: [79, 80, 81, 82]
+
+Network Analysis:
+  Pattern: mixed
+  Sync Links: 3
+  Causal Links: 6
+  Async Links: 0
+
+Quantum Signature: tunneling
+Max Confidence: 1.000
+
+Drug Target Atoms: [79, 81, 82]
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_48_score_2.211_res5 (propagation)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_48_score_2.211_res6 (propagation)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 0.000 Å
+  σ_displacement: 0.000 Å
+  Detection threshold: 0.000 Å
+
+top_49_score_2.193_res0 (instantaneous)
+=======================
+Target Residue: 0
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 2.001 Å
+  σ_displacement: 1.661 Å
+  Detection threshold: 6.983 Å
+
+top_49_score_2.193_res1 (instantaneous)
+=======================
+Target Residue: 1
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 2.001 Å
+  σ_displacement: 1.661 Å
+  Detection threshold: 6.983 Å
+
+top_49_score_2.193_res4 (instantaneous)
+=======================
+Target Residue: 4
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 2.001 Å
+  σ_displacement: 1.661 Å
+  Detection threshold: 6.983 Å
+
+top_49_score_2.193_res5 (instantaneous)
+=======================
+Target Residue: 5
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 2.001 Å
+  σ_displacement: 1.661 Å
+  Detection threshold: 6.983 Å
+
+top_49_score_2.193_res6 (instantaneous)
+=======================
+Target Residue: 6
+Genesis Atoms: []
+
+Quantum Signature: 
+Max Confidence: 0.000
+
+Statistics:
+  μ_displacement: 2.001 Å
+  σ_displacement: 1.661 Å
+  Detection threshold: 6.983 Å
+
+================================================================================
+Generated by Third Impact Analytics v3.0 - GPU Atomic Network Edition
+Powered by residue_network GPU technology adapted to atomic level
+================================================================================
