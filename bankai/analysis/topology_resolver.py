@@ -328,7 +328,7 @@ def resolve_report_text(report_text: str, resolver: TopologyResolver) -> str:
     # Genesis Atoms, Network Hubs, Drug Target Atoms, Bridge Target Atoms
     for field_name in ["Genesis Atoms", "Network Hubs", "Drug Target Atoms", 
                   "Bridge Target Atoms", "Hub atoms", "Bridge atoms"]:
-        pattern = rf'({field}: )\[([0-9, ]+)\]'
+        pattern = rf'({field_name}: )\[([0-9, ]+)\]'
         resolved = re.sub(pattern, replace_atom_list, resolved)
     
     # "ResN→ResM" パターン
