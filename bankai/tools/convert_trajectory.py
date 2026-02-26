@@ -68,11 +68,11 @@ def convert(xtc_path, top_path, output_dir="."):
     with open(f"{output_dir}/metadata.json", "w") as f:
         json.dump(metadata, f, indent=2)
 
-    print(f"\n✅ Conversion complete!")
-    print(f"  trajectory.npy          ({coords.shape})")
-    print(f"  protein.npy             ({len(protein_atoms)} atoms)")
+    print("\n✅ Conversion complete!")
+    print(f"  trajectory.npy            ({coords.shape})")
+    print(f"  protein.npy               ({len(protein_atoms)} atoms)")
     print(f"  residue_atom_mapping.json ({len(residue_map)} residues)")
-    print(f"  metadata.json")
+    print("  metadata.json")
 
 
 if __name__ == "__main__":
