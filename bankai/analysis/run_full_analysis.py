@@ -753,8 +753,8 @@ def save_quantum_assessments_v4(
                 "correlation_coefficient": float(
                     assessment.atomic_evidence.correlation_coefficient
                 ),
-                "n_bond_anomalies": len(assessment.atomic_evidence.bond_anomalies),
-                "n_dihedral_flips": len(assessment.atomic_evidence.dihedral_flips),
+                "n_bond_anomalies": assessment.atomic_evidence.n_bond_anomalies,
+                "n_dihedral_flips": assessment.atomic_evidence.n_dihedral_flips,
             }
 
         # Bell不等式（カスケードの場合）
