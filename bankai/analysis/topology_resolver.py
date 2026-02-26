@@ -457,7 +457,7 @@ DETAILED ANALYSIS
         
         # Drug Targets - 名前解決！
         if result.drug_target_atoms:
-            report += f"\n🎯 Drug Target Atoms:\n"
+            report += "\n🎯 Drug Target Atoms:\n"
             for atom_id in result.drug_target_atoms:
                 info = resolver.get_info(atom_id)
                 trace = result.quantum_atoms.get(atom_id)
