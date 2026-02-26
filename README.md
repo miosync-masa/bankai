@@ -66,6 +66,12 @@ Output: Statistically significant structural events with confidence scores
 
 ## Installation
 
+### From PyPI
+
+```bash
+pip install bankai-md
+```
+
 ### From source
 
 ```bash
@@ -89,6 +95,67 @@ pip install -e ".[cuda12-compat]"
 # Full (CUDA 12 + visualization + dev tools)
 pip install -e ".[full]"
 ```
+
+### Google Colab
+
+```python
+# Step 0: Sample data setup
+!pip install gdown -q
+import os
+import gdown
+
+folder_url = 'https://drive.google.com/drive/folders/1AaS6NA8aCUfIrQArltNERNUotW6Pcayq?usp=drive_link'
+folder_id = folder_url.split('/')[-1].split('?')[0]
+destination_folder = '/content/'
+os.makedirs(destination_folder, exist_ok=True)
+gdown.download_folder(
+    f'https://drive.google.com/drive/folders/{folder_id}',
+    output=destination_folder,
+    quiet=False,
+    use_cookies=False
+)
+
+# Step 1: Install CUDA Toolkit
+!apt-get install -y cuda-toolkit-12-2
+
+# Step 2: Configure CUDA environment
+os.environ['CUDA_HOME'] = '/usr/local/cuda-12.2'
+os.environ['PATH'] = '/usr/local/cuda-12.2/bin:' + os.environ['PATH']
+os.environ['LD_LIBRARY_PATH'] = '/usr/local/cuda-12.2/lib64:' + os.environ.get('LD_LIBRARY_PATH', '')
+
+# Step 3: Install GPU backend
+!pip install cupy-cuda12x==12.3.0 --no-cache-dir
+
+# Step 4: Install BANKAI
+!pip install bankai-md
+
+# Step 5: Run full analysis
+import warnings
+warnings.filterwarnings('ignore')
+
+from bankai.analysis.run_full_analysis import run_quantum_validation_pipeline
+
+results = run_quantum_validation_pipeline(
+    trajectory_path='/content/demo_gromacs/trajectory_stable.npy',
+    metadata_path='/content/demo_gromacs/metadata_stable.json',
+    protein_indices_path='/content/demo_gromacs/protein_stable.npy',
+    topology_path=None,
+    enable_two_stage=True,
+    enable_third_impact=True,
+    enable_visualization=True,
+    output_dir='./gromacs_results_v4',
+    verbose=True,
+    atom_mapping_path='/content/demo_gromacs/residue_atom_mapping.json',
+    third_impact_top_n=10
+)
+```
+
+> **⚠️ Troubleshooting:** Depending on the Colab runtime version,
+> dependency conflicts may occur. If you encounter errors, try:
+> ```python
+> !pip install xarray==2023.7.0
+> !pip install pylibraft-cu12==24.10.0
+> ```
 
 ### Requirements
 
