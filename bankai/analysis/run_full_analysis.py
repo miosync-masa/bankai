@@ -35,13 +35,6 @@ try:
         TwoStageAnalyzerGPU,
     )
 
-    from bankai.analysis.topology_resolver import (
-        TopologyResolver,
-        create_resolver_from_pipeline,
-        generate_resolved_report,
-        save_resolved_json,
-    )
-
     # Version 4.0 imports
     from bankai.quantum import (
         QuantumAssessment,
@@ -151,6 +144,7 @@ def run_quantum_validation_pipeline(
         # ==========================================
         # トポロジー読み込み（原子名解決）
         # ==========================================
+        topology = None
         resolver = None
         if topology_path and Path(topology_path).exists():
             from bankai.analysis.topology_resolver import create_resolver_from_pipeline
@@ -162,7 +156,7 @@ def run_quantum_validation_pipeline(
             if resolver:
                 logger.info(f"   ✅ Topology loaded: {len(resolver.atoms)} atoms resolved")
             else:
-                logger.warning(f"   ⚠️ Topology file found but resolver failed")
+                logger.warning("   ⚠️ Topology file found but resolver failed")
         else:
             logger.info("   No topology file provided (atom names will be numeric)")
 
