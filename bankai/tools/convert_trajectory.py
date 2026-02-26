@@ -10,6 +10,7 @@ Usage:
 
 import argparse
 import json
+
 import numpy as np
 
 try:
@@ -17,7 +18,6 @@ try:
 except ImportError:
     print("❌ mdtraj required: pip install mdtraj")
     exit(1)
-
 
 def convert(xtc_path, top_path, output_dir="."):
     print(f"Loading trajectory: {xtc_path}")
