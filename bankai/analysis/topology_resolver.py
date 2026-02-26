@@ -7,14 +7,11 @@ PDBファイルのATOMレコードをパースして:
   atom_id 134 → "TRP9-CA"
   atom_id 136 → "TRP9-CB" 
 のように解決する。
-
-Version: 1.0.0
-Authors: 環ちゃん & ご主人さま 💕
 """
 
 import json
 import logging
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
@@ -329,7 +326,7 @@ def resolve_report_text(report_text: str, resolver: TopologyResolver) -> str:
             return match.group(0)
     
     # Genesis Atoms, Network Hubs, Drug Target Atoms, Bridge Target Atoms
-    for field in ["Genesis Atoms", "Network Hubs", "Drug Target Atoms", 
+    for field_name in ["Genesis Atoms", "Network Hubs", "Drug Target Atoms", 
                   "Bridge Target Atoms", "Hub atoms", "Bridge atoms"]:
         pattern = rf'({field}: )\[([0-9, ]+)\]'
         resolved = re.sub(pattern, replace_atom_list, resolved)
@@ -460,7 +457,6 @@ DETAILED ANALYSIS
         
         # Drug Targets - 名前解決！
         if result.drug_target_atoms:
-            target_names = resolver.resolve_list(result.drug_target_atoms)
             report += f"\n🎯 Drug Target Atoms:\n"
             for atom_id in result.drug_target_atoms:
                 info = resolver.get_info(atom_id)
@@ -531,7 +527,6 @@ def save_resolved_json(results: dict, resolver: TopologyResolver, output_path: P
         # Drug targets with names
         entry["drug_targets"] = []
         for atom_id in result.drug_target_atoms:
-            info = resolver.get_info(atom_id)
             trace = result.quantum_atoms.get(atom_id)
             target = {
                 "atom_id": atom_id,
