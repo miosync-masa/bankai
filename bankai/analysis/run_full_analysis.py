@@ -3,7 +3,6 @@
 Lambda³ GPU Quantum Validation Pipeline - Version 4.0
 ======================================================
 Version: 4.0.0 - Complete Refactoring
-Authors: Lambda³ Team, 環ちゃん & ご主人さま 💕
 Date: 2024
 """
 
@@ -76,7 +75,7 @@ def run_quantum_validation_pipeline(
     **kwargs,  # その他のパラメータ用
 ) -> dict:
     """
-    完全な量子検証パイプライン（Version 4.0）
+    完全な検証パイプライン（Version 4.0）
 
     Parameters
     ----------
@@ -107,7 +106,9 @@ def run_quantum_validation_pipeline(
     output_path = Path(output_dir)
     output_path.mkdir(parents=True, exist_ok=True)
 
-    logger.info("=" * 70)
+    from bankai.cli import print_banner
+    print_banner()
+    
     logger.info("🚀 LAMBDA³ GPU QUANTUM VALIDATION PIPELINE v4.0")
     logger.info("   Lambda³ Integrated Edition")
     logger.info("=" * 70)
