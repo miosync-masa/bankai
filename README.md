@@ -123,8 +123,10 @@ os.environ['CUDA_HOME'] = '/usr/local/cuda-12.2'
 os.environ['PATH'] = '/usr/local/cuda-12.2/bin:' + os.environ['PATH']
 os.environ['LD_LIBRARY_PATH'] = '/usr/local/cuda-12.2/lib64:' + os.environ.get('LD_LIBRARY_PATH', '')
 
-# Step 3: Install GPU backend
+# Step 3: Install GPU backend 
 !pip install cupy-cuda12x==12.3.0 --no-cache-dir
+!pip install xarray==2023.7.0
+!pip install pylibraft-cu12==24.10.0
 
 # Step 4: Install BANKAI
 !pip install bankai-md
