@@ -15,6 +15,16 @@ from .run_full_analysis import (
     run_quantum_validation_pipeline,
 )
 
+# topology Atomic Nmae
+from .topology_resolver import (
+    TopologyResolver,
+    AtomInfo,
+    create_resolver_from_pipeline,
+    generate_resolved_report,
+    save_resolved_json,
+    resolve_report_text,
+)
+
 # 🔺 Third Impact Analytics
 from .third_impact_analytics import (
     # ネットワーク解析（v3.0新機能！）
@@ -63,6 +73,7 @@ __all__ = [
     "ResidueBridge",  # 追加！
     "EventOrigin",  # 追加！
     "run_third_impact_analysis",
+    
     # 評価
     "PerformanceEvaluatorGPU",
     "PerformanceMetrics",
@@ -72,6 +83,13 @@ __all__ = [
     "run_quantum_validation_pipeline",
     # 🆕 最強レポート生成（v4.0）
     "generate_maximum_report_from_results_v4",
+    # 🆕 Topology Resolver 
+    'TopologyResolver',
+    'AtomInfo',
+    'create_resolver_from_pipeline',
+    'generate_resolved_report',
+    'save_resolved_json',
+    'resolve_report_text',
 ]
 
 __version__ = "1.5.0"  # v4.0 + Third Impact対応メジャーアップデート！
