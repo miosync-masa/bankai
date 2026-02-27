@@ -1,17 +1,6 @@
 #!/usr/bin/env python3
 """
 Maximum Report Generator from Lambda³ GPU Results - Version 4.0.3 (RESTORED)
-=============================================================================
-
-既存の解析結果から最大限の情報を抽出してレポート生成！
-Version 4.0の新機能（Lambda異常性、原子レベル証拠、3パターン分類）完全対応版
-
-【修正内容 v4.0.3】
-- v4.0.2の全機能を復元
-- quantum_events → quantum_assessments に対応
-- イベントキーマッチング修正（top_XX_score_Y.YY形式）
-- Bootstrap信頼区間の完全統合
-- イベントごとのPropagation Pathway解析
 """
 
 import json
@@ -23,6 +12,24 @@ import numpy as np
 from scipy.signal import find_peaks
 
 logger = logging.getLogger("maximum_report_generator")
+
+
+# ============================================
+# ★ Topology Name Resolution Helper
+# ============================================
+
+def _resolve_res(res_id, resolver=None):
+    """残基IDを名前に解決。resolverがなければフォールバック"""
+    if resolver and resolver.is_loaded():
+        name = resolver.resolve_residue(res_id)
+        if not name.startswith("res_"):
+            return name
+    return f"R{res_id + 1}"
+
+
+def _resolve_res_pair(from_id, to_id, resolver=None):
+    """残基ペアを名前解決"""
+    return f"{_resolve_res(from_id, resolver)}-{_resolve_res(to_id, resolver)}"
 
 
 def generate_maximum_report_from_results(
@@ -50,6 +57,7 @@ def generate_maximum_report_from_results_v4(
     metadata=None,
     output_dir="./maximum_report_v4",
     verbose=True,
+    resolver=None,  # ★ NEW: TopologyResolver for atom/residue name resolution
 ) -> str:
     """
     Version 4.0.4対応 - スコア順解析対応版
@@ -327,7 +335,7 @@ def generate_maximum_report_from_results_v4(
                 initiators = []
                 if hasattr(analysis, "initiator_residues"):
                     initiators = analysis.initiator_residues[:5]  # Top 5
-                    initiators_str = ", ".join([f"R{r + 1}" for r in initiators])
+                    initiators_str = ", ".join([_resolve_res(r, resolver) for r in initiators])
                     report += f"- **🎯 Initiator residues**: {initiators_str}\n"
 
                 # ========================================
@@ -344,7 +352,7 @@ def generate_maximum_report_from_results_v4(
                         if pathways:
                             report += "- **🔄 Propagation Pathways**:\n"
                             for j, path in enumerate(pathways[:3], 1):  # Top 3 paths
-                                path_str = " → ".join([f"R{r + 1}" for r in path])
+                                path_str = " → ".join([_resolve_res(r, resolver) for r in path])
                                 report += f"  - Path {j}: {path_str}\n"
 
                     # ========================================
@@ -503,7 +511,7 @@ def generate_maximum_report_from_results_v4(
                     initiators = []
                     if hasattr(analysis, "initiator_residues"):
                         initiators = analysis.initiator_residues[:5]  # Top 5
-                        initiators_str = ", ".join([f"R{r + 1}" for r in initiators])
+                        initiators_str = ", ".join([_resolve_res(r, resolver) for r in initiators])
                         report += f"- **🎯 Initiator residues**: {initiators_str}\n"
 
                     # Propagation Pathways
@@ -523,7 +531,7 @@ def generate_maximum_report_from_results_v4(
                                 for j, path in enumerate(
                                     pathways[:3], 1
                                 ):  # Top 3 paths
-                                    path_str = " → ".join([f"R{r + 1}" for r in path])
+                                    path_str = " → ".join([_resolve_res(r, resolver) for r in path])
                                     report += f"  - Path {j}: {path_str}\n"
 
                         # 統計情報（networkが定義されてる場合のみ）
@@ -624,7 +632,7 @@ def generate_maximum_report_from_results_v4(
                     else:
                         category = "Normal"
 
-                    report += f"| {rank} | R{res_id + 1} | {score:.4f} | {category} |\n"
+                    report += f"| {rank} | {_resolve_res(res_id, resolver)} | {score:.4f} | {category} |\n"
 
         # 各イベントの超詳細解析（修正版）
         if hasattr(two_stage_result, "residue_analyses"):
@@ -672,7 +680,7 @@ def generate_maximum_report_from_results_v4(
                     if all_scores:
                         report += "  - Top 10 anomalous residues:\n"
                         for res_id, score in all_scores[:10]:
-                            report += f"    - R{res_id + 1}: {score:.3f}\n"
+                            report += f"    - {_resolve_res(res_id, resolver)}: {score:.3f}\n"
 
                 if hasattr(analysis, "network_result"):
                     network = analysis.network_result
@@ -1162,7 +1170,7 @@ def generate_maximum_report_from_results_v4(
         report += "\n### Primary Targets (Top Hub Residues)\n"
 
         for i, (res_id, count) in enumerate(top_targets, 1):
-            report += f"\n{i}. **Residue {res_id + 1}**\n"
+            report += f"\n{i}. **{_resolve_res(res_id, resolver)}**\n"
             report += f"   - Hub frequency: {count} events\n"
 
             if hasattr(two_stage_result, "global_residue_importance"):
@@ -1185,7 +1193,7 @@ def generate_maximum_report_from_results_v4(
     hub_counts = None  # 初期化
     if all_hub_residues:
         hub_counts = Counter(all_hub_residues)
-        top3 = [f"R{r + 1}" for r, _ in hub_counts.most_common(3)]
+        top3 = [_resolve_res(r, resolver) for r, _ in hub_counts.most_common(3)]
         recommendations.append(
             f"Focus on residues {', '.join(top3)} for drug targeting"
         )
@@ -1241,7 +1249,7 @@ def generate_maximum_report_from_results_v4(
         ]
         if strong_sig:
             top_pairs = [(r["from_res"], r["to_res"]) for r in strong_sig[:3]]
-            pair_str = ", ".join([f"R{f + 1}-R{t + 1}" for f, t in top_pairs])
+            pair_str = ", ".join([_resolve_res_pair(f, t, resolver) for f, t in top_pairs])
             recommendations.append(
                 f"Statistically validated correlations at {pair_str} - potential allosteric pathway"
             )
