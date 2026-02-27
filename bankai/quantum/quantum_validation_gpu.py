@@ -1,14 +1,35 @@
 """
-Quantum Validation Module v5.0 - Simplified Three-Axis Edition
-===============================================================
-geometrically constrained aromatic alignment
-functional group–localized cooperative displacement
-interaction geometry encoded in the force field
+Quantum Validation Module v5.0 - Three-Axis Geometric Anomaly Classification
+=============================================================================
 
-Lambda³構造変化イベントの量子性を3軸で判定：
-1. 空間的異常（距離的な大変化）
-2. 同期的異常（相関・協調的変化）
-3. 時間的異常（速度的な異常）
+This module classifies structural events detected by the BANKAI-MD / Lambda³
+framework into geometric anomaly signatures using three orthogonal axes.
+
+The term "quantum" in this module refers to the PROVENANCE of the information
+being decoded, not the METHOD of decoding:
+  - Classical force fields (AMBER, CHARMM, OPLS) encode quantum-mechanical
+    interaction geometries as parameterized constraints
+  - Classical MD propagates these constraints into coordinate trajectories
+  - This module decodes the geometric consequences of those constraints
+
+What we detect (and what the force field encoded):
+  - Conjugated aromatic cooperativity    ← π-electron planarity constraints
+  - Carboxylate symmetric displacement   ← resonance charge delocalization
+  - Stacking interface dynamics          ← QM-derived dispersion parameters
+
+Three-axis classification:
+  Axis 1 — Spatial anomaly    : Displacement magnitude exceeding thermal baseline
+                                 (ΔΛC jump, Z-score, velocity)
+  Axis 2 — Synchronization    : Cooperative/correlated multi-atom response
+                                 (σS, correlation coefficient, async bonds)
+  Axis 3 — Temporal anomaly   : Timescale inconsistent with thermal diffusion
+                                 (instantaneous events, fast transitions, sustained coherence)
+
+Paper reference:
+  Iizumi, M. (2025). BANKAI-MD: Discrete Geometric Feature Extraction for
+  Sub-Picosecond Cooperative Event Detection in Molecular Dynamics Trajectories.
+
+See also: README in this directory for full scientific rationale.
 """
 
 import logging
@@ -24,24 +45,34 @@ logger = logging.getLogger("quantum_validation_v5")
 # Enums (外部互換性のため維持)
 # ============================================
 
-
 class StructuralEventPattern(Enum):
-    """構造変化パターン分類"""
-
-    INSTANTANEOUS = "instantaneous"  # 単一フレーム
-    TRANSITION = "transition"  # 連続フレーム
-    CASCADE = "cascade"  # ネットワークカスケード
-
+    """Structural event temporal patterns from ΔΛC analysis."""
+    INSTANTANEOUS = "instantaneous"  # single-frame event (≤1 frame)
+    TRANSITION = "transition"        # multi-frame continuous transition
+    CASCADE = "cascade"              # network-propagated causal cascade
 
 class QuantumSignature(Enum):
-    """量子的シグネチャー"""
-
-    ENTANGLEMENT = "quantum_entanglement"
-    TUNNELING = "quantum_tunneling"
-    COHERENCE = "quantum_coherence"
-    PHASE_TRANSITION = "quantum_phase_transition"
-    INFORMATION_TRANSFER = "quantum_info_transfer"
-    NONE = "classical"
+    """
+    Geometric anomaly signatures detected from classical MD coordinates.
+    
+    Labels use quantum-mechanical metaphors because the detected patterns
+    originate from force-field parameters derived from QM calculations.
+    See: quantum_validation_gpu.py README for full rationale.
+    
+    Paper mapping (Iizumi, 2025 - BANKAI-MD):
+      ENTANGLEMENT      → Spatially instantaneous correlation (r>0.8, >5Å)
+      TUNNELING          → Barrier-crossing displacement (Q_λ sign reversal)
+      COHERENCE          → Sustained structural coordination (>300 ps)
+      PHASE_TRANSITION   → Cooperative phase-like transition (spatial+sync)
+      INFORMATION_TRANSFER → Causal cascade propagation (async bonds)
+      NONE               → Thermal baseline (Z < 2.0)
+    """
+    ENTANGLEMENT = "quantum_entanglement"       # geometric: instantaneous spatial correlation
+    TUNNELING = "quantum_tunneling"             # geometric: barrier-crossing displacement
+    COHERENCE = "quantum_coherence"             # geometric: sustained coordination
+    PHASE_TRANSITION = "quantum_phase_transition"  # geometric: cooperative transition
+    INFORMATION_TRANSFER = "quantum_info_transfer"  # geometric: cascade propagation
+    NONE = "classical"                          # thermal baseline
 
 
 # ============================================
@@ -679,7 +710,6 @@ def validate_lambda_events(
     network_results: Optional[list[Any]] = None,
     **kwargs,
 ) -> list[QuantumAssessment]:
-    """Lambda³イベントの量子性を検証"""
 
     events = []
     if hasattr(lambda_result, "critical_events"):
