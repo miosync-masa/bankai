@@ -747,11 +747,11 @@ def run_quantum_validation_pipeline(
             lambda_result=lambda_result,
             sorted_events=sorted_events,
             two_stage_result=two_stage_result if enable_two_stage else None,
-            quantum_assessments=quantum_assessments,
+            quantum_assessments=quantum_assessments,  # v4.0: quantum_eventsではなくassessments
             metadata=metadata,
             output_dir=str(output_path),
             verbose=verbose,
-            resolver=resolver,
+            resolver=resolver,  # ★ topology名前解決
         )
         logger.info(f"   ✅ Maximum report generated: {len(max_report):,} characters")
 
@@ -1288,7 +1288,7 @@ def generate_comprehensive_report_v4(
     report += f"""
 ## Conclusions
 
-The Lambda³ GPU v4.0 analysis successfully identified structural changes and evaluated their quantum origins:
+analysis successfully identified structural changes and evaluated their quantum origins:
 
 1. **Structural dynamics**: {len(lambda_result.critical_events)} critical structural events detected
 """
@@ -1397,11 +1397,10 @@ Examples:
             protein_indices_path=args.protein,
             topology_path=args.topology,
             enable_two_stage=not args.no_two_stage,
-            enable_third_impact=args.enable_third_impact,  # これも必要！
+            enable_third_impact=args.enable_third_impact,
             enable_visualization=not args.no_viz,
             output_dir=args.output,
             verbose=args.verbose,
-            # Third Impact用の追加パラメータ
             atom_mapping_path=args.atom_mapping,
             third_impact_top_n=args.third_impact_top_n,
         )
