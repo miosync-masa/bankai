@@ -69,6 +69,20 @@ Output: Statistically significant structural events with confidence scores
         (S/N > 100:1, configurable 95%–99.9% confidence)
 ```
 
+## NOTICE
+
+Trajectory output configuration. BANKAI-MD operates exclusively on atomic coordinate data; velocity, force, and energy outputs are neither required nor utilized by the framework. For sub-picosecond analysis at 0.01 ps resolution with a standard 2 fs integration timestep, the recommended GROMACS .mdp settings are:
+```
+nstxout            = 0      ; suppress uncompressed coordinate output
+nstvout            = 0      ; velocities not required
+nstfout            = 0      ; forces not required  
+nstxout-compressed = 5      ; XTC output every 5 steps (= 0.01 ps)
+compressed-x-precision = 1000  ; high-precision lossy compression
+```
+This configuration is critical for practical feasibility. At 0.01 ps resolution, a 10 ns trajectory of a 5,724-atom system generates approximately 200,000 frames. Using compressed XTC format, this produces trajectory files on the order of tens of gigabytes—manageable on consumer-grade storage. The equivalent uncompressed TRR output (coordinates, velocities, and forces) would exceed 700 GB for the same trajectory, rendering sub-picosecond analysis impractical for most research groups despite being computationally feasible. Since BANKAI-MD derives all kinematic quantities (ΛF\Lambda_F
+ΛF​, structural velocity, acceleration) directly from frame-to-frame coordinate differences, the velocity and force arrays stored in TRR files provide no additional information to the analysis pipeline.
+
+
 ## Installation
 
 ### From PyPI
