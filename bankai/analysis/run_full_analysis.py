@@ -747,10 +747,11 @@ def run_quantum_validation_pipeline(
             lambda_result=lambda_result,
             sorted_events=sorted_events,
             two_stage_result=two_stage_result if enable_two_stage else None,
-            quantum_assessments=quantum_assessments,  # v4.0: quantum_eventsではなくassessments
+            quantum_assessments=quantum_assessments,
             metadata=metadata,
             output_dir=str(output_path),
             verbose=verbose,
+            resolver=resolver,
         )
         logger.info(f"   ✅ Maximum report generated: {len(max_report):,} characters")
 
