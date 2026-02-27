@@ -9,7 +9,7 @@ and well-characterized folding behavior.
 - **Protein**: Chignolin (CLN025), PDB: 1UAO
 - **Atoms**: 166
 - **Residues**: 10
-- **Frames**: 10,001
+- **Frames**: 9,901
 - **Timestep**: 0.01 ps (10 fs)
 - **Total simulation time**: 100 ps (0.1 ns)
 - **Force field**: AMBER ff14SB
