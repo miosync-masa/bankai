@@ -795,8 +795,6 @@ def run_quantum_validation_pipeline(
 # ============================================
 # 補助関数群（Version 4.0）
 # ============================================
-
-
 def save_quantum_assessments_v4(
     assessments: list[QuantumAssessment], output_path: Path, metadata: dict
 ):
@@ -878,6 +876,7 @@ def save_quantum_assessments_v4(
     logger.info(f"   💾 Saved {len(assessment_data)} quantum assessments")
 
 
+
 def visualize_quantum_assessments_v4(
     assessments: list, save_path: Optional[str] = None
 ) -> plt.Figure:
@@ -904,8 +903,8 @@ def visualize_quantum_assessments_v4(
     ax1 = axes[0, 0]
     pattern_counts = Counter(a.pattern.value for a in assessments)
     if pattern_counts:
-        labels = [PATTERN_LABELS.get(k, k) for k in pattern_counts.keys()]
-        colors = [PATTERN_COLORS.get(k, "#999999") for k in pattern_counts.keys()]
+        labels = [PATTERN_LABELS.get(k, k) for k in pattern_counts]
+        colors = [PATTERN_COLORS.get(k, "#999999") for k in pattern_counts]
         ax1.pie(
             pattern_counts.values(),
             labels=labels,
@@ -923,8 +922,8 @@ def visualize_quantum_assessments_v4(
     sig_counts = Counter(a.signature.value for a in assessments)
     sig_counts.pop("classical", None)  # exclude thermal baseline
     if sig_counts:
-        labels = [SIGNATURE_LABELS.get(k, k) for k in sig_counts.keys()]
-        colors = [SIGNATURE_COLORS.get(k, "#999999") for k in sig_counts.keys()]
+        labels = [SIGNATURE_LABELS.get(k, k) for k in sig_counts]
+        colors = [SIGNATURE_COLORS.get(k, "#999999") for k in sig_counts]
         ax2.pie(
             sig_counts.values(),
             labels=labels,
@@ -1005,8 +1004,8 @@ def visualize_quantum_assessments_v4(
             pattern_rates[pattern_val] = rate * 100
 
     if pattern_rates:
-        bar_labels = [PATTERN_LABELS.get(k, k).replace("\n", " ") for k in pattern_rates.keys()]
-        bar_colors = [PATTERN_COLORS.get(k, "#999999") for k in pattern_rates.keys()]
+        bar_labels = [PATTERN_LABELS.get(k, k).replace("\n", " ") for k in pattern_rates]
+        bar_colors = [PATTERN_COLORS.get(k, "#999999") for k in pattern_rates]
         bars = ax6.bar(
             range(len(pattern_rates)),
             list(pattern_rates.values()),
