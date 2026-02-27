@@ -1,0 +1,8 @@
+{
+  "n_frames": 100001,
+  "n_atoms": 1169,
+  "n_protein_atoms": 1169,
+  "n_critical_events": 2895,
+  "computation_time": 49865.92182612419,
+  "analysis_version": "4.0.0"
+}
