@@ -56,6 +56,39 @@ logging.basicConfig(
 )
 logger = logging.getLogger("quantum_validation_v4")
 
+# ============================================
+# Label Mapping: Internal Enum → Paper Labels
+# (Display only — no API/JSON changes)
+# ============================================
+
+SIGNATURE_LABELS = {
+    "quantum_entanglement": "Instantaneous\nSpatial Correlation",
+    "quantum_tunneling": "Barrier-Crossing\nDisplacement",
+    "quantum_coherence": "Sustained Structural\nCoordination",
+    "quantum_phase_transition": "Cooperative\nPhase Transition",
+    "quantum_info_transfer": "Causal Cascade\nPropagation",
+    "classical": "Thermal Baseline",
+}
+
+PATTERN_LABELS = {
+    "instantaneous": "Single-Frame\nEvent",
+    "transition": "Multi-Frame\nTransition",
+    "cascade": "Network\nCascade",
+}
+
+SIGNATURE_COLORS = {
+    "quantum_entanglement": "#2196F3",
+    "quantum_tunneling": "#FF9800",
+    "quantum_coherence": "#4CAF50",
+    "quantum_phase_transition": "#9C27B0",
+    "quantum_info_transfer": "#F44336",
+}
+
+PATTERN_COLORS = {
+    "instantaneous": "#FF9800",
+    "transition": "#2196F3",
+    "cascade": "#4CAF50",
+}
 
 # ============================================
 # メイン実行関数（Version 4.0）
@@ -846,70 +879,102 @@ def save_quantum_assessments_v4(
 
 
 def visualize_quantum_assessments_v4(
-    assessments: list[QuantumAssessment], save_path: Optional[str] = None
+    assessments: list, save_path: Optional[str] = None
 ) -> plt.Figure:
-    """量子評価結果の可視化（Version 4.0）"""
-
+    """
+    Geometric anomaly assessment visualization (BANKAI-MD paper edition).
+    
+    Internal classification enum values are mapped to paper-aligned labels
+    for publication. No API changes; display-only modifications.
+    """
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
 
     if not assessments:
         fig.text(
-            0.5, 0.5, "No Assessments Available", ha="center", va="center", fontsize=20
+            0.5, 0.5, "No Assessments Available",
+            ha="center", va="center", fontsize=20
         )
         if save_path:
             plt.savefig(save_path, dpi=150, bbox_inches="tight")
         return fig
 
-    # 1. パターン分布
+    # ─────────────────────────────────────
+    # 1. Event Pattern Distribution
+    # ─────────────────────────────────────
     ax1 = axes[0, 0]
     pattern_counts = Counter(a.pattern.value for a in assessments)
     if pattern_counts:
+        labels = [PATTERN_LABELS.get(k, k) for k in pattern_counts.keys()]
+        colors = [PATTERN_COLORS.get(k, "#999999") for k in pattern_counts.keys()]
         ax1.pie(
             pattern_counts.values(),
-            labels=pattern_counts.keys(),
+            labels=labels,
+            colors=colors,
             autopct="%1.1f%%",
             startangle=90,
+            textprops={"fontsize": 10},
         )
-        ax1.set_title("Event Pattern Distribution")
+        ax1.set_title("Event Pattern Distribution", fontsize=12, fontweight="bold")
 
-    # 2. シグネチャー分布
+    # ─────────────────────────────────────
+    # 2. Geometric Signature Distribution
+    # ─────────────────────────────────────
     ax2 = axes[0, 1]
     sig_counts = Counter(a.signature.value for a in assessments)
-    # CLASSICALを除外
-    sig_counts.pop("classical", None)
+    sig_counts.pop("classical", None)  # exclude thermal baseline
     if sig_counts:
+        labels = [SIGNATURE_LABELS.get(k, k) for k in sig_counts.keys()]
+        colors = [SIGNATURE_COLORS.get(k, "#999999") for k in sig_counts.keys()]
         ax2.pie(
             sig_counts.values(),
-            labels=sig_counts.keys(),
+            labels=labels,
+            colors=colors,
             autopct="%1.1f%%",
             startangle=90,
+            textprops={"fontsize": 9},
         )
-        ax2.set_title("Quantum Signature Distribution")
+        ax2.set_title("Geometric Signature Distribution", fontsize=12, fontweight="bold")
 
-    # 3. 量子判定率
+    # ─────────────────────────────────────
+    # 3. Cooperative Anomaly vs Thermal
+    # ─────────────────────────────────────
     ax3 = axes[0, 2]
-    n_quantum = sum(1 for a in assessments if a.is_quantum)
-    n_classical = len(assessments) - n_quantum
+    n_anomaly = sum(1 for a in assessments if a.is_quantum)
+    n_thermal = len(assessments) - n_anomaly
     ax3.pie(
-        [n_quantum, n_classical],
-        labels=[f"Quantum ({n_quantum})", f"Classical ({n_classical})"],
-        colors=["red", "blue"],
+        [n_anomaly, n_thermal],
+        labels=[
+            f"Cooperative\nAnomaly ({n_anomaly})",
+            f"Thermal\nBaseline ({n_thermal})",
+        ],
+        colors=["#E53935", "#1E88E5"],
         autopct="%1.1f%%",
         startangle=90,
+        textprops={"fontsize": 10},
     )
-    ax3.set_title("Quantum vs Classical")
+    ax3.set_title(
+        "Cooperative Geometric Anomaly\nvs Thermal Baseline",
+        fontsize=12, fontweight="bold",
+    )
 
-    # 4. 信頼度分布
+    # ─────────────────────────────────────
+    # 4. Detection Confidence Distribution
+    # ─────────────────────────────────────
     ax4 = axes[1, 0]
     confidences = [a.confidence for a in assessments if a.is_quantum]
     if confidences:
-        ax4.hist(confidences, bins=20, alpha=0.7, color="purple", edgecolor="black")
-        ax4.set_xlabel("Confidence")
-        ax4.set_ylabel("Count")
-        ax4.set_title("Quantum Confidence Distribution")
+        ax4.hist(
+            confidences, bins=20, alpha=0.7,
+            color="#7B1FA2", edgecolor="black", linewidth=0.5,
+        )
+        ax4.set_xlabel("Confidence Score", fontsize=11)
+        ax4.set_ylabel("Count", fontsize=11)
+        ax4.set_title("Detection Confidence Distribution", fontsize=12, fontweight="bold")
         ax4.grid(True, alpha=0.3)
 
-    # 5. Lambda異常性
+    # ─────────────────────────────────────
+    # 5. Lambda Anomaly Z-score Distribution
+    # ─────────────────────────────────────
     ax5 = axes[1, 1]
     lambda_zscores = [
         a.lambda_anomaly.lambda_zscore
@@ -917,46 +982,66 @@ def visualize_quantum_assessments_v4(
         if a.lambda_anomaly and a.lambda_anomaly.lambda_zscore > 0
     ]
     if lambda_zscores:
-        ax5.hist(lambda_zscores, bins=20, alpha=0.7, color="orange", edgecolor="black")
-        ax5.axvline(x=3.0, color="red", linestyle="--", label="3σ threshold")
-        ax5.set_xlabel("Lambda Z-score")
-        ax5.set_ylabel("Count")
-        ax5.set_title("Lambda Anomaly Distribution")
-        ax5.legend()
+        ax5.hist(
+            lambda_zscores, bins=20, alpha=0.7,
+            color="#FF8F00", edgecolor="black", linewidth=0.5,
+        )
+        ax5.axvline(x=3.0, color="red", linestyle="--", linewidth=1.5, label="3σ threshold")
+        ax5.set_xlabel("ΔΛC Z-score", fontsize=11)
+        ax5.set_ylabel("Count", fontsize=11)
+        ax5.set_title("Lambda Anomaly Distribution", fontsize=12, fontweight="bold")
+        ax5.legend(fontsize=10)
         ax5.grid(True, alpha=0.3)
 
-    # 6. パターン別量子判定率
+    # ─────────────────────────────────────
+    # 6. Anomaly Detection Rate by Pattern
+    # ─────────────────────────────────────
     ax6 = axes[1, 2]
-    pattern_quantum = {}
-    for pattern in StructuralEventPattern:
-        pattern_assessments = [a for a in assessments if a.pattern == pattern]
+    pattern_rates = {}
+    for pattern_val in ["instantaneous", "transition", "cascade"]:
+        pattern_assessments = [a for a in assessments if a.pattern.value == pattern_val]
         if pattern_assessments:
-            quantum_ratio = sum(1 for a in pattern_assessments if a.is_quantum) / len(
-                pattern_assessments
-            )
-            pattern_quantum[pattern.value] = quantum_ratio * 100
+            rate = sum(1 for a in pattern_assessments if a.is_quantum) / len(pattern_assessments)
+            pattern_rates[pattern_val] = rate * 100
 
-    if pattern_quantum:
-        ax6.bar(
-            range(len(pattern_quantum)),
-            list(pattern_quantum.values()),
-            alpha=0.7,
-            color="steelblue",
+    if pattern_rates:
+        bar_labels = [PATTERN_LABELS.get(k, k).replace("\n", " ") for k in pattern_rates.keys()]
+        bar_colors = [PATTERN_COLORS.get(k, "#999999") for k in pattern_rates.keys()]
+        bars = ax6.bar(
+            range(len(pattern_rates)),
+            list(pattern_rates.values()),
+            alpha=0.8,
+            color=bar_colors,
+            edgecolor="black",
+            linewidth=0.5,
         )
-        ax6.set_xticks(range(len(pattern_quantum)))
-        ax6.set_xticklabels(list(pattern_quantum.keys()), rotation=45, ha="right")
-        ax6.set_ylabel("Quantum Rate (%)")
-        ax6.set_title("Quantum Rate by Pattern")
-        ax6.grid(True, alpha=0.3)
+        ax6.set_xticks(range(len(pattern_rates)))
+        ax6.set_xticklabels(bar_labels, rotation=30, ha="right", fontsize=10)
+        ax6.set_ylabel("Cooperative Anomaly Rate (%)", fontsize=11)
+        ax6.set_title("Detection Rate by Event Pattern", fontsize=12, fontweight="bold")
+        ax6.grid(True, alpha=0.3, axis="y")
 
-    plt.suptitle("Quantum Assessment Results v4.0", fontsize=14, fontweight="bold")
+        # Add value labels on bars
+        for bar, val in zip(bars, pattern_rates.values()):
+            ax6.text(
+                bar.get_x() + bar.get_width() / 2, bar.get_height() + 1,
+                f"{val:.0f}%", ha="center", va="bottom", fontsize=10,
+            )
+
+    # ─────────────────────────────────────
+    # Suptitle
+    # ─────────────────────────────────────
+    plt.suptitle(
+        "BANKAI-MD: Geometric Anomaly Classification Results",
+        fontsize=14, fontweight="bold",
+    )
     plt.tight_layout()
 
     if save_path:
-        plt.savefig(save_path, dpi=150, bbox_inches="tight")
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+        print(f"  → Saved: {save_path}")
 
     return fig
-
 
 def visualize_residue_network(
     two_stage_result: Any, save_path: Optional[str] = None
