@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "bankai-md"
-version = "1.1.3"
+version = "1.1.4"
 description = "BANKAI: Bond-vector ANalysis of Kinetic Amino acid Initiator - GPU-accelerated sub-picosecond causal cascade detection in GROMACS trajectories"
 readme = "README.md"
 license = {text = "MIT"}
