@@ -146,7 +146,7 @@ class Lambda3VisualizerGPU:
 
         # タイトル
         plt.suptitle(
-            f"Lambda³ MD Analysis Results - {result.n_frames} frames (GPU)",
+            f"BANKAI MD Analysis Results - {result.n_frames} frames (GPU)",
             fontsize=16,
             y=0.995,
         )
