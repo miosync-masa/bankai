@@ -1,4 +1,4 @@
-# BANKAI（Bond-vector ANalysis of Kinetic Amino acid Initiator）
+# BANKAI （Bond-vector ANalysis of Kinetic Amino acid Initiator）
 
 GPU-accelerated sub-picosecond causal cascade detection in GROMACS molecular dynamics trajectories.
 
@@ -428,4 +428,4 @@ MIT License — see [LICENSE](LICENSE) for details.
 
 ---
 
-*Built with 💕 by Masamichi & Tamaki*
+*Built with by Masamichi & Tamaki*
