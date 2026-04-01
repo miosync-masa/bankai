@@ -1,16 +1,23 @@
 """
-Lambda³ GPU Structures Module
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Lambda³ Structures Module
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Lambda³構造計算のGPU実装だよ〜！💕
-ΛF, ΛFF, ρT, Q_Λ, σₛを超高速で計算しちゃう！
+Lambda³構造計算モジュール 💕
 
 Components:
-    - LambdaStructuresGPU: Lambda構造計算
+    - LambdaStructuresCore: 汎用Lambda³構造計算（CPU, domain-agnostic）
+    - LambdaStructuresGPU: GPU版Lambda構造計算（MD特化）
     - MDFeaturesGPU: MD特徴抽出
     - TensorOperationsGPU: テンソル演算
 """
 
+# ── Core（汎用版・CPU・ドメイン非依存） ──
+from .lambda_structures_core import (
+    LambdaStructuresCore,
+    LambdaCoreConfig,
+)
+
+# ── GPU版（MD特化） ──
 from .lambda_structures_gpu import (
     LambdaStructuresGPU,
     compute_adaptive_window_size_gpu,
@@ -38,7 +45,10 @@ from .tensor_operations_gpu import (
 )
 
 __all__ = [
-    # Lambda Structures
+    # Lambda Structures Core (domain-agnostic)
+    "LambdaStructuresCore",
+    "LambdaCoreConfig",
+    # Lambda Structures GPU (MD-specific)
     "LambdaStructuresGPU",
     "compute_lambda_structures_gpu",
     "compute_adaptive_window_size_gpu",
@@ -66,4 +76,4 @@ __all__ = [
 import logging
 
 logger = logging.getLogger("bankai.structures")
-logger.debug("Lambda³ GPU Structures module initialized")
+logger.debug("Lambda³ Structures module initialized (Core + GPU)")
