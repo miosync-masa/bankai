@@ -23,6 +23,39 @@ from ..core.gpu_kernels import anomaly_detection_kernel
 from ..core.gpu_utils import GPUBackend
 from ..models import NDArray
 
+
+def _anomaly_detection_cpu(series: np.ndarray, window: int) -> np.ndarray:
+    """
+    適応的z-scoreによる異常検出（CPUフォールバック版）
+    anomaly_detection_kernelのCUDA実装と同等の処理をnumpyで実行
+
+    Parameters
+    ----------
+    series : np.ndarray
+        入力時系列（1D）
+    window : int
+        スライディングウィンドウサイズ
+
+    Returns
+    -------
+    np.ndarray
+        異常スコア（適応的z-score）
+    """
+    n = len(series)
+    scores = np.zeros(n, dtype=np.float32)
+    series = np.asarray(series, dtype=np.float32)
+
+    for i in range(n):
+        start = max(0, i - window)
+        end = min(n, i + window + 1)
+        local = series[start:end]
+        local_mean = np.mean(local)
+        local_std = np.std(local)
+        if local_std > 1e-10:
+            scores[i] = abs(float(series[i]) - float(local_mean)) / float(local_std)
+
+    return scores
+
 # ロガー設定
 logger = logging.getLogger(__name__)
 
@@ -168,8 +201,11 @@ class TopologyBreaksDetectorGPU(GPUBackend):
         """構造フローの異常検出（GPU最適化）"""
         lf_mag_gpu = self.to_gpu(lambda_f_mag)
 
-        # 適応的z-scoreによる異常検出（カーネル使用）
-        anomaly_gpu = anomaly_detection_kernel(lf_mag_gpu, window)
+        # 適応的z-scoreによる異常検出
+        if self.is_gpu:
+            anomaly_gpu = anomaly_detection_kernel(lf_mag_gpu, window)
+        else:
+            anomaly_gpu = _anomaly_detection_cpu(lambda_f_mag, window)
 
         # 追加: 急激な変化の検出
         if self.is_gpu:
@@ -191,8 +227,11 @@ class TopologyBreaksDetectorGPU(GPUBackend):
         """加速度異常の検出"""
         lff_mag_gpu = self.to_gpu(lambda_ff_mag)
 
-        # 基本的な異常検出（カーネル使用）
-        anomaly_gpu = anomaly_detection_kernel(lff_mag_gpu, window)
+        # 基本的な異常検出
+        if self.is_gpu:
+            anomaly_gpu = anomaly_detection_kernel(lff_mag_gpu, window)
+        else:
+            anomaly_gpu = _anomaly_detection_cpu(lambda_ff_mag, window)
 
         # 加速度特有の処理：符号変化の検出
         if "lambda_FF" in self.breaks_cache:
@@ -465,7 +504,10 @@ class TopologyBreaksDetectorGPU(GPUBackend):
 
     def _find_local_extrema_gpu(self, data: NDArray, window: int) -> NDArray:
         """局所極値の検出 - CuPy RawKernel使用（PTX 8.4対応）"""
-        data_gpu = self.to_gpu(data).astype(cp.float32)
+        if self.is_gpu:
+            data_gpu = self.to_gpu(data).astype(cp.float32)
+        else:
+            data_gpu = np.asarray(data, dtype=np.float32)
 
         if self.is_gpu and self.local_extrema_kernel is not None:
             extrema = cp.zeros_like(data_gpu, dtype=cp.float32)
