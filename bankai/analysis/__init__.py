@@ -9,6 +9,14 @@ from .maximum_report_generator import (
 )
 from .md_lambda3_detector_gpu import MDConfig, MDLambda3DetectorGPU, MDLambda3Result
 
+# 🌐 Network Analyzer Core (domain-agnostic)
+from .network_analyzer_core import (
+    CooperativeEventNetwork,
+    DimensionLink,
+    NetworkAnalyzerCore,
+    NetworkResult,
+)
+
 # 🆕 フル解析パイプライン
 from .run_full_analysis import (
     run_quantum_validation_pipeline,
@@ -27,7 +35,7 @@ from .third_impact_analytics import (
     run_third_impact_analysis,
 )
 
-# topology Atomic Nmae
+# topology Atomic Name
 from .topology_resolver import (
     AtomInfo,
     TopologyResolver,
@@ -43,13 +51,6 @@ from .two_stage_analyzer_gpu import (
     TwoStageAnalyzerGPU,
     TwoStageLambda3Result,
     perform_two_stage_analysis_gpu,
-)
-
-from .network_analyzer_core import (
-    NetworkAnalyzerCore,
-    NetworkResult,
-    DimensionLink,
-    CooperativeEventNetwork,
 )
 
 __all__ = [
@@ -68,26 +69,21 @@ __all__ = [
     "ThirdImpactAnalyzer",
     "ThirdImpactResult",
     "AtomicQuantumTrace",
-    "AtomicNetworkGPU",  # 追加！
-    "AtomicNetworkResult",  # 追加！
-    "AtomicNetworkLink",  # 追加！
-    "ResidueBridge",  # 追加！
-    "EventOrigin",  # 追加！
+    "AtomicNetworkGPU",
+    "AtomicNetworkResult",
+    "AtomicNetworkLink",
+    "ResidueBridge",
+    "EventOrigin",
     "run_third_impact_analysis",
-    # 評価
-    "PerformanceEvaluatorGPU",
-    "PerformanceMetrics",
-    "EventDetectionResult",
-    "evaluate_two_stage_performance",
-    # フル解析パイプライン
-    "run_quantum_validation_pipeline",
-    # 🆕 最強レポート生成（v4.0）
-    "generate_maximum_report_from_results_v4",
     # 🌐 Network Analyzer Core (domain-agnostic)
     "NetworkAnalyzerCore",
     "NetworkResult",
     "DimensionLink",
     "CooperativeEventNetwork",
+    # フル解析パイプライン
+    "run_quantum_validation_pipeline",
+    # 🆕 最強レポート生成（v4.0）
+    "generate_maximum_report_from_results_v4",
     # 🆕 Topology Resolver
     "TopologyResolver",
     "AtomInfo",
@@ -97,7 +93,8 @@ __all__ = [
     "resolve_report_text",
 ]
 
-__version__ = "1.5.0"  # v4.0 + Third Impact対応メジャーアップデート！
+__version__ = "1.6.0"  # v4.0 + Third Impact + Network Core
+
 
 # ========================================
 # 便利な一括実行関数
@@ -328,8 +325,9 @@ def get_version_info():
             "two_stage": True,
             "quantum_validation": True,
             "third_impact": True,  # 🔺 新機能！
+            "network_core": True,  # 🌐 新機能！
             "gpu_acceleration": True,
             "maximum_report": True,
         },
-        "description": "Lambda³ GPU Analysis Pipeline with Third Impact Analytics",
+        "description": "Lambda³ Analysis Pipeline with Network Core + Third Impact",
     }
