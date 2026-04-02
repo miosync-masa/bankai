@@ -22,9 +22,8 @@ Built with 💕 by Masamichi & Tamaki
 """
 
 import logging
-from collections import defaultdict
 from dataclasses import dataclass, field
-from typing import Optional, List, Dict, Tuple
+from typing import Optional
 
 import numpy as np
 
@@ -51,8 +50,8 @@ class DimensionLink:
 @dataclass
 class NetworkResult:
     """ネットワーク解析結果"""
-    sync_network: List[DimensionLink] = field(default_factory=list)
-    causal_network: List[DimensionLink] = field(default_factory=list)
+    sync_network: list[DimensionLink] = field(default_factory=list)
+    causal_network: list[DimensionLink] = field(default_factory=list)
 
     # 相関行列（生データ）
     sync_matrix: Optional[np.ndarray] = None      # (n_dims, n_dims)
@@ -61,20 +60,20 @@ class NetworkResult:
 
     # ネットワーク特性
     pattern: str = "unknown"         # 'parallel', 'cascade', 'mixed'
-    hub_dimensions: List[int] = field(default_factory=list)
-    hub_names: List[str] = field(default_factory=list)
+    hub_dimensions: list[int] = field(default_factory=list)
+    hub_names: list[str] = field(default_factory=list)
 
     # 因果構造
-    causal_drivers: List[int] = field(default_factory=list)   # 駆動次元
-    causal_followers: List[int] = field(default_factory=list)  # 従属次元
-    driver_names: List[str] = field(default_factory=list)
-    follower_names: List[str] = field(default_factory=list)
+    causal_drivers: list[int] = field(default_factory=list)   # 駆動次元
+    causal_followers: list[int] = field(default_factory=list)  # 従属次元
+    driver_names: list[str] = field(default_factory=list)
+    follower_names: list[str] = field(default_factory=list)
 
     # メタデータ
     n_dims: int = 0
     n_sync_links: int = 0
     n_causal_links: int = 0
-    dimension_names: List[str] = field(default_factory=list)
+    dimension_names: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -88,9 +87,9 @@ class CooperativeEventNetwork:
     network: Optional[NetworkResult] = None
 
     # イベント固有の情報
-    initiator_dims: List[int] = field(default_factory=list)
-    initiator_names: List[str] = field(default_factory=list)
-    propagation_order: List[int] = field(default_factory=list)
+    initiator_dims: list[int] = field(default_factory=list)
+    initiator_names: list[str] = field(default_factory=list)
+    propagation_order: list[int] = field(default_factory=list)
 
 
 # ============================================
@@ -132,7 +131,7 @@ class NetworkAnalyzerCore:
     def analyze(
         self,
         state_vectors: np.ndarray,
-        dimension_names: Optional[List[str]] = None,
+        dimension_names: Optional[list[str]] = None,
         window: Optional[int] = None,
     ) -> NetworkResult:
         """
@@ -142,7 +141,7 @@ class NetworkAnalyzerCore:
         ----------
         state_vectors : np.ndarray (n_frames, n_dims)
             N次元状態ベクトル時系列
-        dimension_names : List[str], optional
+        dimension_names : list[str], optional
             各次元の名前
         window : int, optional
             相関計算ウィンドウ（Noneなら全フレーム使用）
@@ -212,7 +211,7 @@ class NetworkAnalyzerCore:
         event_frame: int,
         window_before: int = 24,
         window_after: int = 6,
-        dimension_names: Optional[List[str]] = None,
+        dimension_names: Optional[list[str]] = None,
     ) -> CooperativeEventNetwork:
         """
         cooperative event発生時の局所ネットワーク解析
@@ -229,7 +228,7 @@ class NetworkAnalyzerCore:
             イベント前の解析ウィンドウ
         window_after : int
             イベント後の解析ウィンドウ
-        dimension_names : List[str], optional
+        dimension_names : list[str], optional
         """
         n_frames, n_dims = state_vectors.shape
 
@@ -244,7 +243,6 @@ class NetworkAnalyzerCore:
         network = self.analyze(local_data, dimension_names, window=len(local_data))
 
         # イベント発火次元の推定
-        # イベントフレーム付近で最も早く大きく動いた次元 = initiator
         initiators = self._identify_initiators(
             state_vectors, event_frame, window_before, n_dims
         )
@@ -268,7 +266,7 @@ class NetworkAnalyzerCore:
 
     def _compute_correlations(
         self, state_vectors: np.ndarray, window: int
-    ) -> Dict:
+    ) -> dict:
         """全次元ペアの相関計算（同期・因果）"""
         n_frames, n_dims = state_vectors.shape
         w = min(window, n_frames)
@@ -337,9 +335,9 @@ class NetworkAnalyzerCore:
 
     def _build_networks(
         self,
-        correlations: Dict,
-        dimension_names: List[str],
-    ) -> Tuple[List[DimensionLink], List[DimensionLink]]:
+        correlations: dict,
+        dimension_names: list[str],
+    ) -> tuple[list[DimensionLink], list[DimensionLink]]:
         """相関行列からネットワークリンクを構築"""
         n_dims = len(dimension_names)
         sync_links = []
@@ -394,8 +392,8 @@ class NetworkAnalyzerCore:
 
     def _identify_pattern(
         self,
-        sync_links: List[DimensionLink],
-        causal_links: List[DimensionLink],
+        sync_links: list[DimensionLink],
+        causal_links: list[DimensionLink],
     ) -> str:
         """ネットワークパターンの識別"""
         n_sync = len(sync_links)
@@ -412,10 +410,10 @@ class NetworkAnalyzerCore:
 
     def _detect_hubs(
         self,
-        sync_links: List[DimensionLink],
-        causal_links: List[DimensionLink],
+        sync_links: list[DimensionLink],
+        causal_links: list[DimensionLink],
         n_dims: int,
-    ) -> List[int]:
+    ) -> list[int]:
         """ハブ次元の検出（多くの次元と強く結合している次元）"""
         connectivity = np.zeros(n_dims)
 
@@ -434,9 +432,9 @@ class NetworkAnalyzerCore:
 
     def _identify_causal_structure(
         self,
-        causal_links: List[DimensionLink],
+        causal_links: list[DimensionLink],
         n_dims: int,
-    ) -> Tuple[List[int], List[int]]:
+    ) -> tuple[list[int], list[int]]:
         """因果構造の特定（ドライバー/フォロワー）"""
         out_degree = np.zeros(n_dims)  # 駆動する側
         in_degree = np.zeros(n_dims)   # 駆動される側
@@ -470,7 +468,7 @@ class NetworkAnalyzerCore:
         event_frame: int,
         lookback: int,
         n_dims: int,
-    ) -> List[int]:
+    ) -> list[int]:
         """
         cooperative eventの発火次元を推定
 
@@ -504,7 +502,7 @@ class NetworkAnalyzerCore:
         event_frame: int,
         lookback: int,
         n_dims: int,
-    ) -> List[int]:
+    ) -> list[int]:
         """
         イベントの伝播順序を推定
 
@@ -539,9 +537,9 @@ class NetworkAnalyzerCore:
 
     def _print_summary(self, result: NetworkResult):
         """結果サマリーの表示"""
-        logger.info(f"\n{'=' * 50}")
-        logger.info(f"Network Analysis Summary")
-        logger.info(f"{'=' * 50}")
+        logger.info("=" * 50)
+        logger.info("Network Analysis Summary")
+        logger.info("=" * 50)
         logger.info(f"  Pattern: {result.pattern}")
         logger.info(f"  Sync links: {result.n_sync_links}")
         logger.info(f"  Causal links: {result.n_causal_links}")
@@ -556,9 +554,9 @@ class NetworkAnalyzerCore:
             logger.info(f"  Causal followers: {', '.join(result.follower_names)}")
 
         if result.sync_network:
-            logger.info(f"\n  Sync Network:")
+            logger.info("  Sync Network:")
             for link in sorted(result.sync_network,
-                              key=lambda l: l.strength, reverse=True):
+                              key=lambda lnk: lnk.strength, reverse=True):
                 sign = "+" if link.correlation > 0 else "−"
                 logger.info(
                     f"    {link.from_name} ↔ {link.to_name}: "
@@ -566,9 +564,9 @@ class NetworkAnalyzerCore:
                 )
 
         if result.causal_network:
-            logger.info(f"\n  Causal Network:")
+            logger.info("  Causal Network:")
             for link in sorted(result.causal_network,
-                              key=lambda l: l.strength, reverse=True):
+                              key=lambda lnk: lnk.strength, reverse=True):
                 logger.info(
                     f"    {link.from_name} → {link.to_name}: "
                     f"{link.strength:.3f} (lag={link.lag})"
