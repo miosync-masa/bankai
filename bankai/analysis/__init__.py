@@ -45,6 +45,13 @@ from .two_stage_analyzer_gpu import (
     perform_two_stage_analysis_gpu,
 )
 
+from .network_analyzer_core import (
+    NetworkAnalyzerCore,
+    NetworkResult,
+    DimensionLink,
+    CooperativeEventNetwork,
+)
+
 __all__ = [
     # メイン検出器
     "MDLambda3DetectorGPU",
@@ -76,6 +83,11 @@ __all__ = [
     "run_quantum_validation_pipeline",
     # 🆕 最強レポート生成（v4.0）
     "generate_maximum_report_from_results_v4",
+    # 🌐 Network Analyzer Core (domain-agnostic)
+    "NetworkAnalyzerCore",
+    "NetworkResult",
+    "DimensionLink",
+    "CooperativeEventNetwork",
     # 🆕 Topology Resolver
     "TopologyResolver",
     "AtomInfo",
