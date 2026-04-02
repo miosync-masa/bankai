@@ -23,10 +23,9 @@ Built with 💕 by Masamichi & Tamaki
 
 import logging
 from dataclasses import dataclass
-from typing import Optional, List, Dict
+from typing import Optional
 
 import numpy as np
-from scipy import signal
 
 logger = logging.getLogger("bankai.structures.lambda_structures_core")
 
@@ -59,8 +58,8 @@ class LambdaStructuresCore:
         self,
         state_vectors: np.ndarray,
         window_steps: int,
-        dimension_names: Optional[List[str]] = None,
-    ) -> Dict[str, np.ndarray]:
+        dimension_names: Optional[list[str]] = None,
+    ) -> dict[str, np.ndarray]:
         """
         Lambda³構造を計算
 
@@ -71,12 +70,12 @@ class LambdaStructuresCore:
             天気なら (748, 6)、MDなら com_positions (n_frames, 3) に相当
         window_steps : int
             スライディングウィンドウサイズ
-        dimension_names : List[str], optional
+        dimension_names : list[str], optional
             各次元の名前（ログ出力用）
 
         Returns
         -------
-        Dict[str, np.ndarray]
+        dict[str, np.ndarray]
             Lambda構造辞書（lambda_structures_gpu.pyと同一フォーマット）
             - lambda_F: 構造フロー (n_frames-1, n_dims)
             - lambda_F_mag: フロー大きさ (n_frames-1,)
@@ -320,7 +319,7 @@ class LambdaStructuresCore:
     # ユーティリティ
     # ================================================================
 
-    def _print_statistics(self, results: Dict[str, np.ndarray]):
+    def _print_statistics(self, results: dict[str, np.ndarray]):
         """統計情報を出力"""
         if not self.config.verbose:
             return
@@ -341,9 +340,9 @@ class LambdaStructuresCore:
 
     def compute_from_md_features(
         self,
-        md_features: Dict[str, np.ndarray],
+        md_features: dict[str, np.ndarray],
         window_steps: int,
-    ) -> Dict[str, np.ndarray]:
+    ) -> dict[str, np.ndarray]:
         """
         md_features dict 経由での呼び出し（後方互換性）
 
