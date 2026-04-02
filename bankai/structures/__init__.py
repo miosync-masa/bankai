@@ -13,8 +13,8 @@ Components:
 
 # ── Core（汎用版・CPU・ドメイン非依存） ──
 from .lambda_structures_core import (
-    LambdaStructuresCore,
     LambdaCoreConfig,
+    LambdaStructuresCore,
 )
 
 # ── GPU版（MD特化） ──
