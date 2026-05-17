@@ -11,17 +11,44 @@ GPU-accelerated sub-picosecond causal cascade detection in GROMACS molecular dyn
 
 ## Overview
 
-Conventional MD analysis reduces raw atomic coordinates to summary metrics like RMSD or RMSF — discarding the vast majority of structural information before analysis even begins. **BANKAI takes the opposite approach**: it operates directly on the full atomic coordinate trajectory from GROMACS, analyzing every atom at every timestep without dimensionality reduction.
+BANKAI-MD is a geometry-first analysis framework for discrete molecular dynamics　coordinate trajectories. It operates directly on atomic coordinate trajectories　(e.g., GROMACS outputs) and analyzes frame-to-frame geometric changes without first　reducing the trajectory to global summary descriptors such as RMSD, RMSF, or PCA　coordinates.
 
-At **0.01 picosecond (10 femtosecond) resolution**, thermal noise dominates the signal by 10:1. BANKAI's **4-layer statistical filtering architecture** strips away thermal fluctuations layer by layer, achieving a final S/N ratio exceeding 100:1 — making it possible to detect statistically significant structural events that are completely invisible to conventional tools.
+Conventional MD analyses answer essential questions about structural stability,
+time-averaged flexibility, collective modes, and correlated motions. BANKAI-MD
+addresses a different question: where a cooperative structural event first appears
+in the discrete coordinate trajectory, how the perturbation propagates across
+residues, and which local atomic displacement temporally precedes the event.
 
-**Core equation:**
+BANKAI-MD should therefore be understood as an event-centric geometric and
+statistical analysis layer, not as a replacement for conventional MD analysis
+tools.
 
-```
-ΔΛC = ρT · σS · |ΛF|
-```
+### Core geometric score
 
-Where `ΔΛC` is the causal cascade event, `ρT` is tension density, `σS` is structural synchronization, and `ΛF` is the lambda field vector.
+BANKAI-MD uses the following composite event score:
+
+\[
+\Delta \Lambda_C = \rho_T \cdot \sigma_S \cdot |\Lambda_F|
+\]
+
+In this expression, all terms are coordinate-derived geometric or statistical
+functionals of the trajectory. They are not introduced as physical observables,
+conserved quantities, free energies, or rate constants.
+
+| Symbol | Working name | Meaning |
+|---|---|---|
+| \(x_t\) | Coordinate state | Full atomic coordinate vector at frame \(t\) |
+| \(\Lambda_F(t)\) | Frame-step vector | Frame-to-frame coordinate displacement, \(x_{t+1} - x_t\) |
+| \(|\Lambda_F(t)|\) | Frame-step norm | Geometric length of the coordinate displacement |
+| \(\rho_T(t)\) | Local covariance trace | Local geometric spread of nearby coordinate states |
+| \(\sigma_S(t)\) | Local coordination index | Degree to which local structural changes occur cooperatively |
+| \(\Delta \Lambda_C(t)\) | Composite event score | Operational score for detecting localized cooperative events |
+| \(Q_\lambda(t)\) | Winding descriptor | Signed directional change of the local structural flow |
+| Directed dependency | Granger/TE relation | Temporal predictive dependency, not definitive mechanistic causation |
+
+In short, BANKAI-MD does not ask only whether a structure is stable or flexible.
+It asks when a coordinated event begins, where it begins, and how it propagates
+through the coordinate trajectory.
 
 ## Why BANKAI?
 
