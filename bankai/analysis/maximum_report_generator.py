@@ -671,7 +671,7 @@ def generate_maximum_report_from_results_v4(
                         report += "- No statistically significant pairs found\n"
 
     # ========================================
-    # 4. 量子評価の完全解析（Version 4.0新機能）
+    # 4. 完全解析（Version 4.0新機能）
     # ========================================
     if geometric_assessments:
         if verbose:
