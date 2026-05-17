@@ -1,14 +1,5 @@
 """
-CUDA Kernels for Lambda³ GPU
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-高速なCUDAカーネル集だよ〜！💕
-めちゃくちゃ速い処理を実現しちゃう！
-
-by 環ちゃん
-
-⚡ 2025/08/11 修正: 全カーネル関数にGPU配列変換チェックを追加！
-   NumPy配列が来てもエラーにならないように対応したよ〜！
+CUDA Kernels for GPU
 """
 
 import logging
