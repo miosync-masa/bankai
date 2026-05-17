@@ -1,15 +1,11 @@
 """
-Lambda³ GPU Core Components
+BANKAI-MD GPU Core Components
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-GPUコンピューティングの基盤となるコアモジュール群だよ〜！💕
-ここには基底クラス、メモリ管理、CUDAカーネルが入ってる！
-
 Components:
-    - GPUBackend: GPU/CPU自動切り替えの基底クラス
-    - GPUMemoryManager: メモリ管理システム
-    - CUDAKernels: 高速カスタムカーネル集
-    - Decorators: プロファイリングとエラーハンドリング
+- GPUBackend: Base class for automatic GPU/CPU switching
+- GPUMemoryManager: Memory management system
+- CUDAKernels: High-speed custom kernel collection
+- Decorators: Profiling and error handling
 """
 
 # gpu_utils.py から
