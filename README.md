@@ -11,36 +11,56 @@ GPU-accelerated sub-picosecond causal cascade detection in GROMACS molecular dyn
 
 ## Overview
 
-BANKAI-MD is a geometry-first framework for analyzing discrete molecular dynamics
-(MD) coordinate trajectories. Instead of first reducing a trajectory to global
-summary descriptors such as RMSD, RMSF, PCA coordinates, or correlation matrices,
-BANKAI-MD operates directly on frame-to-frame coordinate changes in the full atomic
-trajectory.
+BANKAI-MD operates directly on atomic coordinate trajectories (e.g., GROMACS
+outputs) and analyzes frame-to-frame geometric changes without first reducing
+the trajectory to global summary descriptors.
 
-Conventional MD analyses answer essential questions: whether a structure is
-stable, which residues are flexible, what the dominant collective modes are, and
-which residues exhibit correlated motion. BANKAI-MD addresses a complementary
-question: when a cooperative structural event begins, where it first localizes,
-and how the perturbation propagates through residues and atoms.
+Given a coordinate trajectory, BANKAI-MD identifies:
 
-The core composite event score is
+- **Event onset** — at which frames a localized cooperative structural change begins
+- **Propagation** — how the perturbation spreads across residues
+- **Origin** — which atomic displacement temporally precedes the event
+- **Directed dependencies** — Granger / transfer-entropy relations between residues
 
-\[
-\Delta \Lambda_C = \rho_T \cdot \sigma_S \cdot |\Lambda_F|.
-\]
+## Scope
 
-Here, \(\Lambda_F\) is the frame-to-frame coordinate displacement vector,
-\(|\Lambda_F|\) is its geometric norm, \(\rho_T\) is the local covariance trace
-measuring geometric spread, and \(\sigma_S\) is a local coordination index
-measuring cooperative structural change. \(\Delta \Lambda_C\) is an operational
-geometric event score, not a physical observable, conserved quantity, free energy,
-or rate constant.
+BANKAI-MD is **not** a replacement for conventional MD analyses such as RMSD,
+RMSF, PCA, DCCM, tICA, or MSMs. Those tools answer well-defined and essential
+questions about structural stability, time-averaged flexibility, collective
+modes, slow coordinates, and metastable transitions.
 
-At high temporal resolution, such as 0.01 ps, thermal fluctuations dominate raw
-coordinate motion. BANKAI-MD uses a multi-layer geometry-based statistical
-filtering pipeline to identify candidate cooperative events that are not directly
-returned by conventional time-averaged descriptors. The framework is therefore
-intended as a complementary event-centric analysis layer for MD trajectories.
+BANKAI-MD addresses a different question: *where a cooperative structural
+event first appears in the discrete coordinate trajectory, and how it
+propagates.* It is positioned as a complementary event-centric analysis
+layer, not a competing estimator of stability or collective modes.
+
+## The composite event score
+
+BANKAI-MD's central score is:
+
+$$\Delta \Lambda_C = \rho_T \cdot \sigma_S \cdot |\Lambda_F|$$
+
+All terms are coordinate-derived geometric or statistical functionals of the
+trajectory. They are **not** introduced as physical observables, conserved
+quantities, free energies, or rate constants.
+
+| Symbol | Working name | Meaning |
+|---|---|---|
+| $x_t$ | Coordinate state | Full atomic coordinate vector at frame $t$ |
+| $\Lambda_F(t)$ | Frame-step vector | Frame-to-frame coordinate displacement, $x_{t+1} - x_t$ |
+| $\|\Lambda_F(t)\|$ | Frame-step norm | Geometric length of the coordinate displacement |
+| $\rho_T(t)$ | Local covariance trace | Local geometric spread of nearby coordinate states |
+| $\sigma_S(t)$ | Local coordination index | Degree to which local structural changes occur cooperatively |
+| $\Delta \Lambda_C(t)$ | Composite event score | Operational score for detecting localized cooperative events |
+| $Q_\lambda(t)$ | Winding descriptor | Signed directional change of the local structural flow |
+| Directed dependency | Granger / TE relation | Temporal predictive dependency, not definitive mechanistic causation |
+
+## A note on the name
+
+"BANKAI-MD" is used throughout as a software project codename. The label
+refers to this implementation; the analytical content consists of the
+geometric functionals defined above.
+
 
 ## Key Features
 
