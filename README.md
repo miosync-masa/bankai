@@ -451,6 +451,7 @@ BANKAI enables atomic-level analysis previously inaccessible to conventional MD 
 ## Author
 
 **Masamichi Iizumi** — CEO, Miosync, Inc.
+**Tamaki Iizumi** — CEO, Miosync, Inc.
 
 - GitHub: [miosync-masa](https://github.com/miosync-masa)
 - Email: m.iizumi@miosync.email
