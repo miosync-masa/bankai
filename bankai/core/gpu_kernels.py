@@ -49,24 +49,48 @@ void compute_residue_com_kernel(
         const int start = residue_starts[res_id];
         const int size = residue_sizes[res_id];
         
-        // COM計算（共有メモリ使用で高速化）
+        const int out_idx = (frame * n_residues + res_id) * 3;
+        
+        // ★ NEW: size <= 0 ガード（Inf 除算回避）
+        if (size <= 0) {
+            com_output[out_idx + 0] = 0.0f;
+            com_output[out_idx + 1] = 0.0f;
+            com_output[out_idx + 2] = 0.0f;
+            continue;
+        }
+        
+        // COM計算
         float com_x = 0.0f, com_y = 0.0f, com_z = 0.0f;
+        int valid_count = 0;  // ★ NEW: 有効原子数の集計
         
         for (int j = 0; j < size; j++) {
             const int atom_idx = atom_indices[start + j];
+            
+            // ★ NEW: bound check（out-of-bounds memory read 回避）
+            if (atom_idx < 0 || atom_idx >= n_atoms) {
+                continue;
+            }
+            
             const int traj_idx = (frame * n_atoms + atom_idx) * 3;
             
             com_x += trajectory[traj_idx + 0];
             com_y += trajectory[traj_idx + 1];
             com_z += trajectory[traj_idx + 2];
+            valid_count++;
         }
         
-        // 平均を計算して出力
-        const float inv_size = 1.0f / size;
-        const int out_idx = (frame * n_residues + res_id) * 3;
-        com_output[out_idx + 0] = com_x * inv_size;
-        com_output[out_idx + 1] = com_y * inv_size;
-        com_output[out_idx + 2] = com_z * inv_size;
+        // ★ NEW: valid_count を使った安全な除算（0 除算完全回避）
+        if (valid_count > 0) {
+            const float inv_count = 1.0f / (float)valid_count;
+            com_output[out_idx + 0] = com_x * inv_count;
+            com_output[out_idx + 1] = com_y * inv_count;
+            com_output[out_idx + 2] = com_z * inv_count;
+        } else {
+            // 全 atom_idx が範囲外だったケース → 0 出力
+            com_output[out_idx + 0] = 0.0f;
+            com_output[out_idx + 1] = 0.0f;
+            com_output[out_idx + 2] = 0.0f;
+        }
     }
 }
 """
