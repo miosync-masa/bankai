@@ -410,9 +410,7 @@ Examples:
         default=10,
         help="Number of top residues for Third Impact (default: 10)",
     )
-    p_analyze.add_argument(
-        "--topology", "-t", help="Path to topology file (.pdb)"
-    )
+    p_analyze.add_argument("--topology", "-t", help="Path to topology file (.pdb)")
     p_analyze.add_argument(
         "--output",
         "-o",
@@ -424,12 +422,8 @@ Examples:
         action="store_true",
         help="Skip two-stage residue analysis",
     )
-    p_analyze.add_argument(
-        "--no-viz", action="store_true", help="Skip visualization"
-    )
-    p_analyze.add_argument(
-        "--verbose", "-v", action="store_true", help="Verbose output"
-    )
+    p_analyze.add_argument("--no-viz", action="store_true", help="Skip visualization")
+    p_analyze.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
     p_analyze.set_defaults(func=cmd_analyze)
 
     # --- benchmark ---
@@ -466,12 +460,8 @@ Examples:
         "-o",
         help="Output directory (default: ./bankai_example_results)",
     )
-    p_example.add_argument(
-        "--no-viz", action="store_true", help="Skip visualization"
-    )
-    p_example.add_argument(
-        "--verbose", "-v", action="store_true", help="Verbose output"
-    )
+    p_example.add_argument("--no-viz", action="store_true", help="Skip visualization")
+    p_example.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
     p_example.set_defaults(func=cmd_example)
 
     return parser

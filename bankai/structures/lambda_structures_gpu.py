@@ -187,9 +187,7 @@ class LambdaStructuresGPU(GPUBackend):
 
                 # 4. Q_Λ - トポロジカルチャージ
                 with self.timer("Q_lambda"):
-                    Q_lambda, Q_cumulative = self._compute_Q_lambda(
-                        lambda_F, lambda_F_mag
-                    )
+                    Q_lambda, Q_cumulative = self._compute_Q_lambda(lambda_F, lambda_F_mag)
 
                 # 5. σₛ - 構造同期率
                 with self.timer("sigma_s"):
@@ -220,9 +218,7 @@ class LambdaStructuresGPU(GPUBackend):
         except Exception as e:
             logger.error(f"❌ Error in compute_lambda_structures: {e}")
             logger.error(f"   xp={self.xp if hasattr(self, 'xp') else 'NOT SET'}")
-            logger.error(
-                f"   is_gpu={self.is_gpu if hasattr(self, 'is_gpu') else 'NOT SET'}"
-            )
+            logger.error(f"   is_gpu={self.is_gpu if hasattr(self, 'is_gpu') else 'NOT SET'}")
             if self.is_gpu and "out of memory" in str(e).lower():
                 logger.info("💡 Try reducing batch_size or use force_cpu=True")
             raise
@@ -268,9 +264,7 @@ class LambdaStructuresGPU(GPUBackend):
 
             if len(local_positions) > 1:
                 # 共分散行列のトレース（axis明示）
-                centered = local_positions - self.xp.mean(
-                    local_positions, axis=0, keepdims=True
-                )
+                centered = local_positions - self.xp.mean(local_positions, axis=0, keepdims=True)
                 cov = self.xp.cov(centered.T)
                 rho_T[step] = self.xp.trace(cov)
 
@@ -317,9 +311,7 @@ class LambdaStructuresGPU(GPUBackend):
 
         return Q_lambda, Q_cumulative
 
-    def _compute_sigma_s(
-        self, md_features: dict[str, np.ndarray], window_steps: int
-    ) -> NDArray:
+    def _compute_sigma_s(self, md_features: dict[str, np.ndarray], window_steps: int) -> NDArray:
         """σₛ - 構造同期率計算"""
         # 必要な特徴量がない場合
         if "rmsd" not in md_features or "radius_of_gyration" not in md_features:
@@ -348,9 +340,7 @@ class LambdaStructuresGPU(GPUBackend):
 
                 if std_rmsd > 1e-10 and std_rg > 1e-10:
                     # 相関係数
-                    corr_matrix = self.xp.corrcoef(
-                        self.xp.stack([local_rmsd, local_rg])
-                    )
+                    corr_matrix = self.xp.corrcoef(self.xp.stack([local_rmsd, local_rg]))
                     sigma_s[step] = self.xp.abs(corr_matrix[0, 1])
 
         return sigma_s
@@ -375,9 +365,7 @@ class LambdaStructuresGPU(GPUBackend):
                 valid_mask = norms > 1e-10
 
                 if self.xp.any(valid_mask):
-                    normalized_F = (
-                        local_F[valid_mask] / norms[valid_mask, self.xp.newaxis]
-                    )
+                    normalized_F = local_F[valid_mask] / norms[valid_mask, self.xp.newaxis]
                     coherences = self.xp.dot(normalized_F, mean_dir)
                     coherence[i] = self.xp.mean(coherences)
 
@@ -433,9 +421,7 @@ class LambdaStructuresGPU(GPUBackend):
                 lf_mag = self.to_gpu(lambda_structures["lambda_F_mag"])
                 mean_val = float(self.xp.mean(lf_mag))
                 if abs(mean_val) > 1e-10:
-                    volatility_metrics["lambda_f"] = float(
-                        self.xp.std(lf_mag) / mean_val
-                    )
+                    volatility_metrics["lambda_f"] = float(self.xp.std(lf_mag) / mean_val)
                 else:
                     volatility_metrics["lambda_f"] = 0.0
 
@@ -463,9 +449,7 @@ class LambdaStructuresGPU(GPUBackend):
 
             # ウィンドウサイズ決定
             adaptive_window = int(base_window * scale_factor)
-            adaptive_window = np.clip(
-                adaptive_window, config.min_window, config.max_window
-            )
+            adaptive_window = np.clip(adaptive_window, config.min_window, config.max_window)
 
             windows = {
                 "primary": adaptive_window,
@@ -523,9 +507,7 @@ def compute_adaptive_window_size_gpu(
 ) -> dict[str, Union[int, float, dict]]:
     """適応的ウィンドウサイズ計算"""
     calculator = LambdaStructuresGPU(force_cpu=force_cpu)
-    return calculator.compute_adaptive_window_size(
-        md_features, lambda_structures, n_frames, config
-    )
+    return calculator.compute_adaptive_window_size(md_features, lambda_structures, n_frames, config)
 
 
 # ===============================

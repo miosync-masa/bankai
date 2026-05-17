@@ -92,8 +92,7 @@ class ResidueStructureResult:
             actual_shape = getattr(self, name).shape
             if actual_shape != expected_shape:
                 logger.warning(
-                    f"Shape mismatch in {name}: "
-                    f"expected {expected_shape}, got {actual_shape}"
+                    f"Shape mismatch in {name}: expected {expected_shape}, got {actual_shape}"
                 )
                 return False
 
@@ -345,21 +344,15 @@ class ResidueStructuresGPU(GPUBackend):
 
         return residue_coms
 
-    def _compute_residue_lambda_f(
-        self, residue_coms: cp.ndarray
-    ) -> tuple[cp.ndarray, cp.ndarray]:
+    def _compute_residue_lambda_f(self, residue_coms: cp.ndarray) -> tuple[cp.ndarray, cp.ndarray]:
         """残基レベルΛF計算（形状統一版）"""
         n_frames, n_residues, _ = residue_coms.shape
 
         # 単一フレームの特別処理
         if n_frames <= 1:
             # 単一フレーム：変化なし（ゼロ）
-            residue_lambda_f = self.xp.zeros(
-                (n_frames, n_residues, 3), dtype=self.xp.float32
-            )
-            residue_lambda_f_mag = self.xp.zeros(
-                (n_frames, n_residues), dtype=self.xp.float32
-            )
+            residue_lambda_f = self.xp.zeros((n_frames, n_residues, 3), dtype=self.xp.float32)
+            residue_lambda_f_mag = self.xp.zeros((n_frames, n_residues), dtype=self.xp.float32)
             logger.debug("Single frame detected, returning zero lambda_f")
             return residue_lambda_f, residue_lambda_f_mag
 
@@ -372,15 +365,11 @@ class ResidueStructuresGPU(GPUBackend):
         residue_lambda_f = self.xp.concatenate([zero_frame, residue_lambda_f], axis=0)
 
         zero_mag = self.xp.zeros((1, n_residues), dtype=residue_lambda_f_mag.dtype)
-        residue_lambda_f_mag = self.xp.concatenate(
-            [zero_mag, residue_lambda_f_mag], axis=0
-        )
+        residue_lambda_f_mag = self.xp.concatenate([zero_mag, residue_lambda_f_mag], axis=0)
 
         return residue_lambda_f, residue_lambda_f_mag
 
-    def _compute_residue_rho_t(
-        self, residue_coms: cp.ndarray, window_size: int
-    ) -> cp.ndarray:
+    def _compute_residue_rho_t(self, residue_coms: cp.ndarray, window_size: int) -> cp.ndarray:
         """残基レベルρT計算（単一フレーム対応）"""
         n_frames, n_residues, _ = residue_coms.shape
 
@@ -420,9 +409,7 @@ class ResidueStructuresGPU(GPUBackend):
                     local_coms = residue_coms[local_start:local_end, res_id]
                     if len(local_coms) > 1:
                         cov = self.xp.cov(local_coms.T)
-                        if not self.xp.any(self.xp.isnan(cov)) and not self.xp.all(
-                            cov == 0
-                        ):
+                        if not self.xp.any(self.xp.isnan(cov)) and not self.xp.all(cov == 0):
                             residue_rho_t[frame, res_id] = self.xp.trace(cov)
 
             return residue_rho_t
@@ -507,9 +494,7 @@ def compute_residue_lambda_f_gpu(
 ) -> tuple[np.ndarray, np.ndarray]:
     """残基ΛF計算のスタンドアロン関数（パディング済み）"""
     calculator = (
-        ResidueStructuresGPU()
-        if backend is None
-        else ResidueStructuresGPU(device=backend.device)
+        ResidueStructuresGPU() if backend is None else ResidueStructuresGPU(device=backend.device)
     )
     coms_gpu = calculator.to_gpu(residue_coms)
     lambda_f, lambda_f_mag = calculator._compute_residue_lambda_f(coms_gpu)
@@ -523,9 +508,7 @@ def compute_residue_rho_t_gpu(
 ) -> np.ndarray:
     """残基ρT計算のスタンドアロン関数"""
     calculator = (
-        ResidueStructuresGPU()
-        if backend is None
-        else ResidueStructuresGPU(device=backend.device)
+        ResidueStructuresGPU() if backend is None else ResidueStructuresGPU(device=backend.device)
     )
     coms_gpu = calculator.to_gpu(residue_coms)
     rho_t = calculator._compute_residue_rho_t(coms_gpu, window_size)
@@ -537,9 +520,7 @@ def compute_residue_coupling_gpu(
 ) -> np.ndarray:
     """残基カップリング計算のスタンドアロン関数"""
     calculator = (
-        ResidueStructuresGPU()
-        if backend is None
-        else ResidueStructuresGPU(device=backend.device)
+        ResidueStructuresGPU() if backend is None else ResidueStructuresGPU(device=backend.device)
     )
     coms_gpu = calculator.to_gpu(residue_coms)
     coupling = calculator._compute_residue_coupling(coms_gpu)
@@ -554,9 +535,7 @@ def compute_residue_coupling_gpu(
 class ResidueStructureBatchProcessor:
     """大規模トラジェクトリのバッチ処理"""
 
-    def __init__(
-        self, calculator: ResidueStructuresGPU, batch_size: Optional[int] = None
-    ):
+    def __init__(self, calculator: ResidueStructuresGPU, batch_size: Optional[int] = None):
         self.calculator = calculator
         self.batch_size = batch_size
 

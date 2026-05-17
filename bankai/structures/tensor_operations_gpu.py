@@ -315,9 +315,7 @@ class TensorOperationsGPU(GPUBackend):
             elif self.is_gpu:
                 batch_results = self.to_cpu(batch_results)
 
-            results.extend(
-                batch_results if isinstance(batch_results, list) else [batch_results]
-            )
+            results.extend(batch_results if isinstance(batch_results, list) else [batch_results])
 
             # メモリクリア
             if i % (batch_size * 5) == 0:
@@ -359,9 +357,7 @@ class TensorOperationsGPU(GPUBackend):
         if self.is_gpu and HAS_GPU:
             # CuPyの高速畳み込み
             if array_gpu.ndim == 1:
-                result = cp_signal.convolve(
-                    array_gpu, kernel_gpu, mode=mode, method=method
-                )
+                result = cp_signal.convolve(array_gpu, kernel_gpu, mode=mode, method=method)
             else:
                 result = cp_signal.convolve2d(array_gpu, kernel_gpu, mode=mode)
         else:
@@ -369,9 +365,7 @@ class TensorOperationsGPU(GPUBackend):
             from scipy import signal
 
             if array_gpu.ndim == 1:
-                result = signal.convolve(
-                    array_gpu, kernel_gpu, mode=mode, method=method
-                )
+                result = signal.convolve(array_gpu, kernel_gpu, mode=mode, method=method)
             else:
                 result = signal.convolve2d(array_gpu, kernel_gpu, mode=mode)
 
@@ -446,11 +440,7 @@ def compute_gradient_gpu(
     backend: Optional[GPUBackend] = None,
 ) -> Union[np.ndarray, list[np.ndarray]]:
     """勾配計算のスタンドアロン関数"""
-    ops = (
-        TensorOperationsGPU()
-        if backend is None
-        else TensorOperationsGPU(device=backend.device)
-    )
+    ops = TensorOperationsGPU() if backend is None else TensorOperationsGPU(device=backend.device)
     return ops.compute_gradient(array, axis)
 
 
@@ -458,11 +448,7 @@ def compute_covariance_gpu(
     x: NDArray, y: Optional[NDArray] = None, backend: Optional[GPUBackend] = None
 ) -> np.ndarray:
     """共分散計算のスタンドアロン関数"""
-    ops = (
-        TensorOperationsGPU()
-        if backend is None
-        else TensorOperationsGPU(device=backend.device)
-    )
+    ops = TensorOperationsGPU() if backend is None else TensorOperationsGPU(device=backend.device)
     result = ops.compute_covariance(x, y)
     return ops.to_cpu(result) if ops.is_gpu else result
 
@@ -471,11 +457,7 @@ def compute_correlation_gpu(
     x: NDArray, y: Optional[NDArray] = None, backend: Optional[GPUBackend] = None
 ) -> np.ndarray:
     """相関計算のスタンドアロン関数"""
-    ops = (
-        TensorOperationsGPU()
-        if backend is None
-        else TensorOperationsGPU(device=backend.device)
-    )
+    ops = TensorOperationsGPU() if backend is None else TensorOperationsGPU(device=backend.device)
     result = ops.compute_correlation(x, y)
     return ops.to_cpu(result) if ops.is_gpu else result
 
@@ -488,11 +470,7 @@ def sliding_window_operation_gpu(
     backend: Optional[GPUBackend] = None,
 ) -> np.ndarray:
     """スライディングウィンドウ演算のスタンドアロン関数"""
-    ops = (
-        TensorOperationsGPU()
-        if backend is None
-        else TensorOperationsGPU(device=backend.device)
-    )
+    ops = TensorOperationsGPU() if backend is None else TensorOperationsGPU(device=backend.device)
     result = ops.sliding_window_operation(array, window_size, operation, axis)
     return ops.to_cpu(result) if ops.is_gpu else result
 
@@ -506,14 +484,8 @@ def batch_tensor_operation(
     **kwargs,
 ) -> Union[np.ndarray, list]:
     """バッチテンソル演算のスタンドアロン関数"""
-    ops = (
-        TensorOperationsGPU()
-        if backend is None
-        else TensorOperationsGPU(device=backend.device)
-    )
-    return ops.batch_tensor_operation(
-        tensors, operation, batch_size, concat_axis, **kwargs
-    )
+    ops = TensorOperationsGPU() if backend is None else TensorOperationsGPU(device=backend.device)
+    return ops.batch_tensor_operation(tensors, operation, batch_size, concat_axis, **kwargs)
 
 
 # ===============================
@@ -547,8 +519,7 @@ def tensorize(func: Callable) -> Callable:
         # 結果をCPUに戻す
         if isinstance(result, (list, tuple)):
             return type(result)(
-                backend.to_cpu(r) if HAS_GPU and isinstance(r, cp.ndarray) else r
-                for r in result
+                backend.to_cpu(r) if HAS_GPU and isinstance(r, cp.ndarray) else r for r in result
             )
         elif HAS_GPU and isinstance(result, cp.ndarray):
             return backend.to_cpu(result)

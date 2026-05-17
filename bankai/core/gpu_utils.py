@@ -145,9 +145,7 @@ class GPUBackend:
 
         # メモリマネージャー作成
         self.memory_manager = GPUMemoryManager(**default_config)
-        logger.debug(
-            f"Memory manager initialized: {self.memory_manager.get_memory_info()}"
-        )
+        logger.debug(f"Memory manager initialized: {self.memory_manager.get_memory_info()}")
 
     def _select_device(self, device: Union[str, int]) -> int:
         """デバイス選択ロジック"""
@@ -350,9 +348,7 @@ def auto_select_device() -> int:
                 max_free_memory = free_mem
                 best_device = i
 
-    logger.info(
-        f"Auto-selected GPU {best_device} with {max_free_memory / 1e9:.1f}GB free"
-    )
+    logger.info(f"Auto-selected GPU {best_device} with {max_free_memory / 1e9:.1f}GB free")
     return best_device
 
 
@@ -404,9 +400,7 @@ def handle_gpu_errors(func: Callable) -> Callable:
                         logger.error(f"Retry failed: {retry_error}")
 
                         # バッチサイズ調整の提案
-                        if hasattr(self, "config") and hasattr(
-                            self.config, "gpu_batch_size"
-                        ):
+                        if hasattr(self, "config") and hasattr(self.config, "gpu_batch_size"):
                             suggested_size = self.config.gpu_batch_size // 2
                             logger.error(
                                 f"Consider reducing batch size. "
@@ -416,9 +410,7 @@ def handle_gpu_errors(func: Callable) -> Callable:
                         raise
 
             # CuPy/CUDA特有のエラー
-            elif any(
-                keyword in error_str.lower() for keyword in ["cuda", "cupy", "gpu"]
-            ):
+            elif any(keyword in error_str.lower() for keyword in ["cuda", "cupy", "gpu"]):
                 logger.error(f"GPU error in {func.__name__}: {e}")
 
                 # デバイス情報を出力

@@ -190,9 +190,7 @@ class BoundaryDetectorGPU(GPUBackend):
                 structures.get("Q_cumulative", np.zeros(n_steps)), window_steps
             )
 
-            entropy = self._compute_structural_entropy_gpu(
-                structures["rho_T"], window_steps
-            )
+            entropy = self._compute_structural_entropy_gpu(structures["rho_T"], window_steps)
 
             # 境界スコア計算
             boundary_score = self._compute_boundary_score_gpu(
@@ -215,9 +213,7 @@ class BoundaryDetectorGPU(GPUBackend):
             "structural_entropy": self.to_cpu(entropy),
         }
 
-    def _compute_fractal_dimensions_gpu(
-        self, q_cumulative: np.ndarray, window: int
-    ) -> NDArray:
+    def _compute_fractal_dimensions_gpu(self, q_cumulative: np.ndarray, window: int) -> NDArray:
         """局所フラクタル次元の計算（GPU版）"""
         if len(q_cumulative) == 0:
             return self.zeros(len(q_cumulative))
@@ -288,9 +284,7 @@ class BoundaryDetectorGPU(GPUBackend):
 
         return coherence
 
-    def _compute_coupling_strength_gpu(
-        self, q_cumulative: np.ndarray, window: int
-    ) -> NDArray:
+    def _compute_coupling_strength_gpu(self, q_cumulative: np.ndarray, window: int) -> NDArray:
         """結合強度の計算（GPU版）"""
         # xpの確認
         if not hasattr(self, "xp") or self.xp is None:
@@ -310,9 +304,7 @@ class BoundaryDetectorGPU(GPUBackend):
 
         return coupling
 
-    def _compute_structural_entropy_gpu(
-        self, rho_t: np.ndarray, window: int
-    ) -> NDArray:
+    def _compute_structural_entropy_gpu(self, rho_t: np.ndarray, window: int) -> NDArray:
         """
         構造エントロピーの計算（CuPy RawKernel版）
         PTX 8.4対応
@@ -332,9 +324,7 @@ class BoundaryDetectorGPU(GPUBackend):
             blocks = (n + threads - 1) // threads
 
             # カーネル実行
-            self.shannon_entropy_kernel(
-                (blocks,), (threads,), (rho_t_gpu, entropy, window, n)
-            )
+            self.shannon_entropy_kernel((blocks,), (threads,), (rho_t_gpu, entropy, window, n))
 
             self.xp.cuda.Stream.null.synchronize()
             return entropy
@@ -373,27 +363,19 @@ class BoundaryDetectorGPU(GPUBackend):
         if self.is_gpu:
             # compute_gradient_kernelが使えるか確認
             if compute_gradient_kernel is not None:
-                fractal_gradient = self.xp.abs(
-                    compute_gradient_kernel(fractal_dims[:min_len])
-                )
-                entropy_gradient = self.xp.abs(
-                    compute_gradient_kernel(entropy[:min_len])
-                )
+                fractal_gradient = self.xp.abs(compute_gradient_kernel(fractal_dims[:min_len]))
+                entropy_gradient = self.xp.abs(compute_gradient_kernel(entropy[:min_len]))
             else:
                 fractal_gradient = self.xp.abs(self.xp.gradient(fractal_dims[:min_len]))
                 entropy_gradient = self.xp.abs(self.xp.gradient(entropy[:min_len]))
 
             coherence_drop = (
-                1 - coherence[:min_len]
-                if len(coherence) > 0
-                else self.xp.zeros(min_len)
+                1 - coherence[:min_len] if len(coherence) > 0 else self.xp.zeros(min_len)
             )
             coupling_weakness = 1 - coupling[:min_len]
         else:
             fractal_gradient = np.abs(np.gradient(fractal_dims[:min_len]))
-            coherence_drop = (
-                1 - coherence[:min_len] if len(coherence) > 0 else np.zeros(min_len)
-            )
+            coherence_drop = 1 - coherence[:min_len] if len(coherence) > 0 else np.zeros(min_len)
             coupling_weakness = 1 - coupling[:min_len]
             entropy_gradient = np.abs(np.gradient(entropy[:min_len]))
 
@@ -407,9 +389,7 @@ class BoundaryDetectorGPU(GPUBackend):
 
         return boundary_score
 
-    def _detect_peaks_gpu(
-        self, boundary_score: NDArray, n_steps: int
-    ) -> tuple[NDArray, dict]:
+    def _detect_peaks_gpu(self, boundary_score: NDArray, n_steps: int) -> tuple[NDArray, dict]:
         """ピーク検出（GPU版）"""
         # xpの確認
         if not hasattr(self, "xp") or self.xp is None:
@@ -522,9 +502,7 @@ class BoundaryDetectorGPU(GPUBackend):
     # 追加のメソッド（トポロジカル破れ検出など）
     # ===============================
 
-    def _detect_lambda_anomalies_gpu(
-        self, lambda_mag: np.ndarray, window: int
-    ) -> NDArray:
+    def _detect_lambda_anomalies_gpu(self, lambda_mag: np.ndarray, window: int) -> NDArray:
         """Lambda異常検出"""
         # xpの確認
         if not hasattr(self, "xp") or self.xp is None:
@@ -616,9 +594,7 @@ class BoundaryDetectorGPU(GPUBackend):
         if not hasattr(self, "xp") or self.xp is None:
             self._setup_xp()
 
-        with self.memory_manager.temporary_allocation(
-            len(structures["rho_T"]) * 4 * 5, "topology"
-        ):
+        with self.memory_manager.temporary_allocation(len(structures["rho_T"]) * 4 * 5, "topology"):
             # 1. ΛF異常
             lambda_f_anomaly = self._detect_lambda_anomalies_gpu(
                 structures.get("lambda_F_mag", np.zeros(len(structures["rho_T"]))),
@@ -632,9 +608,7 @@ class BoundaryDetectorGPU(GPUBackend):
             )
 
             # 3. テンション場ジャンプ
-            rho_t_breaks = self._detect_tension_jumps_gpu(
-                structures["rho_T"], window_steps
-            )
+            rho_t_breaks = self._detect_tension_jumps_gpu(structures["rho_T"], window_steps)
 
             # 4. トポロジカルチャージ異常
             q_breaks = self._detect_phase_breaks_gpu(

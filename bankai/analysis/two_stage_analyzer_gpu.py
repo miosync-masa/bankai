@@ -221,15 +221,11 @@ class TwoStageAnalyzerGPU(GPUBackend):
                     all_important_residues[res_id] = 0.0
 
                 # 重要度スコア
-                importance = event.peak_lambda_f * (
-                    1 + 0.1 * (100 / event.adaptive_window)
-                )
+                importance = event.peak_lambda_f * (1 + 0.1 * (100 / event.adaptive_window))
                 all_important_residues[res_id] += importance
 
         # 介入ポイントの特定
-        intervention_points = self._identify_intervention_points_gpu(
-            all_important_residues
-        )
+        intervention_points = self._identify_intervention_points_gpu(all_important_residues)
 
         # グローバル統計
         global_stats = self._compute_global_stats(residue_analyses)
@@ -281,9 +277,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
                 try:
                     analysis = future.result()
                     residue_analyses[event_name] = analysis
-                    print(
-                        f"  ✓ {event_name} complete (GPU time: {analysis.gpu_time:.2f}s)"
-                    )
+                    print(f"  ✓ {event_name} complete (GPU time: {analysis.gpu_time:.2f}s)")
                 except Exception as e:
                     print(f"  ✗ {event_name} failed: {str(e)}")
 
@@ -338,16 +332,12 @@ class TwoStageAnalyzerGPU(GPUBackend):
         event_trajectory = trajectory[start_frame:end_frame]
 
         # GPUメモリコンテキスト
-        with self.memory_manager.batch_context(
-            event_frames * len(residue_atoms) * 3 * 4
-        ):
+        with self.memory_manager.batch_context(event_frames * len(residue_atoms) * 3 * 4):
             # ========================================
             # 1. 残基構造計算
             # ========================================
             if is_single_frame:
-                structures = self._compute_single_frame_structures(
-                    event_trajectory, residue_atoms
-                )
+                structures = self._compute_single_frame_structures(event_trajectory, residue_atoms)
             else:
                 structures = self.residue_structures.compute_residue_structures(
                     event_trajectory,
@@ -364,9 +354,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
                     structures, event_name, residue_atoms
                 )
             else:
-                anomaly_scores = self._detect_residue_anomalies_gpu(
-                    structures, event_name
-                )
+                anomaly_scores = self._detect_residue_anomalies_gpu(structures, event_name)
 
             # ========================================
             # 3. ネットワーク解析
@@ -481,9 +469,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
                 from scipy.spatial.distance import pdist
 
                 pairwise_distances = pdist(coords)
-                mean_dist = (
-                    np.mean(pairwise_distances) if len(pairwise_distances) > 0 else 1.0
-                )
+                mean_dist = np.mean(pairwise_distances) if len(pairwise_distances) > 0 else 1.0
                 residue_rho_t[0, i] = 1.0 / mean_dist
             else:
                 residue_rho_t[0, i] = 1.0
@@ -535,9 +521,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
 
         return anomaly_scores
 
-    def _detect_residue_anomalies_gpu(
-        self, structures, event_type: str
-    ) -> dict[int, np.ndarray]:
+    def _detect_residue_anomalies_gpu(self, structures, event_type: str) -> dict[int, np.ndarray]:
         """
         残基異常検出（GPU最適化・修正版）
         感度を適切に調整して、異常を確実に検出！
@@ -591,9 +575,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
 
         # 空の場合のフォールバック（全残基に適切なスコアを割り当て）
         if not residue_anomaly_scores:
-            logger.warning(
-                f"No anomalies detected for {event_type}, assigning default scores"
-            )
+            logger.warning(f"No anomalies detected for {event_type}, assigning default scores")
             for res_id in range(n_residues):
                 # より現実的なランダムノイズを追加
                 base_score = np.random.uniform(0.5, 1.5, n_frames)
@@ -611,9 +593,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
                     lambda_score = np.abs(lambda_vals - np.mean(lambda_vals)) / (
                         np.std(lambda_vals) + 1e-10
                     )
-                    rho_score = np.abs(rho_vals - np.mean(rho_vals)) / (
-                        np.std(rho_vals) + 1e-10
-                    )
+                    rho_score = np.abs(rho_vals - np.mean(rho_vals)) / (np.std(rho_vals) + 1e-10)
                     combined = (lambda_score + rho_score) / 2
 
                     residue_anomaly_scores[res_id] = combined
@@ -661,9 +641,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
 
             use_scipy = True
         except ImportError:
-            logger.warning(
-                "scipy.signal.find_peaks not available, using simple peak detection"
-            )
+            logger.warning("scipy.signal.find_peaks not available, using simple peak detection")
             use_scipy = False
 
         # adaptive_windowsの取得
@@ -726,9 +704,9 @@ class TwoStageAnalyzerGPU(GPUBackend):
         if not events:
             logger.warning("No events detected, creating default events")
             # 上位スコアの残基からイベントを作成
-            top_residues = sorted(
-                anomaly_scores.items(), key=lambda x: np.max(x[1]), reverse=True
-            )[:10]
+            top_residues = sorted(anomaly_scores.items(), key=lambda x: np.max(x[1]), reverse=True)[
+                :10
+            ]
 
             for res_id, scores in top_residues:
                 event = ResidueEvent(
@@ -748,9 +726,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
         logger.debug(f"Created {len(events)} residue events")
         return events
 
-    def _determine_residue_role(
-        self, res_id: int, peak_frame: int, network_results
-    ) -> str:
+    def _determine_residue_role(self, res_id: int, peak_frame: int, network_results) -> str:
         """残基の役割を決定（修正版）"""
         # NetworkAnalysisResultの属性を正しくチェック
         if not hasattr(network_results, "causal_network"):
@@ -984,16 +960,12 @@ class TwoStageAnalyzerGPU(GPUBackend):
                 return self.to_cpu(top_residues).tolist()
             else:
                 # CPU版フォールバック
-                sorted_items = sorted(
-                    importance_scores.items(), key=lambda x: x[1], reverse=True
-                )
+                sorted_items = sorted(importance_scores.items(), key=lambda x: x[1], reverse=True)
                 return [res_id for res_id, _ in sorted_items[:top_n]]
 
         return []
 
-    def _create_residue_mapping(
-        self, n_atoms: int, n_residues: int
-    ) -> dict[int, list[int]]:
+    def _create_residue_mapping(self, n_atoms: int, n_residues: int) -> dict[int, list[int]]:
         """残基マッピングの作成"""
         atoms_per_residue = n_atoms // n_residues
         residue_atoms = {}
@@ -1016,23 +988,16 @@ class TwoStageAnalyzerGPU(GPUBackend):
 
     def _compute_global_stats(self, residue_analyses):
         """グローバル統計の計算"""
-        total_causal = sum(
-            a.network_stats.get("n_causal", 0) for a in residue_analyses.values()
-        )
-        total_sync = sum(
-            a.network_stats.get("n_sync", 0) for a in residue_analyses.values()
-        )
-        total_async = sum(
-            a.network_stats.get("n_async", 0) for a in residue_analyses.values()
-        )
+        total_causal = sum(a.network_stats.get("n_causal", 0) for a in residue_analyses.values())
+        total_sync = sum(a.network_stats.get("n_sync", 0) for a in residue_analyses.values())
+        total_async = sum(a.network_stats.get("n_async", 0) for a in residue_analyses.values())
 
         total_gpu_time = sum(a.gpu_time for a in residue_analyses.values())
 
         mean_window = 100  # デフォルト
         if residue_analyses:
             windows = [
-                a.network_stats.get("mean_adaptive_window", 100)
-                for a in residue_analyses.values()
+                a.network_stats.get("mean_adaptive_window", 100) for a in residue_analyses.values()
             ]
             mean_window = np.mean(windows) if windows else 100
 
@@ -1060,9 +1025,7 @@ class TwoStageAnalyzerGPU(GPUBackend):
             f"   Total async strong bonds: {global_stats['total_async_bonds']} "
             f"({global_stats['async_to_causal_ratio']:.1%})"
         )
-        print(
-            f"   Mean adaptive window: {global_stats['mean_adaptive_window']:.1f} frames"
-        )
+        print(f"   Mean adaptive window: {global_stats['mean_adaptive_window']:.1f} frames")
         print(f"   Total GPU time: {global_stats['total_gpu_time']:.2f} seconds")
         print(f"   Suggested intervention points: {intervention_points[:5]}")
 
@@ -1079,6 +1042,4 @@ def perform_two_stage_analysis_gpu(
     2段階解析の便利なラッパー関数（後方互換性）
     """
     analyzer = TwoStageAnalyzerGPU(config)
-    return analyzer.analyze_trajectory(
-        trajectory, macro_result, detected_events, n_residues
-    )
+    return analyzer.analyze_trajectory(trajectory, macro_result, detected_events, n_residues)

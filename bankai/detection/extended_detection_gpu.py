@@ -109,9 +109,7 @@ class ExtendedDetectorGPU(GPUBackend):
             "detected_periods": detected_periods,
             "metadata": {
                 "n_frames": n_frames,
-                "frequency_range": (1 / max_period, 1 / min_period)
-                if max_period > 0
-                else (0, 0),
+                "frequency_range": (1 / max_period, 1 / min_period) if max_period > 0 else (0, 0),
             },
         }
 
@@ -143,9 +141,7 @@ class ExtendedDetectorGPU(GPUBackend):
                 gradient = self.xp.gradient(trend)
 
                 # 持続的な勾配を検出
-                sustained_gradient = self._detect_sustained_gradient_gpu(
-                    gradient, window
-                )
+                sustained_gradient = self._detect_sustained_gradient_gpu(gradient, window)
 
                 # 正規化して加算
                 if self.xp.std(sustained_gradient) > 1e-10:
@@ -222,9 +218,7 @@ class ExtendedDetectorGPU(GPUBackend):
         rg_gradient = self.xp.gradient(rg_gpu)
 
         # 局所変化率
-        rg_change_rate = self._compute_local_change_rate_gpu(
-            rg_gpu, rg_gradient, window_size
-        )
+        rg_change_rate = self._compute_local_change_rate_gpu(rg_gpu, rg_gradient, window_size)
 
         # 収縮を強調（凝集検出用）
         contraction_score = self.xp.where(
@@ -351,9 +345,7 @@ class ExtendedDetectorGPU(GPUBackend):
         # ピーク検出
         peaks, properties = find_peaks(
             valid_power_cpu,
-            height=float(
-                self.xp.asnumpy(power_threshold) if self.is_gpu else power_threshold
-            ),
+            height=float(self.xp.asnumpy(power_threshold) if self.is_gpu else power_threshold),
             distance=5,
             prominence=float(self.xp.asnumpy(power_mad) if self.is_gpu else power_mad),
         )
@@ -476,9 +468,7 @@ class ExtendedDetectorGPU(GPUBackend):
             threads = 256
             blocks = (n + threads - 1) // threads
 
-            self._change_rate_kernel[blocks, threads](
-                rg, gradient, change_rate, window, n
-            )
+            self._change_rate_kernel[blocks, threads](rg, gradient, change_rate, window, n)
         else:
             # CPU版フォールバック
             for idx in range(n):
@@ -541,9 +531,9 @@ class ExtendedDetectorGPU(GPUBackend):
 
         # 正規化
         if self.xp.std(anomaly_scores) > 1e-10:
-            anomaly_scores = (
-                anomaly_scores - self.xp.mean(anomaly_scores)
-            ) / self.xp.std(anomaly_scores)
+            anomaly_scores = (anomaly_scores - self.xp.mean(anomaly_scores)) / self.xp.std(
+                anomaly_scores
+            )
 
         return anomaly_scores
 
@@ -632,9 +622,7 @@ class ExtendedDetectorGPU(GPUBackend):
                     change_rate[idx] = abs(gradient[idx]) / local_mean
 
         @cuda.jit
-        def _knn_anomaly_kernel(
-            phase_space, anomaly_scores, k, embed_length, embedding_dim, delay
-        ):
+        def _knn_anomaly_kernel(phase_space, anomaly_scores, k, embed_length, embedding_dim, delay):
             """k近傍異常検出カーネル"""
             idx = cuda.grid(1)
 

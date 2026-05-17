@@ -173,9 +173,7 @@ class Lambda3VisualizerGPU:
                 linewidth=2,
             )
 
-        ax.plot(
-            frames, result.anomaly_scores["global"], "g-", label="Global", alpha=0.6
-        )
+        ax.plot(frames, result.anomaly_scores["global"], "g-", label="Global", alpha=0.6)
         ax.plot(frames, result.anomaly_scores["local"], "b-", label="Local", alpha=0.6)
 
         # 閾値ライン
@@ -255,9 +253,7 @@ class Lambda3VisualizerGPU:
         if len(q_cum) > 100:
             z = np.polyfit(frames, q_cum, 1)
             p = np.poly1d(z)
-            ax.plot(
-                frames, p(frames), "r--", alpha=0.8, label=f"Trend (slope={z[0]:.3f})"
-            )
+            ax.plot(frames, p(frames), "r--", alpha=0.8, label=f"Trend (slope={z[0]:.3f})")
 
         ax.set_title("Cumulative Topological Charge", fontsize=12)
         ax.set_xlabel("Frame")
@@ -304,9 +300,7 @@ class Lambda3VisualizerGPU:
             ax2 = ax.twinx()
 
             # RMSD
-            line1 = ax.plot(
-                frames, result.md_features["rmsd"], "b-", alpha=0.7, label="RMSD"
-            )
+            line1 = ax.plot(frames, result.md_features["rmsd"], "b-", alpha=0.7, label="RMSD")
             ax.set_ylabel("RMSD (Å)", color="b")
             ax.tick_params(axis="y", labelcolor="b")
 
@@ -373,9 +367,7 @@ class Lambda3VisualizerGPU:
                 # 視点設定
                 ax.view_init(elev=20, azim=45)
             else:
-                ax.text(
-                    0.5, 0.5, 0.5, "3D Data\nNot Available", ha="center", va="center"
-                )
+                ax.text(0.5, 0.5, 0.5, "3D Data\nNot Available", ha="center", va="center")
 
     def _plot_detected_patterns(self, ax: plt.Axes, result: MDLambda3Result):
         """検出されたパターン"""
@@ -438,9 +430,7 @@ class Lambda3VisualizerGPU:
             # カラーバー
             sm = plt.cm.ScalarMappable(cmap="viridis", norm=norm)
             sm.set_array([])
-            cbar = plt.colorbar(
-                sm, ax=ax, orientation="horizontal", pad=0.1, shrink=0.8
-            )
+            cbar = plt.colorbar(sm, ax=ax, orientation="horizontal", pad=0.1, shrink=0.8)
             cbar.set_label("Strength", fontsize=10)
         else:
             ax.text(
@@ -780,9 +770,7 @@ def visualize_residue_analysis(
     return fig
 
 
-def _visualize_single_event(
-    analysis: ResidueLevelAnalysis, event_name: str
-) -> plt.Figure:
+def _visualize_single_event(analysis: ResidueLevelAnalysis, event_name: str) -> plt.Figure:
     """単一イベントの詳細可視化"""
     fig, axes = plt.subplots(2, 3, figsize=(18, 12))
 
@@ -807,9 +795,7 @@ def _visualize_single_event(
     if analysis.causal_network:
         # 簡易的なネットワーク表示
         n_links = len(analysis.causal_network)
-        ax.text(
-            0.5, 0.5, f"{n_links} Causal Links", ha="center", va="center", fontsize=14
-        )
+        ax.text(0.5, 0.5, f"{n_links} Causal Links", ha="center", va="center", fontsize=14)
     ax.set_title("Causal Network")
 
     # 3. 協調性マトリックス
@@ -831,11 +817,7 @@ def _visualize_single_event(
 
     # 4. 異常スコア分布
     ax = axes[1, 0]
-    scores = [
-        e["anomaly_score"]
-        for events in analysis.residue_events.values()
-        for e in events
-    ]
+    scores = [e["anomaly_score"] for events in analysis.residue_events.values() for e in events]
     if scores:
         ax.hist(scores, bins=30, alpha=0.7, color="orange")
         ax.set_xlabel("Anomaly Score")
@@ -845,9 +827,9 @@ def _visualize_single_event(
     # 5. 構造変化
     ax = axes[1, 1]
     if analysis.structural_changes:
-        changes = sorted(
-            analysis.structural_changes, key=lambda x: x["magnitude"], reverse=True
-        )[:10]
+        changes = sorted(analysis.structural_changes, key=lambda x: x["magnitude"], reverse=True)[
+            :10
+        ]
         labels = [f"R{c['residue']}" for c in changes]
         values = [c["magnitude"] for c in changes]
         ax.bar(labels, values, alpha=0.7, color="green")
@@ -931,16 +913,12 @@ def _visualize_residue_summary(result: TwoStageLambda3Result) -> plt.Figure:
     ax3 = axes[1, 0]
     if hasattr(result, "residue_analyses"):
         event_names = list(result.residue_analyses.keys())[:10]
-        n_residues = [len(a.residue_events) for a in result.residue_analyses.values()][
-            :10
-        ]
+        n_residues = [len(a.residue_events) for a in result.residue_analyses.values()][:10]
 
         if event_names:
             ax3.bar(range(len(event_names)), n_residues, alpha=0.7, color="orange")
             ax3.set_xticks(range(len(event_names)))
-            ax3.set_xticklabels(
-                [f"E{i + 1}" for i in range(len(event_names))], rotation=45
-            )
+            ax3.set_xticklabels([f"E{i + 1}" for i in range(len(event_names))], rotation=45)
             ax3.set_xlabel("Event")
             ax3.set_ylabel("Number of Residues Involved")
             ax3.set_title("Residues per Event", fontsize=12)
@@ -951,9 +929,7 @@ def _visualize_residue_summary(result: TwoStageLambda3Result) -> plt.Figure:
     ax4 = axes[1, 1]
     if hasattr(result, "residue_analyses"):
         gpu_times = [
-            a.gpu_time
-            for a in result.residue_analyses.values()
-            if hasattr(a, "gpu_time")
+            a.gpu_time for a in result.residue_analyses.values() if hasattr(a, "gpu_time")
         ][:10]
 
         if gpu_times:

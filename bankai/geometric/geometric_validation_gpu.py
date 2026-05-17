@@ -44,11 +44,14 @@ logger = logging.getLogger("geometric_validation_v5")
 # Enums
 # ============================================
 
+
 class StructuralEventPattern(Enum):
     """Structural event temporal patterns from ΔΛC analysis."""
+
     INSTANTANEOUS = "instantaneous"  # single-frame event (≤1 frame)
-    TRANSITION = "transition"        # multi-frame continuous transition
-    CASCADE = "cascade"              # network-propagated causal cascade
+    TRANSITION = "transition"  # multi-frame continuous transition
+    CASCADE = "cascade"  # network-propagated causal cascade
+
 
 class GeometricSignature(Enum):
     """
@@ -62,6 +65,7 @@ class GeometricSignature(Enum):
       CAUSAL_CASCADE            → Causal cascade propagation (async bonds)
       NONE                      → Thermal baseline (Z < 2.0)
     """
+
     INSTANTANEOUS_CORRELATION = "instantaneous_correlation_signature"
     BARRIER_CROSSING = "barrier_crossing_signature"
     SUSTAINED_COORDINATION = "sustained_coordination_signature"
@@ -193,9 +197,7 @@ class GeometricValidatorV4:
             atomic_evidence = self._gather_atomic_evidence(event)
 
         # 3軸異常度計算
-        axes = self._calculate_anomaly_axes(
-            event, lambda_anomaly, atomic_evidence, network_result
-        )
+        axes = self._calculate_anomaly_axes(event, lambda_anomaly, atomic_evidence, network_result)
 
         # パターンと異常軸からシグネチャー判定
         signature = self._determine_signature(pattern, axes)
@@ -253,9 +255,7 @@ class GeometricValidatorV4:
     # Lambda Anomaly Evaluation
     # ========================================
 
-    def _evaluate_lambda_anomaly(
-        self, event: dict, lambda_result: Any
-    ) -> LambdaAnomaly:
+    def _evaluate_lambda_anomaly(self, event: dict, lambda_result: Any) -> LambdaAnomaly:
         """Lambda構造の異常性を評価"""
         anomaly = LambdaAnomaly()
 
@@ -312,9 +312,7 @@ class GeometricValidatorV4:
             evidence.max_velocity = np.max(np.linalg.norm(velocities, axis=1))
 
             if frame_start > 1:
-                prev_disp = (
-                    self.trajectory[frame_start - 1] - self.trajectory[frame_start - 2]
-                )
+                prev_disp = self.trajectory[frame_start - 1] - self.trajectory[frame_start - 2]
                 prev_vel = prev_disp / self.dt_ps
                 acc = (velocities - prev_vel) / self.dt_ps
                 evidence.max_acceleration = np.max(np.linalg.norm(acc, axis=1))
@@ -327,9 +325,7 @@ class GeometricValidatorV4:
 
         # 結合異常（簡易チェック）
         if self.topology is not None:
-            evidence.n_bond_anomalies = self._count_bond_anomalies(
-                self.trajectory[frame_start]
-            )
+            evidence.n_bond_anomalies = self._count_bond_anomalies(self.trajectory[frame_start])
 
         return evidence
 
@@ -393,13 +389,8 @@ class GeometricValidatorV4:
 
         if atomic_evidence:
             typical_vel = 0.02  # Å/ps at 300K
-            if (
-                atomic_evidence.max_velocity
-                > typical_vel * self.thresholds["velocity_factor"]
-            ):
-                spatial_scores.append(
-                    min(atomic_evidence.max_velocity / (typical_vel * 10), 1.0)
-                )
+            if atomic_evidence.max_velocity > typical_vel * self.thresholds["velocity_factor"]:
+                spatial_scores.append(min(atomic_evidence.max_velocity / (typical_vel * 10), 1.0))
 
             if atomic_evidence.n_bond_anomalies > 0:
                 spatial_scores.append(min(atomic_evidence.n_bond_anomalies / 10, 1.0))
@@ -414,8 +405,7 @@ class GeometricValidatorV4:
 
         if (
             atomic_evidence
-            and atomic_evidence.correlation_coefficient
-            > self.thresholds["correlation_high"]
+            and atomic_evidence.correlation_coefficient > self.thresholds["correlation_high"]
         ):
             sync_scores.append(atomic_evidence.correlation_coefficient)
 
@@ -446,10 +436,7 @@ class GeometricValidatorV4:
             # Lambda jumpから期待される時間と比較
             if lambda_anomaly.lambda_jump > 0.01:
                 expected_time = 1000.0 * lambda_anomaly.lambda_jump  # 経験的
-                if (
-                    transition_time
-                    < expected_time * self.thresholds["fast_transition_factor"]
-                ):
+                if transition_time < expected_time * self.thresholds["fast_transition_factor"]:
                     temporal_scores.append(1.0 - transition_time / expected_time)
 
             # 長時間コヒーレンス
@@ -510,9 +497,7 @@ class GeometricValidatorV4:
     # Confidence Calculation
     # ========================================
 
-    def _calculate_confidence(
-        self, axes: AnomalyAxes, pattern: StructuralEventPattern
-    ) -> float:
+    def _calculate_confidence(self, axes: AnomalyAxes, pattern: StructuralEventPattern) -> float:
         """信頼度を計算"""
 
         # 基本信頼度（3軸の平均）
@@ -534,9 +519,7 @@ class GeometricValidatorV4:
     # Criteria and Explanation Generation
     # ========================================
 
-    def _generate_criteria(
-        self, axes: AnomalyAxes, pattern: StructuralEventPattern
-    ) -> list[str]:
+    def _generate_criteria(self, axes: AnomalyAxes, pattern: StructuralEventPattern) -> list[str]:
         """判定根拠を生成"""
         criteria = []
 
@@ -602,11 +585,7 @@ class GeometricValidatorV4:
         assessments = []
 
         for i, event in enumerate(events):
-            network = (
-                network_results[i]
-                if network_results and i < len(network_results)
-                else None
-            )
+            network = network_results[i] if network_results and i < len(network_results) else None
 
             try:
                 assessment = self.validate_event(event, lambda_result, network)
@@ -636,9 +615,7 @@ class GeometricValidatorV4:
         pattern_stats = {}
         for pattern in StructuralEventPattern:
             count = sum(1 for a in assessments if a.pattern == pattern)
-            cooperative = sum(
-                1 for a in assessments if a.pattern == pattern and a.is_cooperative
-            )
+            cooperative = sum(1 for a in assessments if a.pattern == pattern and a.is_cooperative)
             pattern_stats[pattern.value] = {
                 "total": count,
                 "cooperative": cooperative,

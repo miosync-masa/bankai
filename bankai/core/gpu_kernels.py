@@ -423,9 +423,7 @@ class CUDAKernels:
             )
 
             # 勾配計算（新規追加）
-            self.kernels["gradient"] = cp.RawKernel(
-                GRADIENT_KERNEL, "compute_gradient_kernel"
-            )
+            self.kernels["gradient"] = cp.RawKernel(GRADIENT_KERNEL, "compute_gradient_kernel")
 
             self.is_initialized = True
             logger.info("CUDA kernels compiled successfully!")
@@ -525,9 +523,7 @@ def residue_com_kernel(
     return com_output
 
 
-def tension_field_kernel(
-    positions: NDArray, window_size: int, block_size: int = 256
-) -> NDArray:
+def tension_field_kernel(positions: NDArray, window_size: int, block_size: int = 256) -> NDArray:
     """
     テンション場計算カーネルのラッパー
     環ちゃんがミスってたところ、修正したよ！💦
@@ -547,16 +543,12 @@ def tension_field_kernel(
 
     grid_size = (n_frames + block_size - 1) // block_size
 
-    kernel(
-        (grid_size,), (block_size,), (positions.ravel(), rho_T, n_frames, window_size)
-    )
+    kernel((grid_size,), (block_size,), (positions.ravel(), rho_T, n_frames, window_size))
 
     return rho_T
 
 
-def anomaly_detection_kernel(
-    series: NDArray, window_size: int, block_size: int = 256
-) -> NDArray:
+def anomaly_detection_kernel(series: NDArray, window_size: int, block_size: int = 256) -> NDArray:
     """
     異常検出カーネルのラッパー
     """
@@ -640,9 +632,7 @@ def topological_charge_kernel(
 
     grid_size = (n_steps + block_size - 1) // block_size
 
-    kernel(
-        (grid_size,), (block_size,), (lambda_F.ravel(), lambda_F_mag, Q_lambda, n_steps)
-    )
+    kernel((grid_size,), (block_size,), (lambda_F.ravel(), lambda_F_mag, Q_lambda, n_steps))
 
     return Q_lambda
 
@@ -668,9 +658,7 @@ def compute_local_fractal_dimension_kernel(
 
     grid_size = (n_points + block_size - 1) // block_size
 
-    kernel(
-        (grid_size,), (block_size,), (q_cumulative, dimensions, window_size, n_points)
-    )
+    kernel((grid_size,), (block_size,), (q_cumulative, dimensions, window_size, n_points))
 
     return dimensions
 
@@ -735,9 +723,7 @@ def create_elementwise_kernel(name: str, operation: str):
     if not HAS_GPU:
         return None
 
-    kernel_code = ELEMENTWISE_KERNEL_TEMPLATE.format(
-        kernel_name=name, operation=operation
-    )
+    kernel_code = ELEMENTWISE_KERNEL_TEMPLATE.format(kernel_name=name, operation=operation)
 
     return cp.RawKernel(kernel_code, name)
 
@@ -747,9 +733,7 @@ def create_elementwise_kernel(name: str, operation: str):
 # ===============================
 
 
-def benchmark_kernels(
-    n_frames: int = 10000, n_atoms: int = 1000, n_residues: int = 100
-):
+def benchmark_kernels(n_frames: int = 10000, n_atoms: int = 1000, n_residues: int = 100):
     """
     カーネルのベンチマーク
     """

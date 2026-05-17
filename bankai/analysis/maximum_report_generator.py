@@ -18,6 +18,7 @@ logger = logging.getLogger("maximum_report_generator")
 # ★ Topology Name Resolution Helper
 # ============================================
 
+
 def _resolve_res(res_id, resolver=None):
     """残基IDを名前に解決。resolverがなければフォールバック"""
     if resolver and resolver.is_loaded():
@@ -113,9 +114,7 @@ def generate_maximum_report_from_results_v4(
     if hasattr(lambda_result, "gpu_info") and lambda_result.gpu_info:
         report += f"- **GPU**: {lambda_result.gpu_info.get('device_name', 'Unknown')}\n"
         if "memory_used" in lambda_result.gpu_info:
-            report += (
-                f"- **Memory used**: {lambda_result.gpu_info['memory_used']:.2f} GB\n"
-            )
+            report += f"- **Memory used**: {lambda_result.gpu_info['memory_used']:.2f} GB\n"
         if "speedup" in lambda_result.gpu_info:
             report += f"- **GPU speedup**: {lambda_result.gpu_info['speedup']:.1f}x\n"
 
@@ -135,9 +134,7 @@ def generate_maximum_report_from_results_v4(
         if len(boundaries) > 0:
             report += f"\n### Structural Boundaries ({len(boundaries)} detected)\n"
             for i, loc in enumerate(boundaries):
-                all_events.append(
-                    {"frame": loc, "type": "structural_boundary", "score": 5.0}
-                )
+                all_events.append({"frame": loc, "type": "structural_boundary", "score": 5.0})
                 if i < 20:
                     report += f"- Boundary {i + 1}: Frame {loc}\n"
             if len(boundaries) > 20:
@@ -150,9 +147,7 @@ def generate_maximum_report_from_results_v4(
             report += f"\n### Topological Breaks ({len(breaks)} detected)\n"
             for i, point in enumerate(breaks[:10]):
                 report += f"- Break {i + 1}: Frame {point}\n"
-                all_events.append(
-                    {"frame": point, "type": "topological_break", "score": 4.0}
-                )
+                all_events.append({"frame": point, "type": "topological_break", "score": 4.0})
 
     # 異常スコアの完全解析
     if hasattr(lambda_result, "anomaly_scores"):
@@ -178,9 +173,7 @@ def generate_maximum_report_from_results_v4(
                 }
 
                 for threshold in [2.0, 2.5, 3.0]:
-                    peaks, properties = find_peaks(
-                        scores, height=threshold, distance=50
-                    )
+                    peaks, properties = find_peaks(scores, height=threshold, distance=50)
                     if len(peaks) > 0:
                         score_stats[score_type][f"peaks_{threshold}"] = len(peaks)
 
@@ -194,12 +187,8 @@ def generate_maximum_report_from_results_v4(
                             )
 
         # 統計表示
-        report += (
-            "\n| Score Type | Mean | Max | Std | Median | Peaks(2.0) | Peaks(3.0) |\n"
-        )
-        report += (
-            "|------------|------|-----|-----|--------|------------|------------|\n"
-        )
+        report += "\n| Score Type | Mean | Max | Std | Median | Peaks(2.0) | Peaks(3.0) |\n"
+        report += "|------------|------|-----|-----|--------|------------|------------|\n"
         for stype, stats in score_stats.items():
             report += f"| {stype} | {stats['mean']:.3f} | {stats['max']:.3f} | "
             report += f"{stats['std']:.3f} | {stats['median']:.3f} | "
@@ -207,9 +196,7 @@ def generate_maximum_report_from_results_v4(
 
     # クリティカルイベントの詳細
     if lambda_result.critical_events:
-        report += (
-            f"\n### Critical Events ({len(lambda_result.critical_events)} detected)\n"
-        )
+        report += f"\n### Critical Events ({len(lambda_result.critical_events)} detected)\n"
         for i, event in enumerate(lambda_result.critical_events):
             if isinstance(event, tuple) and len(event) >= 2:
                 report += f"- Event {i + 1}: Frames {event[0]}-{event[1]} "
@@ -256,17 +243,11 @@ def generate_maximum_report_from_results_v4(
     # ========================================
     # 2.5. イベントごとのPathway解析（スコア順対応版）
     # ========================================
-    if (
-        sorted_events
-        and two_stage_result
-        and hasattr(two_stage_result, "residue_analyses")
-    ):
+    if sorted_events and two_stage_result and hasattr(two_stage_result, "residue_analyses"):
         if verbose:
             print("\n🔬 Extracting event pathways (score-ordered)...")
 
-        report += (
-            "\n## 🔬 Structural Events with Propagation Pathways (Score-Ordered)\n"
-        )
+        report += "\n## 🔬 Structural Events with Propagation Pathways (Score-Ordered)\n"
 
         # 実際に解析されたイベント数を取得
         n_analyzed_events = len(two_stage_result.residue_analyses)
@@ -345,9 +326,7 @@ def generate_maximum_report_from_results_v4(
                     network = analysis.network_result
                     if hasattr(network, "causal_network") and network.causal_network:
                         # パスウェイの構築
-                        pathways = _build_propagation_paths(
-                            network.causal_network, initiators
-                        )
+                        pathways = _build_propagation_paths(network.causal_network, initiators)
 
                         if pathways:
                             report += "- **🔄 Propagation Pathways**:\n"
@@ -359,20 +338,12 @@ def generate_maximum_report_from_results_v4(
                     # ネットワーク統計
                     # ========================================
                     n_residues = (
-                        len(analysis.residue_events)
-                        if hasattr(analysis, "residue_events")
-                        else 0
+                        len(analysis.residue_events) if hasattr(analysis, "residue_events") else 0
                     )
                     n_causal = (
-                        len(network.causal_network)
-                        if hasattr(network, "causal_network")
-                        else 0
+                        len(network.causal_network) if hasattr(network, "causal_network") else 0
                     )
-                    n_sync = (
-                        len(network.sync_network)
-                        if hasattr(network, "sync_network")
-                        else 0
-                    )
+                    n_sync = len(network.sync_network) if hasattr(network, "sync_network") else 0
                     n_async = (
                         len(network.async_strong_bonds)
                         if hasattr(network, "async_strong_bonds")
@@ -381,9 +352,7 @@ def generate_maximum_report_from_results_v4(
                 else:
                     # networkがない場合のデフォルト値
                     n_residues = (
-                        len(analysis.residue_events)
-                        if hasattr(analysis, "residue_events")
-                        else 0
+                        len(analysis.residue_events) if hasattr(analysis, "residue_events") else 0
                     )
                     n_causal = 0
                     n_sync = 0
@@ -400,9 +369,7 @@ def generate_maximum_report_from_results_v4(
                 # ========================================
                 if "lambda_F_mag" in lambda_result.lambda_structures:
                     lambda_vals = lambda_result.lambda_structures["lambda_F_mag"][
-                        start : min(
-                            end, len(lambda_result.lambda_structures["lambda_F_mag"])
-                        )
+                        start : min(end, len(lambda_result.lambda_structures["lambda_F_mag"]))
                     ]
                     if len(lambda_vals) > 0:
                         mean_lambda = np.mean(lambda_vals)
@@ -413,20 +380,13 @@ def generate_maximum_report_from_results_v4(
                 # ========================================
                 # Bootstrap信頼区間（イベント単位）
                 # ========================================
-                if (
-                    hasattr(analysis, "confidence_results")
-                    and analysis.confidence_results
-                ):
+                if hasattr(analysis, "confidence_results") and analysis.confidence_results:
                     sig_pairs = sum(
-                        1
-                        for r in analysis.confidence_results
-                        if r.get("is_significant", False)
+                        1 for r in analysis.confidence_results if r.get("is_significant", False)
                     )
                     total_pairs = len(analysis.confidence_results)
                     if total_pairs > 0:
-                        report += (
-                            f"  - Significant correlations: {sig_pairs}/{total_pairs} "
-                        )
+                        report += f"  - Significant correlations: {sig_pairs}/{total_pairs} "
                         report += f"({sig_pairs / total_pairs * 100:.1f}%)\n"
             else:
                 report += "- *Analysis data not found (check key format)*\n"
@@ -484,9 +444,7 @@ def generate_maximum_report_from_results_v4(
                 report += f"- **Event {i + 1}**: frames {start:6d}-{end:6d} ({duration:5d} frames){analyzed_mark}\n"
 
         # 各イベントの詳細解析（解析済みの分だけ）
-        report += (
-            f"\n### 🧬 Detailed Event Analysis (Top {n_analyzed_events} events):\n"
-        )
+        report += f"\n### 🧬 Detailed Event Analysis (Top {n_analyzed_events} events):\n"
 
         # 解析されたイベント数だけループ
         for i in range(min(n_analyzed_events, n_total_events)):
@@ -517,20 +475,13 @@ def generate_maximum_report_from_results_v4(
                     # Propagation Pathways
                     if hasattr(analysis, "network_result") and analysis.network_result:
                         network = analysis.network_result
-                        if (
-                            hasattr(network, "causal_network")
-                            and network.causal_network
-                        ):
+                        if hasattr(network, "causal_network") and network.causal_network:
                             # パスウェイの構築
-                            pathways = _build_propagation_paths(
-                                network.causal_network, initiators
-                            )
+                            pathways = _build_propagation_paths(network.causal_network, initiators)
 
                             if pathways:
                                 report += "- **🔄 Propagation Pathways**:\n"
-                                for j, path in enumerate(
-                                    pathways[:3], 1
-                                ):  # Top 3 paths
+                                for j, path in enumerate(pathways[:3], 1):  # Top 3 paths
                                     path_str = " → ".join([_resolve_res(r, resolver) for r in path])
                                     report += f"  - Path {j}: {path_str}\n"
 
@@ -541,14 +492,10 @@ def generate_maximum_report_from_results_v4(
                             else 0
                         )
                         n_causal = (
-                            len(network.causal_network)
-                            if hasattr(network, "causal_network")
-                            else 0
+                            len(network.causal_network) if hasattr(network, "causal_network") else 0
                         )
                         n_sync = (
-                            len(network.sync_network)
-                            if hasattr(network, "sync_network")
-                            else 0
+                            len(network.sync_network) if hasattr(network, "sync_network") else 0
                         )
                         n_async = (
                             len(network.async_strong_bonds)
@@ -644,15 +591,15 @@ def generate_maximum_report_from_results_v4(
                 report += f"\n#### Event: {event_name}\n"
 
                 if hasattr(analysis, "frame_range"):
-                    report += f"- Frame range: {analysis.frame_range[0]}-{analysis.frame_range[1]}\n"
+                    report += (
+                        f"- Frame range: {analysis.frame_range[0]}-{analysis.frame_range[1]}\n"
+                    )
 
                 if hasattr(analysis, "gpu_time"):
                     report += f"- GPU computation time: {analysis.gpu_time:.3f}s\n"
 
                 if hasattr(analysis, "residue_events"):
-                    report += (
-                        f"- **Residues involved**: {len(analysis.residue_events)}\n"
-                    )
+                    report += f"- **Residues involved**: {len(analysis.residue_events)}\n"
 
                     # event_scoreを使用（anomaly_scoreではなく）
                     all_scores = []
@@ -685,29 +632,20 @@ def generate_maximum_report_from_results_v4(
                 if hasattr(analysis, "network_result"):
                     network = analysis.network_result
                     if hasattr(network, "async_strong_bonds"):
-                        report += (
-                            f"- **Async bonds**: {len(network.async_strong_bonds)}\n"
-                        )
+                        report += f"- **Async bonds**: {len(network.async_strong_bonds)}\n"
 
                 # Bootstrap信頼区間の結果
-                if (
-                    hasattr(analysis, "confidence_results")
-                    and analysis.confidence_results
-                ):
+                if hasattr(analysis, "confidence_results") and analysis.confidence_results:
                     report += "\n##### Bootstrap Confidence Intervals\n"
                     report += f"- **Total pairs analyzed**: {len(analysis.confidence_results)}\n"
 
                     # 有意なペアのみ抽出
                     significant_results = [
-                        r
-                        for r in analysis.confidence_results
-                        if r.get("is_significant", False)
+                        r for r in analysis.confidence_results if r.get("is_significant", False)
                     ]
 
                     if significant_results:
-                        report += (
-                            f"- **Significant pairs**: {len(significant_results)} "
-                        )
+                        report += f"- **Significant pairs**: {len(significant_results)} "
                         report += f"({len(significant_results) / len(analysis.confidence_results) * 100:.1f}%)\n"
 
                         # Top 10有意なペア
@@ -755,9 +693,7 @@ def generate_maximum_report_from_results_v4(
 
         # パターン分布（Version 4.0の3パターン分類）
         if total > 0 and hasattr(geometric_assessments[0], "pattern"):
-            pattern_counts = Counter(
-                getattr(a, "pattern").value for a in geometric_assessments
-            )
+            pattern_counts = Counter(getattr(a, "pattern").value for a in geometric_assessments)
             report += "\n### Pattern Distribution (3-Pattern Classification)\n"
             for pattern, count in pattern_counts.items():
                 cooperative_in_pattern = sum(
@@ -815,7 +751,9 @@ def generate_maximum_report_from_results_v4(
                 report += f"- **Lambda Z-scores**: mean={np.mean(lambda_zscores):.2f}, "
                 report += f"max={np.max(lambda_zscores):.2f}\n"
                 report += f"  - Significant (>3σ): {sum(1 for z in lambda_zscores if z > 3)}\n"
-                report += f"  - Highly significant (>5σ): {sum(1 for z in lambda_zscores if z > 5)}\n"
+                report += (
+                    f"  - Highly significant (>5σ): {sum(1 for z in lambda_zscores if z > 5)}\n"
+                )
 
             if rho_t_spikes:
                 report += f"- **ρT spikes**: mean={np.mean(rho_t_spikes):.3f}, "
@@ -825,8 +763,7 @@ def generate_maximum_report_from_results_v4(
         atomic_evidences = [
             getattr(a, "atomic_evidence")
             for a in geometric_assessments
-            if hasattr(a, "atomic_evidence")
-            and getattr(a, "atomic_evidence") is not None
+            if hasattr(a, "atomic_evidence") and getattr(a, "atomic_evidence") is not None
         ]
         if atomic_evidences:
             report += "\n### Atomic-Level Evidence Statistics (v4.0)\n"
@@ -839,8 +776,7 @@ def generate_maximum_report_from_results_v4(
             correlations = [
                 ae.correlation_coefficient
                 for ae in atomic_evidences
-                if hasattr(ae, "correlation_coefficient")
-                and ae.correlation_coefficient > 0
+                if hasattr(ae, "correlation_coefficient") and ae.correlation_coefficient > 0
             ]
 
             if max_velocities:
@@ -848,19 +784,17 @@ def generate_maximum_report_from_results_v4(
                 report += f"max={np.max(max_velocities):.2f} Å/ps\n"
 
             if correlations:
-                report += (
-                    f"- **Atomic correlations**: mean={np.mean(correlations):.3f}, "
-                )
+                report += f"- **Atomic correlations**: mean={np.mean(correlations):.3f}, "
                 report += f"max={np.max(correlations):.3f}\n"
-                report += f"  - High correlation (>0.8): {sum(1 for c in correlations if c > 0.8)}\n"
+                report += (
+                    f"  - High correlation (>0.8): {sum(1 for c in correlations if c > 0.8)}\n"
+                )
 
             bond_anomaly_counts = [
                 len(getattr(ae, "bond_anomalies", [])) for ae in atomic_evidences
             ]
             if any(bond_anomaly_counts):
-                report += (
-                    f"- **Bond anomalies detected**: {sum(bond_anomaly_counts)} total\n"
-                )
+                report += f"- **Bond anomalies detected**: {sum(bond_anomaly_counts)} total\n"
 
         # 信頼度統計
         confidences = [
@@ -879,14 +813,15 @@ def generate_maximum_report_from_results_v4(
         bell_values = [
             getattr(a, "bell_inequality")
             for a in geometric_assessments
-            if hasattr(a, "bell_inequality")
-            and getattr(a, "bell_inequality") is not None
+            if hasattr(a, "bell_inequality") and getattr(a, "bell_inequality") is not None
         ]
         if bell_values:
             report += "\n### Bell Inequality Analysis (Cascade Events)\n"
             report += f"- Events with Bell test: {len(bell_values)}\n"
             violations = sum(1 for b in bell_values if b > 2.0)
-            report += f"- Violations (S > 2): {violations} ({violations / len(bell_values) * 100:.1f}%)\n"
+            report += (
+                f"- Violations (S > 2): {violations} ({violations / len(bell_values) * 100:.1f}%)\n"
+            )
             report += f"- Max CHSH value: {np.max(bell_values):.3f}\n"
             report += "- Classical bound: 2.000\n"
             report += f"- Tsirelson bound: {2 * np.sqrt(2):.3f}\n"
@@ -905,9 +840,7 @@ def generate_maximum_report_from_results_v4(
             report += f"- **Pattern**: {getattr(assessment, 'pattern').value}\n"
             report += f"- **Signature**: {getattr(assessment, 'signature').value}\n"
             report += f"- **Confidence**: {getattr(assessment, 'confidence', 0):.1%}\n"
-            report += (
-                f"- **Explanation**: {getattr(assessment, 'explanation', 'N/A')}\n"
-            )
+            report += f"- **Explanation**: {getattr(assessment, 'explanation', 'N/A')}\n"
 
             if hasattr(assessment, "criteria_met") and assessment.criteria_met:
                 report += f"- **Criteria met** ({len(assessment.criteria_met)}):\n"
@@ -923,18 +856,10 @@ def generate_maximum_report_from_results_v4(
 
             if hasattr(assessment, "atomic_evidence") and assessment.atomic_evidence:
                 ae = assessment.atomic_evidence
-                if (
-                    hasattr(ae, "correlation_coefficient")
-                    and ae.correlation_coefficient > 0.8
-                ):
-                    report += (
-                        f"- **Atomic correlation**: {ae.correlation_coefficient:.3f}\n"
-                    )
+                if hasattr(ae, "correlation_coefficient") and ae.correlation_coefficient > 0.8:
+                    report += f"- **Atomic correlation**: {ae.correlation_coefficient:.3f}\n"
 
-            if (
-                hasattr(assessment, "bell_inequality")
-                and assessment.bell_inequality is not None
-            ):
+            if hasattr(assessment, "bell_inequality") and assessment.bell_inequality is not None:
                 report += f"- **Bell inequality**: S={assessment.bell_inequality:.3f}\n"
 
     # ========================================
@@ -956,9 +881,7 @@ def generate_maximum_report_from_results_v4(
 
         # 全体統計
         n_total = len(all_confidence_results)
-        n_significant = sum(
-            1 for r in all_confidence_results if r.get("is_significant", False)
-        )
+        n_significant = sum(1 for r in all_confidence_results if r.get("is_significant", False))
 
         percent = n_significant / n_total * 100 if n_total > 0 else 0
         report += f"""
@@ -1024,11 +947,7 @@ def generate_maximum_report_from_results_v4(
             report += f"- **Mean absolute bias**: {np.mean(biases):.4f}\n"
             report += f"- **Max absolute bias**: {np.max(biases):.4f}\n"
 
-            high_bias = [
-                r
-                for r in all_confidence_results
-                if "bias" in r and abs(r["bias"]) > 0.05
-            ]
+            high_bias = [r for r in all_confidence_results if "bias" in r and abs(r["bias"]) > 0.05]
             if high_bias:
                 report += f"- **High bias pairs (|bias| > 0.05)**: {len(high_bias)}\n"
 
@@ -1051,9 +970,7 @@ def generate_maximum_report_from_results_v4(
     # イベントパスウェイ
     if lambda_result.critical_events:
         n_events = len(lambda_result.critical_events)
-        insights.append(
-            f"✓ {n_events} critical events with propagation pathways analyzed"
-        )
+        insights.append(f"✓ {n_events} critical events with propagation pathways analyzed")
 
     # 量子性の分析（Version 4.0）
     if geometric_assessments:
@@ -1061,14 +978,10 @@ def generate_maximum_report_from_results_v4(
             # パターン別の量子性
             for pattern in ["instantaneous", "transition", "cascade"]:
                 pattern_events = [
-                    a
-                    for a in geometric_assessments
-                    if getattr(a, "pattern").value == pattern
+                    a for a in geometric_assessments if getattr(a, "pattern").value == pattern
                 ]
                 if pattern_events:
-                    q_count = sum(
-                        1 for a in pattern_events if getattr(a, "is_cooperative", False)
-                    )
+                    q_count = sum(1 for a in pattern_events if getattr(a, "is_cooperative", False))
                     if q_count > 0:
                         insights.append(
                             f"✓ {pattern}: {q_count}/{len(pattern_events)} cooperative "
@@ -1090,22 +1003,17 @@ def generate_maximum_report_from_results_v4(
                 if hasattr(la, "lambda_zscore") and la.lambda_zscore > 3
             )
             if high_z > 0:
-                insights.append(
-                    f"✓ {high_z} events with significant Lambda anomaly (>3σ)"
-                )
+                insights.append(f"✓ {high_z} events with significant Lambda anomaly (>3σ)")
 
         # 原子レベルの証拠
         if atomic_evidences:
             high_corr = sum(
                 1
                 for ae in atomic_evidences
-                if hasattr(ae, "correlation_coefficient")
-                and ae.correlation_coefficient > 0.8
+                if hasattr(ae, "correlation_coefficient") and ae.correlation_coefficient > 0.8
             )
             if high_corr > 0:
-                insights.append(
-                    f"✓ {high_corr} events with high atomic correlation (>0.8)"
-                )
+                insights.append(f"✓ {high_corr} events with high atomic correlation (>0.8)")
 
     # ネットワーク解析
     if two_stage_result and hasattr(two_stage_result, "global_network_stats"):
@@ -1119,9 +1027,7 @@ def generate_maximum_report_from_results_v4(
             insights.append(f"✓ {total_links} total network connections")
 
             if stats.get("async_to_causal_ratio", 0) > 0.5:
-                insights.append(
-                    f"✓ High async/causal ratio ({stats['async_to_causal_ratio']:.1%})"
-                )
+                insights.append(f"✓ High async/causal ratio ({stats['async_to_causal_ratio']:.1%})")
 
     # ブートストラップ統計の洞察
     if all_confidence_results:
@@ -1132,21 +1038,15 @@ def generate_maximum_report_from_results_v4(
             )
 
         # 高相関ペア
-        high_corr = [
-            r for r in all_confidence_results if abs(r.get("correlation", 0)) > 0.8
-        ]
+        high_corr = [r for r in all_confidence_results if abs(r.get("correlation", 0)) > 0.8]
         if high_corr:
-            insights.append(
-                f"✓ {len(high_corr)} pairs with |r| > 0.8 (strong correlation)"
-            )
+            insights.append(f"✓ {len(high_corr)} pairs with |r| > 0.8 (strong correlation)")
 
         # 狭い信頼区間（精度の高い推定）
         if ci_widths:
             narrow_ci = sum(1 for w in ci_widths if w < 0.2)
             if narrow_ci > 0:
-                insights.append(
-                    f"✓ {narrow_ci} pairs with narrow CI (width < 0.2, high precision)"
-                )
+                insights.append(f"✓ {narrow_ci} pairs with narrow CI (width < 0.2, high precision)")
 
     for insight in insights:
         report += f"\n{insight}"
@@ -1194,9 +1094,7 @@ def generate_maximum_report_from_results_v4(
     if all_hub_residues:
         hub_counts = Counter(all_hub_residues)
         top3 = [_resolve_res(r, resolver) for r, _ in hub_counts.most_common(3)]
-        recommendations.append(
-            f"Focus on residues {', '.join(top3)} for drug targeting"
-        )
+        recommendations.append(f"Focus on residues {', '.join(top3)} for drug targeting")
 
     # 量子イベントベース（Version 4.0）
     if geometric_assessments and cooperative_count > 0:
@@ -1224,9 +1122,7 @@ def generate_maximum_report_from_results_v4(
     # Lambda異常ベース（Version 4.0）
     if lambda_anomalies:
         high_z = [
-            la
-            for la in lambda_anomalies
-            if hasattr(la, "lambda_zscore") and la.lambda_zscore > 5
+            la for la in lambda_anomalies if hasattr(la, "lambda_zscore") and la.lambda_zscore > 5
         ]
         if high_z:
             recommendations.append(
@@ -1259,9 +1155,7 @@ def generate_maximum_report_from_results_v4(
             precise_pairs = [
                 r
                 for r in all_confidence_results
-                if "ci_upper" in r
-                and "ci_lower" in r
-                and (r["ci_upper"] - r["ci_lower"]) < 0.15
+                if "ci_upper" in r and "ci_lower" in r and (r["ci_upper"] - r["ci_lower"]) < 0.15
             ]
             if precise_pairs:
                 recommendations.append(
@@ -1377,16 +1271,12 @@ def generate_maximum_report_from_results_v4(
         if geometric_assessments:
             print(f"   📐 Cooperative events: {cooperative_count}/{total}")
         if all_confidence_results:
-            n_sig = sum(
-                1 for r in all_confidence_results if r.get("is_significant", False)
-            )
+            n_sig = sum(1 for r in all_confidence_results if r.get("is_significant", False))
             print(
                 f"   📊 Bootstrap: {n_sig}/{len(all_confidence_results)} significant correlations"
             )
         if lambda_result.critical_events:
-            print(
-                f"   🔬 Event pathways: {len(lambda_result.critical_events)} events analyzed"
-            )
+            print(f"   🔬 Event pathways: {len(lambda_result.critical_events)} events analyzed")
         if all_hub_residues:
             hub_counts = Counter(all_hub_residues)  # ここで定義
             print(f"   💊 Drug targets: {len(hub_counts)}")

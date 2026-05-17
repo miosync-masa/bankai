@@ -291,9 +291,7 @@ class AtomicNetworkGPU:
         correlations = self._compute_correlations(traj_gpu, adaptive_windows)
 
         # 3. ネットワーク構築
-        networks = self._build_networks(
-            correlations, atoms, trajectory[0], residue_mapping
-        )
+        networks = self._build_networks(correlations, atoms, trajectory[0], residue_mapping)
 
         result.sync_network = networks["sync"]
         result.causal_network = networks["causal"]
@@ -316,9 +314,7 @@ class AtomicNetworkGPU:
 
         return result
 
-    def _compute_adaptive_windows(
-        self, traj_gpu: Any, atoms: list[int]
-    ) -> dict[int, int]:
+    def _compute_adaptive_windows(self, traj_gpu: Any, atoms: list[int]) -> dict[int, int]:
         """原子ごとの適応的窓サイズ計算"""
         n_frames = traj_gpu.shape[0]
         windows = {}
@@ -354,9 +350,7 @@ class AtomicNetworkGPU:
 
         for i in range(n_atoms):
             for j in range(i + 1, n_atoms):
-                window = min(
-                    windows[list(windows.keys())[i]], windows[list(windows.keys())[j]]
-                )
+                window = min(windows[list(windows.keys())[i]], windows[list(windows.keys())[j]])
 
                 # 時系列データ
                 if HAS_GPU:
@@ -389,14 +383,10 @@ class AtomicNetworkGPU:
                     # 距離ベースの結合強度
                     if HAS_GPU:
                         mean_dist = float(
-                            cp.mean(
-                                cp.linalg.norm(traj_gpu[:, i] - traj_gpu[:, j], axis=1)
-                            )
+                            cp.mean(cp.linalg.norm(traj_gpu[:, i] - traj_gpu[:, j], axis=1))
                         )
                     else:
-                        mean_dist = np.mean(
-                            np.linalg.norm(traj_gpu[:, i] - traj_gpu[:, j], axis=1)
-                        )
+                        mean_dist = np.mean(np.linalg.norm(traj_gpu[:, i] - traj_gpu[:, j], axis=1))
 
                     if mean_dist < self.distance_cutoff:
                         correlations["async_strength"][i, j] = 1.0 / (1.0 + mean_dist)
@@ -724,9 +714,7 @@ class ThirdImpactAnalyzer:
                     trace.lambda_change = float(lambda_change)
 
                 # シグネチャー分類
-                trace.geometric_signature = self._classify_signature(
-                    z_score, trace.lambda_change
-                )
+                trace.geometric_signature = self._classify_signature(z_score, trace.lambda_change)
                 trace.confidence = min(z_score / 5.0, 1.0)
 
                 result.cooperative_atoms[atom_id] = trace
@@ -793,9 +781,7 @@ class ThirdImpactAnalyzer:
             )
 
             new_atoms = [
-                a
-                for a in wave_result.origin.genesis_atoms
-                if a not in result.origin.genesis_atoms
+                a for a in wave_result.origin.genesis_atoms if a not in result.origin.genesis_atoms
             ]
             result.origin.first_wave_atoms.extend(new_atoms)
 
@@ -892,9 +878,7 @@ class ThirdImpactAnalyzer:
             return set()
 
         importance_scores = two_stage_result.global_residue_importance
-        sorted_residues = sorted(
-            importance_scores.items(), key=lambda x: x[1], reverse=True
-        )
+        sorted_residues = sorted(importance_scores.items(), key=lambda x: x[1], reverse=True)
 
         return set(res_id for res_id, _ in sorted_residues[:top_n])
 
@@ -940,9 +924,7 @@ class ThirdImpactAnalyzer:
 
                 if result.atomic_network.residue_bridges:
                     bridge = result.atomic_network.residue_bridges[0]
-                    print(
-                        f"  - Main bridge: Res{bridge.from_residue}→Res{bridge.to_residue}"
-                    )
+                    print(f"  - Main bridge: Res{bridge.from_residue}→Res{bridge.to_residue}")
                     print(f"    Bridge atoms: {bridge.bridge_atoms[:2]}")
 
             if result.drug_target_atoms:
@@ -1087,9 +1069,7 @@ def save_network_data(results: dict[str, ThirdImpactResult], output_path: Path):
         # 保存
         network_file = output_path / f"{event_key}_network.json"
         with open(network_file, "w") as f:
-            json.dump(
-                {"edges": edges, "hubs": result.atomic_network.hub_atoms}, f, indent=2
-            )
+            json.dump({"edges": edges, "hubs": result.atomic_network.hub_atoms}, f, indent=2)
 
 
 def generate_impact_report(results: dict[str, ThirdImpactResult]) -> str:

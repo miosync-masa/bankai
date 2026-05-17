@@ -573,9 +573,7 @@ class CausalityAnalyzerGPU(GPUBackend):
             y_future = int(target_discrete[t])
 
             # 3次元ヒストグラム
-            idx_3d = (
-                y_future * self.n_bins * self.n_bins + y_past * self.n_bins + x_past
-            )
+            idx_3d = y_future * self.n_bins * self.n_bins + y_past * self.n_bins + x_past
             hist_3d[idx_3d] += 1
 
             # 2次元ヒストグラム
@@ -599,11 +597,7 @@ class CausalityAnalyzerGPU(GPUBackend):
         for y_future in range(self.n_bins):
             for y_past in range(self.n_bins):
                 for x_past in range(self.n_bins):
-                    idx_3d = (
-                        y_future * self.n_bins * self.n_bins
-                        + y_past * self.n_bins
-                        + x_past
-                    )
+                    idx_3d = y_future * self.n_bins * self.n_bins + y_past * self.n_bins + x_past
                     idx_2d = y_future * self.n_bins + y_past
 
                     if p_yyx[idx_3d] > 0 and p_yy[idx_2d] > 0 and p_y[y_past] > 0:
@@ -690,9 +684,7 @@ class CausalityAnalyzerGPU(GPUBackend):
                 if lag == 0:
                     corr = self.xp.corrcoef(series_i_gpu, series_j_gpu)[0, 1]
                 else:
-                    corr = self.xp.corrcoef(series_i_gpu[:-lag], series_j_gpu[lag:])[
-                        0, 1
-                    ]
+                    corr = self.xp.corrcoef(series_i_gpu[:-lag], series_j_gpu[lag:])[0, 1]
 
                 correlations[lag] = corr
 
@@ -817,9 +809,7 @@ class CausalityAnalyzerGPU(GPUBackend):
         # 制限モデル（yの過去のみ）
         y_lagged = self.xp.zeros((n - order, order))
         for i in range(order):
-            y_lagged[:, i] = (
-                y_gpu[order - i - 1 : -i - 1] if i > 0 else y_gpu[order - 1 : -1]
-            )
+            y_lagged[:, i] = y_gpu[order - i - 1 : -i - 1] if i > 0 else y_gpu[order - 1 : -1]
 
         y_target = y_gpu[order:]
 
@@ -841,9 +831,7 @@ class CausalityAnalyzerGPU(GPUBackend):
 
         try:
             coef_unrestricted = self.xp.linalg.lstsq(xy_lagged, y_target, rcond=None)[0]
-            residuals_unrestricted = y_target - self.xp.dot(
-                xy_lagged, coef_unrestricted
-            )
+            residuals_unrestricted = y_target - self.xp.dot(xy_lagged, coef_unrestricted)
             rss_unrestricted = self.xp.sum(residuals_unrestricted**2)
         except Exception:
             return 0.0
@@ -883,9 +871,7 @@ def compute_lagged_correlation_gpu(
 ) -> tuple[np.ndarray, int, float]:
     """遅延相関計算のスタンドアロン関数"""
     analyzer = (
-        CausalityAnalyzerGPU()
-        if backend is None
-        else CausalityAnalyzerGPU(device=backend.device)
+        CausalityAnalyzerGPU() if backend is None else CausalityAnalyzerGPU(device=backend.device)
     )
     return analyzer.compute_lagged_correlation(series_i, series_j, max_lag)
 

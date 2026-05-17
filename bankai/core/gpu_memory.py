@@ -178,9 +178,7 @@ class GPUMemoryManager:
         if self.max_memory_gb is None:
             self.max_memory = int(mem.available * 0.8)
         else:
-            self.max_memory = int(
-                min(self.max_memory_gb * 1024**3, mem.available * 0.8)
-            )
+            self.max_memory = int(min(self.max_memory_gb * 1024**3, mem.available * 0.8))
 
         self._log_memory_info("CPU")
 
@@ -433,9 +431,7 @@ class GPUMemoryManager:
         ]
 
         if self._allocations:
-            for name, size in sorted(
-                self._allocations.items(), key=lambda x: x[1], reverse=True
-            ):
+            for name, size in sorted(self._allocations.items(), key=lambda x: x[1], reverse=True):
                 summary.append(f"  {name}: {size / 1024**3:.2f} GB")
         else:
             summary.append("  (none)")
@@ -603,9 +599,7 @@ class BatchProcessor:
         # 結果の返却
         return self._combine_results(results, return_type, axis)
 
-    def _estimate_batch_size(
-        self, shape: tuple[int, ...], axis: int, dtype: type
-    ) -> int:
+    def _estimate_batch_size(self, shape: tuple[int, ...], axis: int, dtype: type) -> int:
         """バッチサイズを推定"""
         batch_shape = list(shape)
         batch_shape[axis] = 1
@@ -626,8 +620,7 @@ class BatchProcessor:
         n_batches = (n_samples + batch_size - 1) // batch_size
 
         logger.info(
-            f"Batch processing: {n_samples} samples, "
-            f"{n_batches} batches of size {batch_size}"
+            f"Batch processing: {n_samples} samples, {n_batches} batches of size {batch_size}"
         )
 
         results = []
@@ -637,9 +630,7 @@ class BatchProcessor:
             batch_data = self._get_batch_data(data, i, batch_size, axis, n_samples)
 
             # 処理実行
-            batch_result = self._process_single_batch(
-                batch_data, process_func, dtype, i, **kwargs
-            )
+            batch_result = self._process_single_batch(batch_data, process_func, dtype, i, **kwargs)
 
             # オーバーラップ除去
             if self.overlap_frames > 0 and i < n_batches - 1:
@@ -688,9 +679,7 @@ class BatchProcessor:
             batch_data = cp.asarray(batch_data, dtype=dtype)
 
         # メモリ割り当てコンテキスト内で処理
-        with self.memory_manager.temporary_allocation(
-            batch_data.nbytes, f"batch_{batch_idx}"
-        ):
+        with self.memory_manager.temporary_allocation(batch_data.nbytes, f"batch_{batch_idx}"):
             batch_result = process_func(batch_data, **kwargs)
 
             # CPU転送（必要なら）

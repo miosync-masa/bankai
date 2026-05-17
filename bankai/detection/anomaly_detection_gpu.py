@@ -78,9 +78,7 @@ class AnomalyDetectorGPU(GPUBackend):
                 self.boundary_emphasis_kernel = cp.RawKernel(
                     BOUNDARY_EMPHASIS_KERNEL_CODE, "apply_boundary_emphasis_kernel"
                 )
-                logger.info(
-                    "✅ Anomaly detection kernel compiled successfully (PTX 8.4)"
-                )
+                logger.info("✅ Anomaly detection kernel compiled successfully (PTX 8.4)")
             except Exception as e:
                 logger.warning(f"Failed to compile boundary emphasis kernel: {e}")
                 self.boundary_emphasis_kernel = None
@@ -176,9 +174,7 @@ class AnomalyDetectorGPU(GPUBackend):
             "final_combined": self.to_cpu(final_combined),
         }
 
-    def _compute_global_anomalies_gpu(
-        self, breaks: dict, config: any, n_frames: int
-    ) -> NDArray:
+    def _compute_global_anomalies_gpu(self, breaks: dict, config: any, n_frames: int) -> NDArray:
         """グローバル異常スコア計算（GPU）"""
         global_score = cp.zeros(n_frames) if self.is_gpu else np.zeros(n_frames)
 
@@ -322,9 +318,7 @@ class AnomalyDetectorGPU(GPUBackend):
 
         if hasattr(config, "radius_of_gyration") and config.radius_of_gyration:
             if md_features and "radius_of_gyration" in md_features:
-                extended_scores["rg_based"] = self._detect_rg_transitions_gpu(
-                    md_features
-                )
+                extended_scores["rg_based"] = self._detect_rg_transitions_gpu(md_features)
 
         if hasattr(config, "use_phase_space") and config.use_phase_space:
             extended_scores["phase_space"] = self._detect_phase_space_gpu(structures)
@@ -457,22 +451,16 @@ class AnomalyDetectorGPU(GPUBackend):
 
         # GPU上でガウシアンフィルタ
         window_sizes = [500, 1000, 2000]
-        gradual_scores = (
-            cp.zeros_like(rho_t_gpu) if self.is_gpu else np.zeros_like(rho_t_gpu)
-        )
+        gradual_scores = cp.zeros_like(rho_t_gpu) if self.is_gpu else np.zeros_like(rho_t_gpu)
 
         for window in window_sizes:
             if window < len(rho_t_gpu):
                 # 簡略化：移動平均で代用
-                smoothed = self._moving_average_gpu(
-                    rho_t_gpu, min(window, len(rho_t_gpu))
+                smoothed = self._moving_average_gpu(rho_t_gpu, min(window, len(rho_t_gpu)))
+                gradient = cp.gradient(smoothed) if self.is_gpu else np.gradient(smoothed)
+                gradual_scores += (cp.abs(gradient) if self.is_gpu else np.abs(gradient)) / len(
+                    window_sizes
                 )
-                gradient = (
-                    cp.gradient(smoothed) if self.is_gpu else np.gradient(smoothed)
-                )
-                gradual_scores += (
-                    cp.abs(gradient) if self.is_gpu else np.abs(gradient)
-                ) / len(window_sizes)
 
         return self._normalize_scores_gpu(gradual_scores)
 
@@ -505,13 +493,9 @@ class AnomalyDetectorGPU(GPUBackend):
 
         # 収縮を強調
         if self.is_gpu:
-            contraction_score = cp.where(
-                gradient < 0, cp.abs(gradient) * 2.0, cp.abs(gradient)
-            )
+            contraction_score = cp.where(gradient < 0, cp.abs(gradient) * 2.0, cp.abs(gradient))
         else:
-            contraction_score = np.where(
-                gradient < 0, np.abs(gradient) * 2.0, np.abs(gradient)
-            )
+            contraction_score = np.where(gradient < 0, np.abs(gradient) * 2.0, np.abs(gradient))
 
         return contraction_score
 

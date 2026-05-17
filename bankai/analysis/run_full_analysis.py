@@ -90,6 +90,7 @@ PATTERN_COLORS = {
     "cascade": "#4CAF50",
 }
 
+
 # ============================================
 # メイン実行関数（Version 4.0）
 # ============================================
@@ -140,8 +141,9 @@ def run_geometric_validation_pipeline(
     output_path.mkdir(parents=True, exist_ok=True)
 
     from bankai.cli import print_banner
+
     print_banner()
-    
+
     logger.info("🚀 LAMBDA³ GPU GEOMETRIC VALIDATION PIPELINE v4.0")
     logger.info("   Lambda³ Integrated Edition")
     logger.info("=" * 70)
@@ -167,9 +169,7 @@ def run_geometric_validation_pipeline(
 
         # タンパク質インデックス読み込み
         if not Path(protein_indices_path).exists():
-            raise FileNotFoundError(
-                f"Protein indices file not found: {protein_indices_path}"
-            )
+            raise FileNotFoundError(f"Protein indices file not found: {protein_indices_path}")
 
         protein_indices = np.load(protein_indices_path)
         logger.info(f"   Protein indices loaded: {len(protein_indices)} atoms")
@@ -181,6 +181,7 @@ def run_geometric_validation_pipeline(
         resolver = None
         if topology_path and Path(topology_path).exists():
             from bankai.analysis.topology_resolver import create_resolver_from_pipeline
+
             resolver = create_resolver_from_pipeline(
                 topology_path=topology_path,
                 protein_indices_path=protein_indices_path,
@@ -260,9 +261,7 @@ def run_geometric_validation_pipeline(
         lambda_result = detector.analyze(trajectory, protein_indices)
 
         logger.info("   ✅ Lambda³ analysis complete")
-        logger.info(
-            f"   Critical events detected: {len(lambda_result.critical_events)}"
-        )
+        logger.info(f"   Critical events detected: {len(lambda_result.critical_events)}")
 
         # 結果の保存
         result_summary = {
@@ -320,38 +319,24 @@ def run_geometric_validation_pipeline(
                         # anomaly_scoresから該当範囲の最大値を取得
                         if "combined" in lambda_result.anomaly_scores:
                             score = float(
-                                np.max(
-                                    lambda_result.anomaly_scores["combined"][
-                                        start : end + 1
-                                    ]
-                                )
+                                np.max(lambda_result.anomaly_scores["combined"][start : end + 1])
                             )
                         elif "final_combined" in lambda_result.anomaly_scores:
                             score = float(
                                 np.max(
-                                    lambda_result.anomaly_scores["final_combined"][
-                                        start : end + 1
-                                    ]
+                                    lambda_result.anomaly_scores["final_combined"][start : end + 1]
                                 )
                             )
                         elif "global" in lambda_result.anomaly_scores:
                             score = float(
-                                np.max(
-                                    lambda_result.anomaly_scores["global"][
-                                        start : end + 1
-                                    ]
-                                )
+                                np.max(lambda_result.anomaly_scores["global"][start : end + 1])
                             )
                         else:
                             # フォールバック
                             for key in ["local", "extended"]:
                                 if key in lambda_result.anomaly_scores:
                                     score = float(
-                                        np.max(
-                                            lambda_result.anomaly_scores[key][
-                                                start : end + 1
-                                            ]
-                                        )
+                                        np.max(lambda_result.anomaly_scores[key][start : end + 1])
                                     )
                                     break
                             else:
@@ -372,9 +357,7 @@ def run_geometric_validation_pipeline(
             if verbose:
                 logger.debug("   Top event scores:")
                 for i, (start, end, score) in enumerate(selected_events[:10]):
-                    logger.debug(
-                        f"     Event {i}: frames {start}-{end}, score={score:.3f}"
-                    )
+                    logger.debug(f"     Event {i}: frames {start}-{end}, score={score:.3f}")
 
             # =========== 修正部分！！ ===========
             # detected_eventsをtop_XX_score_Y.YY形式に変換
@@ -417,12 +400,8 @@ def run_geometric_validation_pipeline(
             # グローバル統計の表示
             if hasattr(two_stage_result, "global_network_stats"):
                 stats = two_stage_result.global_network_stats
-                logger.info(
-                    f"   Total causal links: {stats.get('total_causal_links', 0)}"
-                )
-                logger.info(
-                    f"   Total async bonds: {stats.get('total_async_bonds', 0)}"
-                )
+                logger.info(f"   Total causal links: {stats.get('total_causal_links', 0)}")
+                logger.info(f"   Total async bonds: {stats.get('total_async_bonds', 0)}")
 
         except Exception as e:
             logger.error(f"Two-stage analysis failed: {e}")
@@ -488,9 +467,7 @@ def run_geometric_validation_pipeline(
 
             # 統計表示
             cooperative_count = sum(1 for a in geometric_assessments if a.is_cooperative)
-            logger.info(
-                f"   Cooperative events: {cooperative_count}/{len(geometric_assessments)}"
-            )
+            logger.info(f"   Cooperative events: {cooperative_count}/{len(geometric_assessments)}")
 
             # パターン別統計
             pattern_counts = Counter(a.pattern.value for a in geometric_assessments)
@@ -553,9 +530,7 @@ def run_geometric_validation_pipeline(
                             raw_mapping = json.load(f)
                             atom_mapping = {int(k): v for k, v in raw_mapping.items()}
                     elif atom_mapping_path.endswith(".npy"):
-                        atom_mapping = np.load(
-                            atom_mapping_path, allow_pickle=True
-                        ).item()
+                        atom_mapping = np.load(atom_mapping_path, allow_pickle=True).item()
                     logger.info(f"   Atom mapping loaded: {len(atom_mapping)} residues")
                 else:
                     logger.warning(
@@ -586,12 +561,8 @@ def run_geometric_validation_pipeline(
                 )
 
                 # v3.0: ネットワーク統計も追加
-                total_network_links = sum(
-                    r.n_network_links for r in third_impact_results.values()
-                )
-                total_bridges = sum(
-                    r.n_residue_bridges for r in third_impact_results.values()
-                )
+                total_network_links = sum(r.n_network_links for r in third_impact_results.values())
+                total_bridges = sum(r.n_residue_bridges for r in third_impact_results.values())
 
                 logger.info("   ✅ Third Impact v3.0 analysis complete")
                 logger.info(f"   Genesis atoms identified: {total_genesis}")
@@ -644,22 +615,20 @@ def run_geometric_validation_pipeline(
                         generate_resolved_report,
                         save_resolved_json,
                     )
-                    
+
                     # 名前解決済みレポート
-                    resolved_report = generate_resolved_report(
-                        third_impact_results, resolver
-                    )
+                    resolved_report = generate_resolved_report(third_impact_results, resolver)
                     resolved_path = output_path / "third_impact"
                     resolved_path.mkdir(parents=True, exist_ok=True)
-                    
+
                     with open(resolved_path / "third_impact_v31_resolved.txt", "w") as f:
                         f.write(resolved_report)
-                    
+
                     # 名前解決済みJSON
                     save_resolved_json(third_impact_results, resolver, resolved_path)
-                    
+
                     logger.info("   ✅ Topology-resolved report generated!")
-                    
+
                     # ログにも名前付きで表示！
                     if unique_drug_targets:
                         named_targets = resolver.resolve_list(unique_drug_targets[:5])
@@ -862,9 +831,7 @@ def save_geometric_assessments_v4(
             "pattern_distribution": dict(Counter(a.pattern.value for a in assessments)),
             "signature_distribution": dict(
                 Counter(
-                    a.signature.value
-                    for a in assessments
-                    if a.signature != GeometricSignature.NONE
+                    a.signature.value for a in assessments if a.signature != GeometricSignature.NONE
                 )
             ),
         },
@@ -877,23 +844,19 @@ def save_geometric_assessments_v4(
     logger.info(f"   💾 Saved {len(assessment_data)} geometric assessments")
 
 
-
 def visualize_geometric_assessments_v4(
     assessments: list, save_path: Optional[str] = None
 ) -> plt.Figure:
     """
     Geometric anomaly assessment visualization (BANKAI-MD paper edition).
-    
+
     Internal classification enum values are mapped to paper-aligned labels
     for publication. No API changes; display-only modifications.
     """
     fig, axes = plt.subplots(2, 3, figsize=(18, 10))
 
     if not assessments:
-        fig.text(
-            0.5, 0.5, "No Assessments Available",
-            ha="center", va="center", fontsize=20
-        )
+        fig.text(0.5, 0.5, "No Assessments Available", ha="center", va="center", fontsize=20)
         if save_path:
             plt.savefig(save_path, dpi=150, bbox_inches="tight")
         return fig
@@ -954,7 +917,8 @@ def visualize_geometric_assessments_v4(
     )
     ax3.set_title(
         "Cooperative Geometric Anomaly\nvs Thermal Baseline",
-        fontsize=12, fontweight="bold",
+        fontsize=12,
+        fontweight="bold",
     )
 
     # ─────────────────────────────────────
@@ -964,8 +928,12 @@ def visualize_geometric_assessments_v4(
     confidences = [a.confidence for a in assessments if a.is_cooperative]
     if confidences:
         ax4.hist(
-            confidences, bins=20, alpha=0.7,
-            color="#7B1FA2", edgecolor="black", linewidth=0.5,
+            confidences,
+            bins=20,
+            alpha=0.7,
+            color="#7B1FA2",
+            edgecolor="black",
+            linewidth=0.5,
         )
         ax4.set_xlabel("Confidence Score", fontsize=11)
         ax4.set_ylabel("Count", fontsize=11)
@@ -983,8 +951,12 @@ def visualize_geometric_assessments_v4(
     ]
     if lambda_zscores:
         ax5.hist(
-            lambda_zscores, bins=20, alpha=0.7,
-            color="#FF8F00", edgecolor="black", linewidth=0.5,
+            lambda_zscores,
+            bins=20,
+            alpha=0.7,
+            color="#FF8F00",
+            edgecolor="black",
+            linewidth=0.5,
         )
         ax5.axvline(x=3.0, color="red", linestyle="--", linewidth=1.5, label="3σ threshold")
         ax5.set_xlabel("ΔΛC Z-score", fontsize=11)
@@ -1001,7 +973,9 @@ def visualize_geometric_assessments_v4(
     for pattern_val in ["instantaneous", "transition", "cascade"]:
         pattern_assessments = [a for a in assessments if a.pattern.value == pattern_val]
         if pattern_assessments:
-            rate = sum(1 for a in pattern_assessments if a.is_cooperative) / len(pattern_assessments)
+            rate = sum(1 for a in pattern_assessments if a.is_cooperative) / len(
+                pattern_assessments
+            )
             pattern_rates[pattern_val] = rate * 100
 
     if pattern_rates:
@@ -1024,8 +998,12 @@ def visualize_geometric_assessments_v4(
         # Add value labels on bars
         for bar, val in zip(bars, pattern_rates.values()):
             ax6.text(
-                bar.get_x() + bar.get_width() / 2, bar.get_height() + 1,
-                f"{val:.0f}%", ha="center", va="bottom", fontsize=10,
+                bar.get_x() + bar.get_width() / 2,
+                bar.get_height() + 1,
+                f"{val:.0f}%",
+                ha="center",
+                va="bottom",
+                fontsize=10,
             )
 
     # ─────────────────────────────────────
@@ -1033,7 +1011,8 @@ def visualize_geometric_assessments_v4(
     # ─────────────────────────────────────
     plt.suptitle(
         "BANKAI-MD: Geometric Anomaly Classification Results",
-        fontsize=14, fontweight="bold",
+        fontsize=14,
+        fontweight="bold",
     )
     plt.tight_layout()
 
@@ -1043,9 +1022,8 @@ def visualize_geometric_assessments_v4(
 
     return fig
 
-def visualize_residue_network(
-    two_stage_result: Any, save_path: Optional[str] = None
-) -> plt.Figure:
+
+def visualize_residue_network(two_stage_result: Any, save_path: Optional[str] = None) -> plt.Figure:
     """残基ネットワークの可視化"""
 
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
@@ -1239,9 +1217,7 @@ def generate_comprehensive_report_v4(
 """
         # パターン別統計
         for pattern in StructuralEventPattern:
-            pattern_assessments = [
-                a for a in geometric_assessments if a.pattern == pattern
-            ]
+            pattern_assessments = [a for a in geometric_assessments if a.pattern == pattern]
             if pattern_assessments:
                 n_pattern = len(pattern_assessments)
                 n_cooperative = sum(1 for a in pattern_assessments if a.is_cooperative)
@@ -1362,9 +1338,7 @@ Examples:
         action="store_true",
         help="Enable Third Impact atomic-level analysis",
     )
-    parser.add_argument(
-        "--atom-mapping", help="Path to atom mapping file (residue->atoms JSON)"
-    )
+    parser.add_argument("--atom-mapping", help="Path to atom mapping file (residue->atoms JSON)")
     parser.add_argument(
         "--third-impact-top-n",
         type=int,

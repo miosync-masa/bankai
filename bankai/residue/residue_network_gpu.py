@@ -46,9 +46,7 @@ class NetworkLink:
     lag: int = 0
     distance: Optional[float] = None
     sync_rate: Optional[float] = None
-    link_type: str = (
-        "causal"  # 'causal', 'sync', 'async', 'instantaneous', 'transition', 'cascade'
-    )
+    link_type: str = "causal"  # 'causal', 'sync', 'async', 'instantaneous', 'transition', 'cascade'
     confidence: float = 1.0
     geometric_signature: Optional[str] = None  # 'entanglement', 'tunneling', 'jump', etc.
 
@@ -255,19 +253,13 @@ class ResidueNetworkGPU(GPUBackend):
             if not residue_anomaly_scores:
                 logger.warning("No anomaly scores provided - using default analysis")
                 # デフォルトの解析を提供
-                n_residues = (
-                    residue_coupling.shape[1] if residue_coupling is not None else 10
-                )
-                n_frames = (
-                    residue_coupling.shape[0] if residue_coupling is not None else 1
-                )
+                n_residues = residue_coupling.shape[1] if residue_coupling is not None else 10
+                n_frames = residue_coupling.shape[0] if residue_coupling is not None else 1
 
                 # デフォルトのanomaly_scoresを生成
                 residue_anomaly_scores = {}
                 for res_id in range(n_residues):
-                    residue_anomaly_scores[res_id] = np.random.uniform(
-                        0.5, 1.5, n_frames
-                    )
+                    residue_anomaly_scores[res_id] = np.random.uniform(0.5, 1.5, n_frames)
 
                 logger.info(f"   Generated default scores for {n_residues} residues")
 
@@ -295,18 +287,14 @@ class ResidueNetworkGPU(GPUBackend):
 
             # 2. INSTANTANEOUS判定（単一フレーム）
             elif n_frames == 1:
-                logger.info(
-                    "   ⚡ INSTANTANEOUS pattern detected - Cooperative anomaly analysis"
-                )
+                logger.info("   ⚡ INSTANTANEOUS pattern detected - Cooperative anomaly analysis")
                 return self._analyze_instantaneous_pattern(
                     residue_anomaly_scores, residue_coupling, residue_coms
                 )
 
             # 3. TRANSITION判定（通常の時系列）
             else:
-                logger.info(
-                    f"   📈 TRANSITION pattern detected - {n_frames} frames analysis"
-                )
+                logger.info(f"   📈 TRANSITION pattern detected - {n_frames} frames analysis")
                 return self._analyze_transition_pattern(
                     residue_anomaly_scores,
                     residue_coupling,
@@ -341,9 +329,7 @@ class ResidueNetworkGPU(GPUBackend):
 
         # 適応的ウィンドウ（修正：最小値を保証）
         if self.adaptive_window_kernel and n_frames >= 10:
-            adaptive_windows = self._compute_adaptive_windows_gpu(
-                residue_anomaly_scores, n_frames
-            )
+            adaptive_windows = self._compute_adaptive_windows_gpu(residue_anomaly_scores, n_frames)
         else:
             # デフォルト値を使用（フレーム数に応じて調整）
             default_window = min(100, max(10, n_frames // 2))
@@ -352,9 +338,7 @@ class ResidueNetworkGPU(GPUBackend):
 
         # 空間制約（修正：None チェック）
         if residue_coms is not None and len(residue_coms) > 0:
-            spatial_constraints = self._compute_spatial_constraints(
-                residue_ids, residue_coms
-            )
+            spatial_constraints = self._compute_spatial_constraints(residue_ids, residue_coms)
         else:
             # 全ペアを有効とする
             spatial_constraints = {}
@@ -504,21 +488,15 @@ class ResidueNetworkGPU(GPUBackend):
         # 単一フレームの異常スコア取得
         frame_scores = {}
         for res_id, scores in residue_anomaly_scores.items():
-            frame_scores[res_id] = float(
-                scores[0] if hasattr(scores, "__len__") else scores
-            )
+            frame_scores[res_id] = float(scores[0] if hasattr(scores, "__len__") else scores)
 
         # 高異常残基を特定
         mean_score = np.mean(list(frame_scores.values()))
         std_score = np.std(list(frame_scores.values()))
         anomaly_threshold = mean_score + 2 * std_score
-        high_anomaly_residues = [
-            r for r, s in frame_scores.items() if s > anomaly_threshold
-        ]
+        high_anomaly_residues = [r for r, s in frame_scores.items() if s > anomaly_threshold]
 
-        logger.info(
-            f"   Found {len(high_anomaly_residues)} residues with simultaneous anomalies"
-        )
+        logger.info(f"   Found {len(high_anomaly_residues)} residues with simultaneous anomalies")
 
         # カップリング行列の準備
         if residue_coupling.ndim == 3 and residue_coupling.shape[0] > 0:
@@ -539,14 +517,8 @@ class ResidueNetworkGPU(GPUBackend):
                 strength = np.sqrt(frame_scores[res_i] * frame_scores[res_j])
 
                 # カップリングで重み付け（あれば）
-                if (
-                    coupling is not None
-                    and res_i < coupling.shape[0]
-                    and res_j < coupling.shape[1]
-                ):
-                    coupling_factor = coupling[res_i, res_j] / (
-                        np.mean(coupling) + 1e-10
-                    )
+                if coupling is not None and res_i < coupling.shape[0] and res_j < coupling.shape[1]:
+                    coupling_factor = coupling[res_i, res_j] / (np.mean(coupling) + 1e-10)
                     strength *= np.clip(coupling_factor, 0.5, 2.0)
 
                 # 空間距離（あれば）
@@ -585,9 +557,7 @@ class ResidueNetworkGPU(GPUBackend):
         # 空間制約（オプション）
         spatial_constraints = {}
         if residue_coms is not None and residue_coms.shape[0] > 0:
-            spatial_constraints = self._compute_spatial_constraints(
-                residue_ids, residue_coms
-            )
+            spatial_constraints = self._compute_spatial_constraints(residue_ids, residue_coms)
 
         return NetworkAnalysisResult(
             causal_network=[],  # 因果なし（時間差ゼロ）
@@ -646,9 +616,7 @@ class ResidueNetworkGPU(GPUBackend):
         # 空間制約計算
         with self.timer("spatial_constraints"):
             if residue_coms is not None:
-                spatial_constraints = self._compute_spatial_constraints(
-                    residue_ids, residue_coms
-                )
+                spatial_constraints = self._compute_spatial_constraints(residue_ids, residue_coms)
             else:
                 spatial_constraints = self._create_all_pairs(residue_ids)
 
@@ -725,9 +693,7 @@ class ResidueNetworkGPU(GPUBackend):
 
         # 空間制約
         if residue_coms is not None:
-            spatial_constraints = self._compute_spatial_constraints(
-                residue_ids, residue_coms
-            )
+            spatial_constraints = self._compute_spatial_constraints(residue_ids, residue_coms)
         else:
             spatial_constraints = self._create_all_pairs(residue_ids)
 
@@ -787,9 +753,7 @@ class ResidueNetworkGPU(GPUBackend):
             "pattern": "cascade",
             "geometric_signature": "information_transfer",
             "n_initiators": len(initiators),
-            "cascade_depth": max([link.lag for link in causal_links])
-            if causal_links
-            else 0,
+            "cascade_depth": max([link.lag for link in causal_links]) if causal_links else 0,
             "n_frames": n_frames,
         }
 
@@ -838,11 +802,7 @@ class ResidueNetworkGPU(GPUBackend):
                     delta_j = scores_j[1] - scores_j[0]
 
                     # 同じ方向への変化 = トンネリングペア
-                    if (
-                        delta_i * delta_j > 0
-                        and abs(delta_i) > 0.5
-                        and abs(delta_j) > 0.5
-                    ):
+                    if delta_i * delta_j > 0 and abs(delta_i) > 0.5 and abs(delta_j) > 0.5:
                         link = NetworkLink(
                             from_res=res_i,
                             to_res=res_j,
@@ -859,12 +819,8 @@ class ResidueNetworkGPU(GPUBackend):
 
                 elif n_frames == 3:
                     # ジャンプ検出
-                    jump_i = abs(scores_i[1] - scores_i[0]) + abs(
-                        scores_i[2] - scores_i[1]
-                    )
-                    jump_j = abs(scores_j[1] - scores_j[0]) + abs(
-                        scores_j[2] - scores_j[1]
-                    )
+                    jump_i = abs(scores_i[1] - scores_i[0]) + abs(scores_i[2] - scores_i[1])
+                    jump_j = abs(scores_j[1] - scores_j[0]) + abs(scores_j[2] - scores_j[1])
 
                     if jump_i > 0.3 and jump_j > 0.3:
                         link = NetworkLink(
@@ -975,9 +931,7 @@ class ResidueNetworkGPU(GPUBackend):
     # CASCADE用ヘルパーメソッド
     # ========================================
 
-    def _find_cascade_initiators(
-        self, anomaly_scores: dict[int, np.ndarray]
-    ) -> list[int]:
+    def _find_cascade_initiators(self, anomaly_scores: dict[int, np.ndarray]) -> list[int]:
         """カスケードの開始点を検出"""
         initiators = []
 
@@ -1103,9 +1057,7 @@ class ResidueNetworkGPU(GPUBackend):
     # 既存のヘルパーメソッド（変更最小限）
     # ========================================
 
-    def _compute_adaptive_windows(
-        self, anomaly_scores: dict[int, np.ndarray]
-    ) -> dict[int, int]:
+    def _compute_adaptive_windows(self, anomaly_scores: dict[int, np.ndarray]) -> dict[int, int]:
         """適応的ウィンドウサイズ計算（既存のまま）"""
         n_residues = len(anomaly_scores)
         residue_ids = sorted(anomaly_scores.keys())
@@ -1304,9 +1256,7 @@ class ResidueNetworkGPU(GPUBackend):
                 continue
 
             # 最適ウィンドウ
-            (
-                adaptive_windows.get(res_i, 100) + adaptive_windows.get(res_j, 100)
-            ) // 2
+            (adaptive_windows.get(res_i, 100) + adaptive_windows.get(res_j, 100)) // 2
 
             # 因果性解析
             max_correlation = 0.0
@@ -1335,9 +1285,7 @@ class ResidueNetworkGPU(GPUBackend):
                             # 後方向
                             if lag > 0:
                                 corr = float(
-                                    self.xp.corrcoef(
-                                        scores_i_gpu[lag:], scores_j_gpu[:-lag]
-                                    )[0, 1]
+                                    self.xp.corrcoef(scores_i_gpu[lag:], scores_j_gpu[:-lag])[0, 1]
                                 )
 
                                 if abs(corr) > abs(max_correlation):
@@ -1414,9 +1362,7 @@ class ResidueNetworkGPU(GPUBackend):
 
         return results
 
-    def _filter_causal_network(
-        self, causal_links: list[NetworkLink]
-    ) -> list[NetworkLink]:
+    def _filter_causal_network(self, causal_links: list[NetworkLink]) -> list[NetworkLink]:
         """因果ネットワークのフィルタリング（既存のまま）"""
         # 強度でソート
         causal_links.sort(key=lambda x: x.strength, reverse=True)
@@ -1424,16 +1370,13 @@ class ResidueNetworkGPU(GPUBackend):
         # 上位N個を選択
         if len(causal_links) > self.max_causal_links:
             logger.info(
-                f"   Filtering causal network: {len(causal_links)} → "
-                f"{self.max_causal_links} links"
+                f"   Filtering causal network: {len(causal_links)} → {self.max_causal_links} links"
             )
             causal_links = causal_links[: self.max_causal_links]
 
         # 最小強度でフィルタ
         causal_links = [
-            link
-            for link in causal_links
-            if link.strength >= self.min_causality_strength
+            link for link in causal_links if link.strength >= self.min_causality_strength
         ]
 
         return causal_links
@@ -1477,14 +1420,10 @@ class ResidueNetworkGPU(GPUBackend):
         """結果サマリー出力（v4.0対応）"""
         logger.info("\n🌐 Network Analysis Summary (v4.0):")
         logger.info(f"   Pattern: {result.network_stats.get('pattern', 'unknown')}")
-        logger.info(
-            f"   Event type: {result.network_stats.get('event_type', 'unknown')}"
-        )
+        logger.info(f"   Event type: {result.network_stats.get('event_type', 'unknown')}")
 
         if result.network_stats.get("geometric_signature"):
-            logger.info(
-                f"   Geometric signature: {result.network_stats['geometric_signature']}"
-            )
+            logger.info(f"   Geometric signature: {result.network_stats['geometric_signature']}")
 
         logger.info(f"   Causal links: {result.n_causal_links}")
         logger.info(f"   Synchronous links: {result.n_sync_links}")
@@ -1525,12 +1464,8 @@ def analyze_residue_network_gpu(
     **kwargs,
 ) -> NetworkAnalysisResult:
     """残基ネットワーク解析のスタンドアロン関数（v4.0）"""
-    analyzer = ResidueNetworkGPU(
-        max_interaction_distance=max_interaction_distance, **kwargs
-    )
-    return analyzer.analyze_network(
-        residue_anomaly_scores, residue_coupling, residue_coms
-    )
+    analyzer = ResidueNetworkGPU(max_interaction_distance=max_interaction_distance, **kwargs)
+    return analyzer.analyze_network(residue_anomaly_scores, residue_coupling, residue_coms)
 
 
 def compute_spatial_constraints_gpu(
@@ -1569,7 +1504,7 @@ def build_propagation_paths_gpu(
     initiators: list[int], causal_links: list[NetworkLink], max_depth: int = 5
 ) -> list[list[int]]:
     """Build propagation paths from initiator residues through causal network.
-    
+
     Traces strongest-first paths using DFS, scoring each path by
     cumulative link strength. Returns paths sorted by total score.
     """

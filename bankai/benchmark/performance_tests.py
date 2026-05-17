@@ -250,17 +250,14 @@ class Lambda3BenchmarkSuite:
                             "n_atoms": n_atoms,
                             "data_size_gb": data_size_gb,
                             "gpu_memory_gb": self.gpu_memory_stats["used"] / 1e9,
-                            "memory_ratio": self.gpu_memory_stats["used"]
-                            / trajectory.nbytes,
+                            "memory_ratio": self.gpu_memory_stats["used"] / trajectory.nbytes,
                             "time": end - start,
                             "success": True,
                         }
                     )
 
                     print(f"    Data size: {data_size_gb:.2f} GB")
-                    print(
-                        f"    GPU memory: {self.gpu_memory_stats['used'] / 1e9:.2f} GB"
-                    )
+                    print(f"    GPU memory: {self.gpu_memory_stats['used'] / 1e9:.2f} GB")
                     print(
                         f"    Memory ratio: {self.gpu_memory_stats['used'] / trajectory.nbytes:.2f}"
                     )
@@ -350,9 +347,7 @@ class Lambda3BenchmarkSuite:
         analyzer = TwoStageAnalyzerGPU(residue_config)
 
         start = time.time()
-        analyzer.analyze_trajectory(
-            trajectory, macro_result, events, n_residues
-        )
+        analyzer.analyze_trajectory(trajectory, macro_result, events, n_residues)
         residue_time = time.time() - start
 
         print(f"    Residue analysis time: {residue_time:.2f}s")
@@ -363,9 +358,7 @@ class Lambda3BenchmarkSuite:
         residue_config.parallel_events = True
 
         start = time.time()
-        analyzer.analyze_trajectory(
-            trajectory, macro_result, events, n_residues
-        )
+        analyzer.analyze_trajectory(trajectory, macro_result, events, n_residues)
         parallel_time = time.time() - start
 
         print(f"    Parallel time: {parallel_time:.2f}s")
@@ -467,9 +460,7 @@ class Lambda3BenchmarkSuite:
         _ = extractor.extract_md_features(trajectory, MDConfig())
         return time.time() - start
 
-    def _benchmark_lambda_structures(
-        self, trajectory: np.ndarray, use_gpu: bool
-    ) -> float:
+    def _benchmark_lambda_structures(self, trajectory: np.ndarray, use_gpu: bool) -> float:
         """Lambda構造計算のベンチマーク"""
         from ..structures.lambda_structures_gpu import LambdaStructuresGPU
         from ..structures.md_features_gpu import MDFeaturesGPU
@@ -484,9 +475,7 @@ class Lambda3BenchmarkSuite:
         _ = computer.compute_lambda_structures(trajectory, md_features, 100)
         return time.time() - start
 
-    def _benchmark_anomaly_detection(
-        self, trajectory: np.ndarray, use_gpu: bool
-    ) -> float:
+    def _benchmark_anomaly_detection(self, trajectory: np.ndarray, use_gpu: bool) -> float:
         """異常検出のベンチマーク"""
         # 簡略化のため、ダミーデータで測定
         from ..detection.anomaly_detection_gpu import AnomalyDetectorGPU
@@ -498,9 +487,7 @@ class Lambda3BenchmarkSuite:
         _ = detector.detect_local_anomalies(series, window=50)
         return time.time() - start
 
-    def _benchmark_boundary_detection(
-        self, trajectory: np.ndarray, use_gpu: bool
-    ) -> float:
+    def _benchmark_boundary_detection(self, trajectory: np.ndarray, use_gpu: bool) -> float:
         """境界検出のベンチマーク"""
         from ..detection.boundary_detection_gpu import BoundaryDetectorGPU
 
@@ -516,9 +503,7 @@ class Lambda3BenchmarkSuite:
         _ = detector.detect_structural_boundaries(structures, 100)
         return time.time() - start
 
-    def _benchmark_extended_detection(
-        self, trajectory: np.ndarray, use_gpu: bool
-    ) -> float:
+    def _benchmark_extended_detection(self, trajectory: np.ndarray, use_gpu: bool) -> float:
         """拡張検出のベンチマーク"""
         from ..detection.extended_detection_gpu import ExtendedDetectorGPU
 
@@ -596,9 +581,7 @@ class Lambda3BenchmarkSuite:
 
         fig, ax = plt.subplots(figsize=(8, 6))
 
-        ax.plot(
-            df["data_size_gb"], df["gpu_memory_gb"], "o-", linewidth=2, markersize=8
-        )
+        ax.plot(df["data_size_gb"], df["gpu_memory_gb"], "o-", linewidth=2, markersize=8)
         ax.plot(
             [0, df["data_size_gb"].max()],
             [0, df["data_size_gb"].max()],
@@ -765,9 +748,7 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Lambda³ GPU Benchmark Suite")
     parser.add_argument("--quick", action="store_true", help="Run quick benchmark only")
-    parser.add_argument(
-        "--output", default="./benchmark_results", help="Output directory"
-    )
+    parser.add_argument("--output", default="./benchmark_results", help="Output directory")
 
     args = parser.parse_args()
 

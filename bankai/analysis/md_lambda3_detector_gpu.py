@@ -216,9 +216,7 @@ class MDLambda3DetectorGPU(GPUBackend):
 
         # 1. MD特徴抽出
         print("\n1. Extracting MD features on GPU...")
-        md_features = self.feature_extractor.extract_md_features(
-            trajectory, backbone_indices
-        )
+        md_features = self.feature_extractor.extract_md_features(trajectory, backbone_indices)
 
         # 2. 初期ウィンドウサイズ
         initial_window = self._compute_initial_window(n_frames)
@@ -230,9 +228,7 @@ class MDLambda3DetectorGPU(GPUBackend):
         )
 
         # 4. 適応的ウィンドウサイズ決定
-        adaptive_windows = self._determine_adaptive_windows(
-            lambda_structures, initial_window
-        )
+        adaptive_windows = self._determine_adaptive_windows(lambda_structures, initial_window)
         primary_window = adaptive_windows.get("primary", initial_window)
 
         # 5. 構造境界検出
@@ -328,9 +324,7 @@ class MDLambda3DetectorGPU(GPUBackend):
             batch_trajectory = trajectory[start_idx:end_idx]
 
             # バッチ解析（特徴抽出とLambda構造計算のみ）
-            batch_result = self._analyze_single_batch(
-                batch_trajectory, backbone_indices, start_idx
-            )
+            batch_result = self._analyze_single_batch(batch_trajectory, backbone_indices, start_idx)
 
             batch_results.append(batch_result)
 
@@ -355,9 +349,7 @@ class MDLambda3DetectorGPU(GPUBackend):
     ) -> dict:
         """単一バッチの解析（特徴抽出とLambda構造計算のみ）"""
         # MD特徴抽出（重い処理）
-        md_features = self.feature_extractor.extract_md_features(
-            batch_trajectory, backbone_indices
-        )
+        md_features = self.feature_extractor.extract_md_features(batch_trajectory, backbone_indices)
 
         window = self._compute_initial_window(len(batch_trajectory))
 
@@ -432,9 +424,9 @@ class MDLambda3DetectorGPU(GPUBackend):
                     if hasattr(value, "get"):  # CuPy配列の場合
                         value = self.to_cpu(value)
                     actual_frames = min(len(value), batch_n_frames)
-                    merged_lambda_structures[key][offset : offset + actual_frames] = (
-                        value[:actual_frames]
-                    )
+                    merged_lambda_structures[key][offset : offset + actual_frames] = value[
+                        :actual_frames
+                    ]
 
             # MD特徴をマージ
             for key, value in batch_result.get("md_features", {}).items():
@@ -442,9 +434,7 @@ class MDLambda3DetectorGPU(GPUBackend):
                     if hasattr(value, "get"):
                         value = self.to_cpu(value)
                     actual_frames = min(len(value), batch_n_frames)
-                    merged_md_features[key][offset : offset + actual_frames] = value[
-                        :actual_frames
-                    ]
+                    merged_md_features[key][offset : offset + actual_frames] = value[:actual_frames]
 
         # NaNチェック
         for key, arr in merged_lambda_structures.items():
@@ -493,9 +483,7 @@ class MDLambda3DetectorGPU(GPUBackend):
 
         # 適応的ウィンドウサイズ決定
         initial_window = merged_result.window_steps
-        adaptive_windows = self._determine_adaptive_windows(
-            lambda_structures, initial_window
-        )
+        adaptive_windows = self._determine_adaptive_windows(lambda_structures, initial_window)
         primary_window = adaptive_windows.get("primary", initial_window)
 
         # 5. 構造境界検出（全フレームで実行 - 軽い処理）
@@ -702,12 +690,8 @@ class MDLambda3DetectorGPU(GPUBackend):
                 pass
 
             print(f"   Batch Size: {self.config.gpu_batch_size} frames")
-            print(
-                f"   Extended Detection: {'ON' if self.config.use_extended_detection else 'OFF'}"
-            )
-            print(
-                f"   Phase Space Analysis: {'ON' if self.config.use_phase_space else 'OFF'}"
-            )
+            print(f"   Extended Detection: {'ON' if self.config.use_extended_detection else 'OFF'}")
+            print(f"   Phase Space Analysis: {'ON' if self.config.use_phase_space else 'OFF'}")
 
     def _print_summary(self, result: MDLambda3Result):
         """結果サマリーの表示"""
@@ -718,22 +702,16 @@ class MDLambda3DetectorGPU(GPUBackend):
         print(f"Computation time: {result.computation_time:.2f} seconds")
 
         if result.computation_time > 0:
-            print(
-                f"Speed: {result.n_frames / result.computation_time:.1f} frames/second"
-            )
+            print(f"Speed: {result.n_frames / result.computation_time:.1f} frames/second")
 
         if result.gpu_info:
             print("\nGPU Performance:")
             print(f"  Memory used: {result.gpu_info.get('memory_used', 0):.2f} GB")
-            print(
-                f"  Computation mode: {result.gpu_info.get('computation_mode', 'unknown')}"
-            )
+            print(f"  Computation mode: {result.gpu_info.get('computation_mode', 'unknown')}")
 
         print("\nDetected features:")
         if isinstance(result.structural_boundaries, dict):
-            n_boundaries = len(
-                result.structural_boundaries.get("boundary_locations", [])
-            )
+            n_boundaries = len(result.structural_boundaries.get("boundary_locations", []))
         else:
             n_boundaries = 0
         print(f"  Structural boundaries: {n_boundaries}")

@@ -34,37 +34,40 @@ logger = logging.getLogger("bankai.analysis.network_analyzer_core")
 # Data Classes
 # ============================================
 
+
 @dataclass
 class DimensionLink:
     """次元間ネットワークリンク"""
+
     from_dim: int
     to_dim: int
     from_name: str
     to_name: str
-    link_type: str          # 'sync' or 'causal'
-    strength: float         # 相関の絶対値
-    correlation: float      # 相関の符号付き値（正/負の相関を区別）
-    lag: int = 0            # causalの場合のラグ（フレーム数）
+    link_type: str  # 'sync' or 'causal'
+    strength: float  # 相関の絶対値
+    correlation: float  # 相関の符号付き値（正/負の相関を区別）
+    lag: int = 0  # causalの場合のラグ（フレーム数）
 
 
 @dataclass
 class NetworkResult:
     """ネットワーク解析結果"""
+
     sync_network: list[DimensionLink] = field(default_factory=list)
     causal_network: list[DimensionLink] = field(default_factory=list)
 
     # 相関行列（生データ）
-    sync_matrix: Optional[np.ndarray] = None      # (n_dims, n_dims)
-    causal_matrix: Optional[np.ndarray] = None     # (n_dims, n_dims) 最大ラグ相関
+    sync_matrix: Optional[np.ndarray] = None  # (n_dims, n_dims)
+    causal_matrix: Optional[np.ndarray] = None  # (n_dims, n_dims) 最大ラグ相関
     causal_lag_matrix: Optional[np.ndarray] = None  # (n_dims, n_dims) 最適ラグ
 
     # ネットワーク特性
-    pattern: str = "unknown"         # 'parallel', 'cascade', 'mixed'
+    pattern: str = "unknown"  # 'parallel', 'cascade', 'mixed'
     hub_dimensions: list[int] = field(default_factory=list)
     hub_names: list[str] = field(default_factory=list)
 
     # 因果構造
-    causal_drivers: list[int] = field(default_factory=list)   # 駆動次元
+    causal_drivers: list[int] = field(default_factory=list)  # 駆動次元
     causal_followers: list[int] = field(default_factory=list)  # 従属次元
     driver_names: list[str] = field(default_factory=list)
     follower_names: list[str] = field(default_factory=list)
@@ -79,6 +82,7 @@ class NetworkResult:
 @dataclass
 class CooperativeEventNetwork:
     """cooperative event発生時のネットワーク構造"""
+
     event_frame: int
     event_timestamp: Optional[str] = None
     delta_lambda_c: float = 0.0
@@ -95,6 +99,7 @@ class CooperativeEventNetwork:
 # ============================================
 # Network Analyzer Core
 # ============================================
+
 
 class NetworkAnalyzerCore:
     """
@@ -160,17 +165,14 @@ class NetworkAnalyzerCore:
             window = n_frames
 
         logger.info(
-            f"🔍 Analyzing {n_dims}-dimensional network "
-            f"({n_frames} frames, window={window})"
+            f"🔍 Analyzing {n_dims}-dimensional network ({n_frames} frames, window={window})"
         )
 
         # 1. 相関計算
         correlations = self._compute_correlations(state_vectors, window)
 
         # 2. ネットワーク構築
-        sync_links, causal_links = self._build_networks(
-            correlations, dimension_names
-        )
+        sync_links, causal_links = self._build_networks(correlations, dimension_names)
 
         # 3. パターン識別
         pattern = self._identify_pattern(sync_links, causal_links)
@@ -179,9 +181,7 @@ class NetworkAnalyzerCore:
         hub_dims = self._detect_hubs(sync_links, causal_links, n_dims)
 
         # 5. 因果構造（ドライバー/フォロワー）
-        drivers, followers = self._identify_causal_structure(
-            causal_links, n_dims
-        )
+        drivers, followers = self._identify_causal_structure(causal_links, n_dims)
 
         result = NetworkResult(
             sync_network=sync_links,
@@ -243,9 +243,7 @@ class NetworkAnalyzerCore:
         network = self.analyze(local_data, dimension_names, window=len(local_data))
 
         # イベント発火次元の推定
-        initiators = self._identify_initiators(
-            state_vectors, event_frame, window_before, n_dims
-        )
+        initiators = self._identify_initiators(state_vectors, event_frame, window_before, n_dims)
 
         # 伝播順序の推定
         propagation = self._estimate_propagation_order(
@@ -264,9 +262,7 @@ class NetworkAnalyzerCore:
     # 相関計算
     # ================================================================
 
-    def _compute_correlations(
-        self, state_vectors: np.ndarray, window: int
-    ) -> dict:
+    def _compute_correlations(self, state_vectors: np.ndarray, window: int) -> dict:
         """全次元ペアの相関計算（同期・因果）"""
         n_frames, n_dims = state_vectors.shape
         w = min(window, n_frames)
@@ -351,21 +347,24 @@ class NetworkAnalyzerCore:
 
                 # 同期リンク
                 if abs(sync_corr) > self.sync_threshold:
-                    sync_links.append(DimensionLink(
-                        from_dim=i,
-                        to_dim=j,
-                        from_name=dimension_names[i],
-                        to_name=dimension_names[j],
-                        link_type="sync",
-                        strength=abs(sync_corr),
-                        correlation=sync_corr,
-                    ))
+                    sync_links.append(
+                        DimensionLink(
+                            from_dim=i,
+                            to_dim=j,
+                            from_name=dimension_names[i],
+                            to_name=dimension_names[j],
+                            link_type="sync",
+                            strength=abs(sync_corr),
+                            correlation=sync_corr,
+                        )
+                    )
 
                 # 因果リンク
                 # 同期相関より有意にラグ相関が強い場合のみ因果と判定
-                if (abs(causal_corr) > self.causal_threshold
-                        and abs(causal_corr) > abs(sync_corr) * 1.1):
-
+                if (
+                    abs(causal_corr) > self.causal_threshold
+                    and abs(causal_corr) > abs(sync_corr) * 1.1
+                ):
                     # ラグの符号で因果の方向を決定
                     if lag > 0:
                         from_d, to_d = i, j
@@ -373,16 +372,18 @@ class NetworkAnalyzerCore:
                         from_d, to_d = j, i
                         lag = abs(lag)
 
-                    causal_links.append(DimensionLink(
-                        from_dim=from_d,
-                        to_dim=to_d,
-                        from_name=dimension_names[from_d],
-                        to_name=dimension_names[to_d],
-                        link_type="causal",
-                        strength=abs(causal_corr),
-                        correlation=causal_corr,
-                        lag=lag,
-                    ))
+                    causal_links.append(
+                        DimensionLink(
+                            from_dim=from_d,
+                            to_dim=to_d,
+                            from_name=dimension_names[from_d],
+                            to_name=dimension_names[to_d],
+                            link_type="causal",
+                            strength=abs(causal_corr),
+                            correlation=causal_corr,
+                            lag=lag,
+                        )
+                    )
 
         return sync_links, causal_links
 
@@ -402,9 +403,9 @@ class NetworkAnalyzerCore:
         if n_sync == 0 and n_causal == 0:
             return "independent"
         elif n_sync > n_causal * 2:
-            return "parallel"     # 同期的協調（全次元が同時に動く）
+            return "parallel"  # 同期的協調（全次元が同時に動く）
         elif n_causal > n_sync * 2:
-            return "cascade"      # カスケード伝播（次元間に時間差）
+            return "cascade"  # カスケード伝播（次元間に時間差）
         else:
             return "mixed"
 
@@ -437,7 +438,7 @@ class NetworkAnalyzerCore:
     ) -> tuple[list[int], list[int]]:
         """因果構造の特定（ドライバー/フォロワー）"""
         out_degree = np.zeros(n_dims)  # 駆動する側
-        in_degree = np.zeros(n_dims)   # 駆動される側
+        in_degree = np.zeros(n_dims)  # 駆動される側
 
         for link in causal_links:
             out_degree[link.from_dim] += link.strength
@@ -475,7 +476,7 @@ class NetworkAnalyzerCore:
         イベント直前のウィンドウで最も早く・大きく動き始めた次元を特定。
         """
         start = max(0, event_frame - lookback)
-        pre_event = state_vectors[start:event_frame + 1]
+        pre_event = state_vectors[start : event_frame + 1]
 
         if len(pre_event) < 3:
             return []
@@ -509,7 +510,7 @@ class NetworkAnalyzerCore:
         各次元が閾値を超えた最初のフレームで順序付け。
         """
         start = max(0, event_frame - lookback)
-        window = state_vectors[start:event_frame + 1]
+        window = state_vectors[start : event_frame + 1]
 
         if len(window) < 3:
             return list(range(n_dims))
@@ -555,19 +556,13 @@ class NetworkAnalyzerCore:
 
         if result.sync_network:
             logger.info("  Sync Network:")
-            for link in sorted(result.sync_network,
-                              key=lambda lnk: lnk.strength, reverse=True):
+            for link in sorted(result.sync_network, key=lambda lnk: lnk.strength, reverse=True):
                 sign = "+" if link.correlation > 0 else "−"
-                logger.info(
-                    f"    {link.from_name} ↔ {link.to_name}: "
-                    f"{sign}{link.strength:.3f}"
-                )
+                logger.info(f"    {link.from_name} ↔ {link.to_name}: {sign}{link.strength:.3f}")
 
         if result.causal_network:
             logger.info("  Causal Network:")
-            for link in sorted(result.causal_network,
-                              key=lambda lnk: lnk.strength, reverse=True):
+            for link in sorted(result.causal_network, key=lambda lnk: lnk.strength, reverse=True):
                 logger.info(
-                    f"    {link.from_name} → {link.to_name}: "
-                    f"{link.strength:.3f} (lag={link.lag})"
+                    f"    {link.from_name} → {link.to_name}: {link.strength:.3f} (lag={link.lag})"
                 )

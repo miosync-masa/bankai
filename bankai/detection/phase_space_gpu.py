@@ -616,9 +616,7 @@ void compute_fnn_kernel(
 class PhaseSpaceAnalyzerGPU(GPUBackend):
     """位相空間解析のGPU実装（爆速版・完全リファクタリング済み）"""
 
-    def __init__(
-        self, config: Optional[PhaseSpaceConfig] = None, force_cpu: bool = False
-    ):
+    def __init__(self, config: Optional[PhaseSpaceConfig] = None, force_cpu: bool = False):
         """初期化"""
         super().__init__(force_cpu)
         self.config = config or PhaseSpaceConfig()
@@ -661,9 +659,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
             self.acceleration_anomaly_kernel = cp.RawKernel(
                 ACCELERATION_ANOMALY_KERNEL_CODE, "compute_acceleration_anomaly_kernel"
             )
-            self.lyapunov_kernel = cp.RawKernel(
-                LYAPUNOV_KERNEL_CODE, "compute_lyapunov_kernel"
-            )
+            self.lyapunov_kernel = cp.RawKernel(LYAPUNOV_KERNEL_CODE, "compute_lyapunov_kernel")
             self.map_transition_scores_kernel = cp.RawKernel(
                 MAP_TRANSITION_SCORES_KERNEL_CODE, "map_transition_scores_kernel"
             )
@@ -731,16 +727,12 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
         return results
 
-    def _perform_analysis(
-        self, primary_series: ArrayType, embedding_params: dict
-    ) -> dict:
+    def _perform_analysis(self, primary_series: ArrayType, embedding_params: dict) -> dict:
         """実際の解析処理"""
         results = {}
 
         # 1. 最適埋め込みパラメータの推定
-        optimal_params = self._estimate_embedding_parameters_gpu(
-            primary_series, embedding_params
-        )
+        optimal_params = self._estimate_embedding_parameters_gpu(primary_series, embedding_params)
         results["optimal_parameters"] = optimal_params
 
         # 2. 位相空間再構成
@@ -781,21 +773,15 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
         return results
 
-    def _analyze_attractor_gpu_fast(
-        self, phase_space: cp.ndarray, voxel_grid_size: int
-    ) -> dict:
+    def _analyze_attractor_gpu_fast(self, phase_space: cp.ndarray, voxel_grid_size: int) -> dict:
         """アトラクタ特性の高速解析"""
         features = {}
         n_points = len(phase_space)
         dim = phase_space.shape[1]
 
-        phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(
-            cp.float32
-        )
+        phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(cp.float32)
 
-        features["correlation_dimension"] = float(
-            self._correlation_dimension_gpu_fast(phase_space)
-        )
+        features["correlation_dimension"] = float(self._correlation_dimension_gpu_fast(phase_space))
 
         features["lyapunov_exponent"] = float(
             self._estimate_lyapunov_gpu_fast(phase_space_flat, n_points, dim)
@@ -829,9 +815,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         else:
             features["attractor_volume"] = 0.0
 
-        features["fractal_measure"] = float(
-            self._compute_fractal_measure_gpu_fast(phase_space)
-        )
+        features["fractal_measure"] = float(self._compute_fractal_measure_gpu_fast(phase_space))
 
         features["information_dimension"] = float(
             self._compute_information_dimension_gpu(phase_space)
@@ -853,20 +837,13 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         else:
             phase_space_sample = phase_space
 
-        rec_matrix = self._compute_recurrence_matrix_gpu_fast(
-            phase_space_sample, threshold
-        )
+        rec_matrix = self._compute_recurrence_matrix_gpu_fast(phase_space_sample, threshold)
 
         features = {}
 
-        if (
-            self.rqa_features_kernel is not None
-            and self.diagonal_dist_kernel is not None
-        ):
+        if self.rqa_features_kernel is not None and self.diagonal_dist_kernel is not None:
             features_array = cp.zeros(10, dtype=cp.float32)
-            rec_matrix_flat = cp.ascontiguousarray(rec_matrix.flatten()).astype(
-                cp.float32
-            )
+            rec_matrix_flat = cp.ascontiguousarray(rec_matrix.flatten()).astype(cp.float32)
 
             blocks, threads = self._optimize_kernel_launch(n)
 
@@ -877,9 +854,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
             )
 
             diag_dist = cp.zeros(n // 2, dtype=cp.int32)
-            self.diagonal_dist_kernel(
-                (blocks,), (threads,), (rec_matrix_flat, diag_dist, n)
-            )
+            self.diagonal_dist_kernel((blocks,), (threads,), (rec_matrix_flat, diag_dist, n))
 
             total_points = n * n
             rec_points = cp.sum(rec_matrix)
@@ -919,9 +894,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         n = len(phase_space)
         dim = phase_space.shape[1]
 
-        phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(
-            cp.float32
-        )
+        phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(cp.float32)
         anomaly_scores = cp.zeros(n, dtype=cp.float32)
 
         if self.knn_anomaly_kernel is not None:
@@ -966,9 +939,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         features = {}
 
         if self.complexity_measures_kernel is not None:
-            phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(
-                cp.float32
-            )
+            phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(cp.float32)
             measures = cp.zeros(5, dtype=cp.float32)
             blocks, threads = self._optimize_kernel_launch(n)
 
@@ -992,17 +963,13 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
         return features
 
-    def _estimate_lyapunov_gpu_fast(
-        self, phase_space_flat: cp.ndarray, n: int, dim: int
-    ) -> float:
+    def _estimate_lyapunov_gpu_fast(self, phase_space_flat: cp.ndarray, n: int, dim: int) -> float:
         """高速Lyapunov指数推定"""
         if self.lyapunov_kernel is None:
             return 0.0
 
         n_ref_points = min(200, n // 10)
-        ref_indices = cp.random.choice(n - 10, n_ref_points, replace=False).astype(
-            cp.int32
-        )
+        ref_indices = cp.random.choice(n - 10, n_ref_points, replace=False).astype(cp.int32)
 
         lyap_values = cp.zeros(n_ref_points, dtype=cp.float32)
 
@@ -1034,15 +1001,10 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
             indices = cp.random.choice(len(phase_space), n, replace=False)
             phase_space = phase_space[indices]
 
-        if (
-            self.pairwise_distances_kernel is not None
-            and self.fractal_dimension_kernel is not None
-        ):
+        if self.pairwise_distances_kernel is not None and self.fractal_dimension_kernel is not None:
             n_pairs = n * (n - 1) // 2
             distances = cp.zeros(n_pairs, dtype=cp.float32)
-            phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(
-                cp.float32
-            )
+            phase_space_flat = cp.ascontiguousarray(phase_space.flatten()).astype(cp.float32)
 
             blocks, threads = self._optimize_kernel_launch(n_pairs)
             self.pairwise_distances_kernel(
@@ -1093,16 +1055,14 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
             phase_range = phase_max - phase_min + 1e-10
 
             for i in range(n):
-                box_coords = (
-                    (phase_space[i] - phase_min) / phase_range * (n_boxes - 1)
-                ).astype(int)
+                box_coords = ((phase_space[i] - phase_min) / phase_range * (n_boxes - 1)).astype(
+                    int
+                )
                 box_coords = cp.clip(box_coords, 0, n_boxes - 1)
 
                 if len(box_coords) >= 3:
                     box_idx = (
-                        box_coords[0] * n_boxes * n_boxes
-                        + box_coords[1] * n_boxes
-                        + box_coords[2]
+                        box_coords[0] * n_boxes * n_boxes + box_coords[1] * n_boxes + box_coords[2]
                     )
                     box_counts[box_idx] += 1
 
@@ -1135,9 +1095,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
                 for ii in range(len(block_i)):
                     distances = cp.sqrt(cp.sum((block_j - block_i[ii]) ** 2, axis=1))
-                    rec_matrix[i + ii, j:j_end] = (distances < threshold).astype(
-                        cp.float32
-                    )
+                    rec_matrix[i + ii, j:j_end] = (distances < threshold).astype(cp.float32)
 
         return rec_matrix
 
@@ -1161,9 +1119,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
                 if mean_power > 0:
                     period_strength = max_peak / mean_power
-                    max_period_strength = max(
-                        max_period_strength, float(period_strength)
-                    )
+                    max_period_strength = max(max_period_strength, float(period_strength))
 
         return float(1.0 / (1.0 + cp.exp(-max_period_strength + 5)))
 
@@ -1191,14 +1147,10 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
         raise ValueError("No suitable time series found in structures")
 
-    def _estimate_embedding_parameters_gpu(
-        self, series: cp.ndarray, params: dict
-    ) -> dict:
+    def _estimate_embedding_parameters_gpu(self, series: cp.ndarray, params: dict) -> dict:
         """最適な埋め込みパラメータを推定"""
         optimal_delay = self._estimate_delay_mutual_info_gpu_fast(series)
-        optimal_dim = self._estimate_dimension_fnn_gpu_fast(
-            series, optimal_delay, max_dim=10
-        )
+        optimal_dim = self._estimate_dimension_fnn_gpu_fast(series, optimal_delay, max_dim=10)
 
         return {
             "embedding_dim": int(optimal_dim),
@@ -1227,8 +1179,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
             valid = hist_2d > 0
             mi = cp.sum(
-                hist_2d[valid]
-                * cp.log(hist_2d[valid] / (px[:, None] * py[None, :])[valid])
+                hist_2d[valid] * cp.log(hist_2d[valid] / (px[:, None] * py[None, :])[valid])
             )
 
             mi_values[delay] = mi
@@ -1281,9 +1232,9 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
                     phase_space_sample = phase_space
 
                 if self.fnn_kernel is not None:
-                    phase_space_flat = cp.ascontiguousarray(
-                        phase_space_sample.flatten()
-                    ).astype(cp.float32)
+                    phase_space_flat = cp.ascontiguousarray(phase_space_sample.flatten()).astype(
+                        cp.float32
+                    )
                     series_flat = cp.ascontiguousarray(series).astype(cp.float32)
                     fnn_count = cp.zeros(1, dtype=cp.int32)
 
@@ -1305,9 +1256,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
                     fnn_fraction = float(fnn_count[0]) / n
                 else:
                     # 🔧 修正3: CPUフォールバックの改善
-                    fnn_fraction = self._compute_fnn_cpu(
-                        phase_space_sample, series, delay
-                    )
+                    fnn_fraction = self._compute_fnn_cpu(phase_space_sample, series, delay)
 
                 fnn_fractions.append(fnn_fraction)
 
@@ -1354,8 +1303,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         min_length = embedding_dim * delay + 1
         if n < min_length:
             raise ValueError(
-                f"Series too short: {n} < {min_length} "
-                f"(dim={embedding_dim}, delay={delay})"
+                f"Series too short: {n} < {min_length} (dim={embedding_dim}, delay={delay})"
             )
 
         embed_length = n - (embedding_dim - 1) * delay
@@ -1364,17 +1312,13 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         expected_size = embed_length * embedding_dim * 4  # float32
         if expected_size > 1e9:  # 1GB以上
             logger.warning(
-                f"Large phase space: {embed_length}x{embedding_dim} "
-                f"({expected_size / 1e9:.1f}GB)"
+                f"Large phase space: {embed_length}x{embedding_dim} ({expected_size / 1e9:.1f}GB)"
             )
 
         # 🔧 修正4: より効率的なインデックス生成
         try:
             # ブロードキャスティングを使った効率的な実装
-            indices = (
-                cp.arange(embed_length)[:, None]
-                + cp.arange(embedding_dim)[None, :] * delay
-            )
+            indices = cp.arange(embed_length)[:, None] + cp.arange(embedding_dim)[None, :] * delay
             phase_space = series[indices]
 
         except cp.cuda.MemoryError:
@@ -1385,10 +1329,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
 
             for start in range(0, embed_length, chunk_size):
                 end = min(start + chunk_size, embed_length)
-                idx = (
-                    cp.arange(start, end)[:, None]
-                    + cp.arange(embedding_dim)[None, :] * delay
-                )
+                idx = cp.arange(start, end)[:, None] + cp.arange(embedding_dim)[None, :] * delay
                 chunks.append(series[idx])
 
             phase_space = cp.vstack(chunks)
@@ -1396,9 +1337,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         return phase_space
 
     # 🔧 追加: CPU フォールバック用のFNN計算
-    def _compute_fnn_cpu(
-        self, phase_space: cp.ndarray, series: cp.ndarray, delay: int
-    ) -> float:
+    def _compute_fnn_cpu(self, phase_space: cp.ndarray, series: cp.ndarray, delay: int) -> float:
         """CPUでのFNN計算（フォールバック用）"""
         n = len(phase_space)
         fnn_count = 0
@@ -1490,9 +1429,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
         """解析結果のサマリー表示"""
         print("\n📊 Phase Space Analysis Summary (CuPy RawKernel Edition):")
         print(f"   ⚡ GPU Acceleration: {'ENABLED' if self.is_gpu else 'DISABLED'}")
-        print(
-            f"   Embedding dimension: {results['optimal_parameters']['embedding_dim']}"
-        )
+        print(f"   Embedding dimension: {results['optimal_parameters']['embedding_dim']}")
         print(f"   Optimal delay: {results['optimal_parameters']['delay']}")
 
         if "attractor_features" in results:
@@ -1502,9 +1439,7 @@ class PhaseSpaceAnalyzerGPU(GPUBackend):
             print(f"   - Lyapunov exponent: {att['lyapunov_exponent']:.3f}")
             print(f"   - Fractal measure: {att['fractal_measure']:.3f}")
             print(f"   - Attractor volume: {att['attractor_volume']:.3f}")
-            print(
-                f"   - Information dimension: {att.get('information_dimension', 0):.3f}"
-            )
+            print(f"   - Information dimension: {att.get('information_dimension', 0):.3f}")
 
         if "recurrence_features" in results:
             rec = results["recurrence_features"]

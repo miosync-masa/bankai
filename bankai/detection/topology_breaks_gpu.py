@@ -56,6 +56,7 @@ def _anomaly_detection_cpu(series: np.ndarray, window: int) -> np.ndarray:
 
     return scores
 
+
 # ロガー設定
 logger = logging.getLogger(__name__)
 
@@ -144,9 +145,7 @@ class TopologyBreaksDetectorGPU(GPUBackend):
         n_frames = len(structures["rho_T"])
 
         # temporary_allocationを使用
-        with self.memory_manager.temporary_allocation(
-            n_frames * 4 * 8, "topology_breaks"
-        ):
+        with self.memory_manager.temporary_allocation(n_frames * 4 * 8, "topology_breaks"):
             # 1. ΛF異常（構造フロー破れ）
             lambda_f_anomaly = self._detect_flow_anomalies_gpu(
                 structures["lambda_F_mag"], window_steps
@@ -158,22 +157,16 @@ class TopologyBreaksDetectorGPU(GPUBackend):
             )
 
             # 3. テンション場ジャンプ
-            rho_t_breaks = self._detect_tension_field_jumps_gpu(
-                structures["rho_T"], window_steps
-            )
+            rho_t_breaks = self._detect_tension_field_jumps_gpu(structures["rho_T"], window_steps)
 
             # 4. トポロジカルチャージ異常
-            q_breaks = self._detect_topological_charge_breaks_gpu(
-                structures["Q_lambda"]
-            )
+            q_breaks = self._detect_topological_charge_breaks_gpu(structures["Q_lambda"])
 
             # 5. 位相コヒーレンス破れ（新規追加）
             phase_coherence_breaks = self._detect_phase_coherence_breaks_gpu(structures)
 
             # 6. 構造的特異点検出（新規追加）
-            singularities = self._detect_structural_singularities_gpu(
-                structures, window_steps
-            )
+            singularities = self._detect_structural_singularities_gpu(structures, window_steps)
 
             # 7. 統合異常スコア
             combined_anomaly = self._combine_topological_anomalies_gpu(
@@ -195,9 +188,7 @@ class TopologyBreaksDetectorGPU(GPUBackend):
             "combined_anomaly": self.to_cpu(combined_anomaly),
         }
 
-    def _detect_flow_anomalies_gpu(
-        self, lambda_f_mag: np.ndarray, window: int
-    ) -> NDArray:
+    def _detect_flow_anomalies_gpu(self, lambda_f_mag: np.ndarray, window: int) -> NDArray:
         """構造フローの異常検出（GPU最適化）"""
         lf_mag_gpu = self.to_gpu(lambda_f_mag)
 
@@ -221,9 +212,7 @@ class TopologyBreaksDetectorGPU(GPUBackend):
         else:
             return np.maximum(anomaly_gpu, sudden_changes)
 
-    def _detect_acceleration_anomalies_gpu(
-        self, lambda_ff_mag: np.ndarray, window: int
-    ) -> NDArray:
+    def _detect_acceleration_anomalies_gpu(self, lambda_ff_mag: np.ndarray, window: int) -> NDArray:
         """加速度異常の検出"""
         lff_mag_gpu = self.to_gpu(lambda_ff_mag)
 
@@ -244,9 +233,7 @@ class TopologyBreaksDetectorGPU(GPUBackend):
 
         return anomaly_gpu
 
-    def _detect_tension_field_jumps_gpu(
-        self, rho_t: np.ndarray, window_steps: int
-    ) -> NDArray:
+    def _detect_tension_field_jumps_gpu(self, rho_t: np.ndarray, window_steps: int) -> NDArray:
         """テンション場のジャンプ検出（改良版）"""
         rho_t_gpu = self.to_gpu(rho_t)
 
@@ -341,9 +328,7 @@ class TopologyBreaksDetectorGPU(GPUBackend):
 
         return breaks
 
-    def _detect_structural_singularities_gpu(
-        self, structures: dict, window: int
-    ) -> NDArray:
+    def _detect_structural_singularities_gpu(self, structures: dict, window: int) -> NDArray:
         """構造的特異点の検出（新機能）"""
         n_frames = len(structures["rho_T"])
 
@@ -388,9 +373,7 @@ class TopologyBreaksDetectorGPU(GPUBackend):
                 singularities += div_anomaly.astype(np.float32)
 
         # 3. 位相空間での異常軌道
-        phase_anomaly = self._detect_phase_space_singularities_gpu(
-            lf_mag_gpu, rho_t_gpu, window
-        )
+        phase_anomaly = self._detect_phase_space_singularities_gpu(lf_mag_gpu, rho_t_gpu, window)
 
         # phase_anomalyの長さも確認
         if len(phase_anomaly) != n_frames:
@@ -688,9 +671,7 @@ def test_topology_breaks():
 
     # 結果確認
     for key, value in results.items():
-        print(
-            f"  {key}: shape={value.shape}, mean={np.mean(value):.4f}, max={np.max(value):.4f}"
-        )
+        print(f"  {key}: shape={value.shape}, mean={np.mean(value):.4f}, max={np.max(value):.4f}")
 
     # 局所極値検出のテスト
     print("\nTesting local extrema detection...")

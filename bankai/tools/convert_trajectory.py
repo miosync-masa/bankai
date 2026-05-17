@@ -19,6 +19,7 @@ except ImportError:
     print("❌ mdtraj required: pip install mdtraj")
     exit(1)
 
+
 def convert(xtc_path, top_path, output_dir="."):
     print(f"Loading trajectory: {xtc_path}")
     traj = md.load(xtc_path, top=top_path)
@@ -48,8 +49,7 @@ def convert(xtc_path, top_path, output_dir="."):
     protein_residues = [r for r in traj.topology.residues if r.is_protein]
     dt_ps = traj.timestep  # mdtraj returns ps
     sequence = "".join(
-        md.core.residue_names.amino_acid_codes.get(r.name, "X")
-        for r in protein_residues
+        md.core.residue_names.amino_acid_codes.get(r.name, "X") for r in protein_residues
     )
 
     metadata = {

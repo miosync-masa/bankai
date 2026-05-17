@@ -286,9 +286,7 @@ class CausalityVisualizerGPU:
         y = [b["causality"] for b in bond_data]
         colors = [b["lag"] for b in bond_data]
 
-        scatter = ax.scatter(
-            x, y, c=colors, cmap="plasma", s=200, alpha=0.7, edgecolors="black"
-        )
+        scatter = ax.scatter(x, y, c=colors, cmap="plasma", s=200, alpha=0.7, edgecolors="black")
 
         # ラベル
         for i, b in enumerate(bond_data[:8]):  # 上位8個にラベル
@@ -302,12 +300,8 @@ class CausalityVisualizerGPU:
             )
 
         # 閾値ライン
-        ax.axvline(
-            x=0.2, color="red", linestyle="--", alpha=0.5, label="Sync threshold"
-        )
-        ax.axhline(
-            y=0.15, color="blue", linestyle="--", alpha=0.5, label="Causality threshold"
-        )
+        ax.axvline(x=0.2, color="red", linestyle="--", alpha=0.5, label="Sync threshold")
+        ax.axhline(y=0.15, color="blue", linestyle="--", alpha=0.5, label="Causality threshold")
 
         # 非同期領域を強調
         ax.axvspan(0, 0.2, alpha=0.1, color="green", label="Async region")
@@ -374,9 +368,7 @@ Top Initiator Residues:
             return
 
         # 有意なペアのみ
-        significant_results = [c for c in analysis.confidence_results if c.significant][
-            :10
-        ]
+        significant_results = [c for c in analysis.confidence_results if c.significant][:10]
 
         if not significant_results:
             ax.text(
@@ -397,9 +389,7 @@ Top Initiator Residues:
             res_i, res_j = conf.pair
 
             # エラーバー
-            ax.plot(
-                [conf.ci_lower, conf.ci_upper], [i, i], "b-", linewidth=3, alpha=0.6
-            )
+            ax.plot([conf.ci_lower, conf.ci_upper], [i, i], "b-", linewidth=3, alpha=0.6)
 
             # 平均値
             ax.plot(conf.mean, i, "ro", markersize=10)
@@ -433,9 +423,7 @@ Top Initiator Residues:
         ax.set_yticklabels([])
         ax.set_ylim(-0.5, len(significant_results) - 0.5)
         ax.grid(True, axis="x", alpha=0.3)
-        ax.set_title(
-            f"95% Confidence Intervals (n={len(significant_results)} significant)"
-        )
+        ax.set_title(f"95% Confidence Intervals (n={len(significant_results)} significant)")
 
     def _plot_propagation_paths(self, ax: plt.Axes, analysis: ResidueLevelAnalysis):
         """伝播経路の可視化"""
@@ -593,9 +581,7 @@ Top Initiator Residues:
         fig.update_xaxes(title_text="Frame", row=row, col=col)
         fig.update_yaxes(title_text="Residue ID", row=row, col=col)
 
-    def _add_3d_network(
-        self, fig: go.Figure, analysis: ResidueLevelAnalysis, row: int, col: int
-    ):
+    def _add_3d_network(self, fig: go.Figure, analysis: ResidueLevelAnalysis, row: int, col: int):
         """3D因果ネットワーク追加"""
         # NetworkXグラフ構築
         G = nx.DiGraph()
@@ -779,9 +765,7 @@ Top Initiator Residues:
                     label=labels,
                     color="blue",
                 ),
-                link=dict(
-                    source=source, target=target, value=value, color="rgba(0,0,200,0.3)"
-                ),
+                link=dict(source=source, target=target, value=value, color="rgba(0,0,200,0.3)"),
             ),
             row=row,
             col=col,

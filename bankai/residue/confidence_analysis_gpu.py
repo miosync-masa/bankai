@@ -310,9 +310,7 @@ class ConfidenceAnalyzerGPU(GPUBackend):
         for pair_idx, (from_res, to_res, strength) in enumerate(causality_chains):
             # 両方の残基のスコアが存在する場合のみ解析
             if from_res not in anomaly_scores or to_res not in anomaly_scores:
-                logger.debug(
-                    f"Skipping pair ({from_res}, {to_res}): missing anomaly scores"
-                )
+                logger.debug(f"Skipping pair ({from_res}, {to_res}): missing anomaly scores")
                 continue
 
             try:
@@ -355,9 +353,7 @@ class ConfidenceAnalyzerGPU(GPUBackend):
                 results.append(result_dict)
 
             except Exception as e:
-                logger.warning(
-                    f"Confidence analysis failed for pair ({from_res}, {to_res}): {e}"
-                )
+                logger.warning(f"Confidence analysis failed for pair ({from_res}, {to_res}): {e}")
                 continue
 
         # サマリー情報を追加
@@ -583,9 +579,7 @@ class ConfidenceAnalyzerGPU(GPUBackend):
                 perm_group2 = combined[perm[n1:]]
 
                 # 統計量計算
-                perm_stats[i + j] = self.xp.mean(perm_group1) - self.xp.mean(
-                    perm_group2
-                )
+                perm_stats[i + j] = self.xp.mean(perm_group1) - self.xp.mean(perm_group2)
 
         # p値計算
         if alternative == "two-sided":
@@ -819,11 +813,7 @@ def create_null_distribution_gpu(
     data_gpu = backend.to_gpu(data)
     null_dist = backend.zeros(n_samples)
 
-    rng = (
-        cp.random.RandomState(seed=42)
-        if backend.is_gpu
-        else np.random.RandomState(seed=42)
-    )
+    rng = cp.random.RandomState(seed=42) if backend.is_gpu else np.random.RandomState(seed=42)
 
     for i in range(n_samples):
         # データをシャッフル

@@ -203,9 +203,7 @@ class MDFeaturesGPU(GPUBackend):
             n_frames, n_atoms, _ = trajectory.shape
             features = {}
 
-            logger.info(
-                f"🚀 Extracting MD features on {'GPU' if self.is_gpu else 'CPU'}"
-            )
+            logger.info(f"🚀 Extracting MD features on {'GPU' if self.is_gpu else 'CPU'}")
             logger.info(f"   Trajectory: {n_frames} frames, {n_atoms} atoms")
 
             # バッチサイズ決定
@@ -220,9 +218,7 @@ class MDFeaturesGPU(GPUBackend):
             # 1. RMSD計算
             if self.config.use_rmsd:
                 with self.timer("rmsd"):
-                    features["rmsd"] = self._calculate_rmsd_batched(
-                        trajectory, batch_size
-                    )
+                    features["rmsd"] = self._calculate_rmsd_batched(trajectory, batch_size)
 
             # 2. Radius of gyration
             if self.config.use_rg:
@@ -233,9 +229,7 @@ class MDFeaturesGPU(GPUBackend):
 
             # 3. Center of mass
             with self.timer("com_positions"):
-                features["com_positions"] = self._calculate_com_batched(
-                    trajectory, batch_size
-                )
+                features["com_positions"] = self._calculate_com_batched(trajectory, batch_size)
 
             # 4. 接触マップ（オプション）
             if self.config.use_contacts and backbone_indices is not None:
@@ -257,9 +251,7 @@ class MDFeaturesGPU(GPUBackend):
 
             return features
 
-    def _calculate_rmsd_batched(
-        self, trajectory: np.ndarray, batch_size: int
-    ) -> np.ndarray:
+    def _calculate_rmsd_batched(self, trajectory: np.ndarray, batch_size: int) -> np.ndarray:
         """バッチ処理でRMSD計算"""
         n_frames = trajectory.shape[0]
         rmsd_values = np.zeros(n_frames, dtype=np.float32)
@@ -303,9 +295,7 @@ class MDFeaturesGPU(GPUBackend):
 
         return rmsd_values
 
-    def _calculate_rmsd_cpu(
-        self, coords_batch: np.ndarray, ref_coords: np.ndarray
-    ) -> np.ndarray:
+    def _calculate_rmsd_cpu(self, coords_batch: np.ndarray, ref_coords: np.ndarray) -> np.ndarray:
         """CPU版RMSD計算"""
         n_frames = coords_batch.shape[0]
         rmsd_values = np.zeros(n_frames, dtype=np.float32)
@@ -316,9 +306,7 @@ class MDFeaturesGPU(GPUBackend):
 
         return rmsd_values
 
-    def _calculate_rg_batched(
-        self, trajectory: np.ndarray, batch_size: int
-    ) -> np.ndarray:
+    def _calculate_rg_batched(self, trajectory: np.ndarray, batch_size: int) -> np.ndarray:
         """バッチ処理でRadius of gyration計算"""
         n_frames = trajectory.shape[0]
         rg_values = np.zeros(n_frames, dtype=np.float32)
@@ -366,9 +354,7 @@ class MDFeaturesGPU(GPUBackend):
 
         return rg_values
 
-    def _calculate_com_batched(
-        self, trajectory: np.ndarray, batch_size: int
-    ) -> np.ndarray:
+    def _calculate_com_batched(self, trajectory: np.ndarray, batch_size: int) -> np.ndarray:
         """バッチ処理でCOM計算"""
         n_frames = trajectory.shape[0]
         com_positions = np.zeros((n_frames, 3), dtype=np.float32)

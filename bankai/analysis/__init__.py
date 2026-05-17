@@ -24,10 +24,10 @@ from .run_full_analysis import (
 
 # 🔺 Third Impact Analytics
 from .third_impact_analytics import (
+    AtomicCooperativeTrace,
     AtomicNetworkGPU,
     AtomicNetworkLink,
     AtomicNetworkResult,
-    AtomicCooperativeTrace,
     EventOrigin,
     ResidueBridge,
     ThirdImpactAnalyzer,
@@ -211,9 +211,7 @@ def generate_max_report(results_or_path, **kwargs):
 # ========================================
 
 
-def analyze(
-    trajectory_path: str, metadata_path: str, protein_indices_path: str, **kwargs
-):
+def analyze(trajectory_path: str, metadata_path: str, protein_indices_path: str, **kwargs):
     """
     最も簡単な実行方法
 
@@ -222,9 +220,7 @@ def analyze(
     >>> from bankai.analysis import analyze
     >>> results = analyze('traj.npy', 'meta.json', 'protein.npy')
     """
-    return run_full_analysis(
-        trajectory_path, metadata_path, protein_indices_path, **kwargs
-    )
+    return run_full_analysis(trajectory_path, metadata_path, protein_indices_path, **kwargs)
 
 
 def analyze_with_impact(
@@ -240,9 +236,7 @@ def analyze_with_impact(
     >>> # 自動的にThird Impactも実行される！
     """
     kwargs["enable_third_impact"] = True
-    return run_full_analysis(
-        trajectory_path, metadata_path, protein_indices_path, **kwargs
-    )
+    return run_full_analysis(trajectory_path, metadata_path, protein_indices_path, **kwargs)
 
 
 def max_report(results):
@@ -268,9 +262,7 @@ def max_report(results):
 # ========================================
 
 
-def quick_cooperative_check(
-    trajectory_path: str, metadata_path: str, protein_indices_path: str
-):
+def quick_cooperative_check(trajectory_path: str, metadata_path: str, protein_indices_path: str):
     """
     超高速協調イベントチェック（Third Impact v3.0込み）
     """

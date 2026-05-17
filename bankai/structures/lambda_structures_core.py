@@ -33,6 +33,7 @@ logger = logging.getLogger("bankai.structures.lambda_structures_core")
 @dataclass
 class LambdaCoreConfig:
     """Lambda³ Core 計算設定"""
+
     verbose: bool = True
 
 
@@ -139,25 +140,19 @@ class LambdaStructuresCore:
     # 以下のメソッドは lambda_structures_gpu.py と同一ロジック（numpy版）
     # ================================================================
 
-    def _compute_lambda_F(
-        self, positions: np.ndarray
-    ) -> tuple[np.ndarray, np.ndarray]:
+    def _compute_lambda_F(self, positions: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """ΛF - 構造フロー計算（次元数フリー）"""
         lambda_F = np.diff(positions, axis=0)
         lambda_F_mag = np.linalg.norm(lambda_F, axis=1)
         return lambda_F, lambda_F_mag
 
-    def _compute_lambda_FF(
-        self, lambda_F: np.ndarray
-    ) -> tuple[np.ndarray, np.ndarray]:
+    def _compute_lambda_FF(self, lambda_F: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         """ΛFF - 二次構造フロー計算"""
         lambda_FF = np.diff(lambda_F, axis=0)
         lambda_FF_mag = np.linalg.norm(lambda_FF, axis=1)
         return lambda_FF, lambda_FF_mag
 
-    def _compute_rho_T(
-        self, positions: np.ndarray, window_steps: int
-    ) -> np.ndarray:
+    def _compute_rho_T(self, positions: np.ndarray, window_steps: int) -> np.ndarray:
         """ρT - テンション場計算（共分散トレース）"""
         n_frames = len(positions)
         rho_T = np.zeros(n_frames)
@@ -168,9 +163,7 @@ class LambdaStructuresCore:
             local_positions = positions[start:end]
 
             if len(local_positions) > 1:
-                centered = local_positions - np.mean(
-                    local_positions, axis=0, keepdims=True
-                )
+                centered = local_positions - np.mean(local_positions, axis=0, keepdims=True)
                 cov = np.cov(centered.T)
                 if cov.ndim == 0:
                     rho_T[step] = float(cov)
@@ -206,9 +199,7 @@ class LambdaStructuresCore:
         Q_cumulative = np.cumsum(Q_lambda)
         return Q_lambda, Q_cumulative
 
-    def _compute_coherence(
-        self, lambda_F: np.ndarray, window: int
-    ) -> np.ndarray:
+    def _compute_coherence(self, lambda_F: np.ndarray, window: int) -> np.ndarray:
         """構造的コヒーレンス計算"""
         n_frames = len(lambda_F)
         coherence = np.zeros(n_frames)
@@ -313,7 +304,7 @@ class LambdaStructuresCore:
             sigma_s_arr[n_frames] = sigma_s_arr[n_frames - 1]
 
         # state_vectorsのフレーム数に合わせて返す
-        return sigma_s_arr[:len(state_vectors)]
+        return sigma_s_arr[: len(state_vectors)]
 
     # ================================================================
     # ユーティリティ
@@ -325,8 +316,14 @@ class LambdaStructuresCore:
             return
 
         logger.info("📊 Lambda³ Structure Statistics:")
-        for key in ["lambda_F_mag", "lambda_FF_mag", "rho_T",
-                     "Q_cumulative", "sigma_s", "structural_coherence"]:
+        for key in [
+            "lambda_F_mag",
+            "lambda_FF_mag",
+            "rho_T",
+            "Q_cumulative",
+            "sigma_s",
+            "structural_coherence",
+        ]:
             if key in results and len(results[key]) > 0:
                 data = results[key]
                 logger.info(

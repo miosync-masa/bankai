@@ -34,9 +34,7 @@ __author__ = "Masamichi Iizumi"
 
 logger = logging.getLogger("bankai")
 _handler = logging.StreamHandler()
-_handler.setFormatter(
-    logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
-)
+_handler.setFormatter(logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s"))
 logger.addHandler(_handler)
 logger.setLevel(logging.INFO)
 
