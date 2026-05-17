@@ -25,7 +25,7 @@ from typing import Any
 # Version
 # ===============================
 
-__version__ = "1.2.1"
+__version__ = "1.2.2"
 __author__ = "Masamichi Iizumi"
 
 # ===============================
