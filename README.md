@@ -11,50 +11,36 @@ GPU-accelerated sub-picosecond causal cascade detection in GROMACS molecular dyn
 
 ## Overview
 
-BANKAI-MD is a geometry-first analysis framework for discrete molecular dynamics　coordinate trajectories. It operates directly on atomic coordinate trajectories　(e.g., GROMACS outputs) and analyzes frame-to-frame geometric changes without first　reducing the trajectory to global summary descriptors such as RMSD, RMSF, or PCA　coordinates.
+BANKAI-MD is a geometry-first framework for analyzing discrete molecular dynamics
+(MD) coordinate trajectories. Instead of first reducing a trajectory to global
+summary descriptors such as RMSD, RMSF, PCA coordinates, or correlation matrices,
+BANKAI-MD operates directly on frame-to-frame coordinate changes in the full atomic
+trajectory.
 
-Conventional MD analyses answer essential questions about structural stability,
-time-averaged flexibility, collective modes, and correlated motions. BANKAI-MD
-addresses a different question: where a cooperative structural event first appears
-in the discrete coordinate trajectory, how the perturbation propagates across
-residues, and which local atomic displacement temporally precedes the event.
+Conventional MD analyses answer essential questions: whether a structure is
+stable, which residues are flexible, what the dominant collective modes are, and
+which residues exhibit correlated motion. BANKAI-MD addresses a complementary
+question: when a cooperative structural event begins, where it first localizes,
+and how the perturbation propagates through residues and atoms.
 
-BANKAI-MD should therefore be understood as an event-centric geometric and
-statistical analysis layer, not as a replacement for conventional MD analysis
-tools.
-
-### Core geometric score
-
-BANKAI-MD uses the following composite event score:
+The core composite event score is
 
 \[
-\Delta \Lambda_C = \rho_T \cdot \sigma_S \cdot |\Lambda_F|
+\Delta \Lambda_C = \rho_T \cdot \sigma_S \cdot |\Lambda_F|.
 \]
 
-In this expression, all terms are coordinate-derived geometric or statistical
-functionals of the trajectory. They are not introduced as physical observables,
-conserved quantities, free energies, or rate constants.
+Here, \(\Lambda_F\) is the frame-to-frame coordinate displacement vector,
+\(|\Lambda_F|\) is its geometric norm, \(\rho_T\) is the local covariance trace
+measuring geometric spread, and \(\sigma_S\) is a local coordination index
+measuring cooperative structural change. \(\Delta \Lambda_C\) is an operational
+geometric event score, not a physical observable, conserved quantity, free energy,
+or rate constant.
 
-| Symbol | Working name | Meaning |
-|---|---|---|
-| \(x_t\) | Coordinate state | Full atomic coordinate vector at frame \(t\) |
-| \(\Lambda_F(t)\) | Frame-step vector | Frame-to-frame coordinate displacement, \(x_{t+1} - x_t\) |
-| \(|\Lambda_F(t)|\) | Frame-step norm | Geometric length of the coordinate displacement |
-| \(\rho_T(t)\) | Local covariance trace | Local geometric spread of nearby coordinate states |
-| \(\sigma_S(t)\) | Local coordination index | Degree to which local structural changes occur cooperatively |
-| \(\Delta \Lambda_C(t)\) | Composite event score | Operational score for detecting localized cooperative events |
-| \(Q_\lambda(t)\) | Winding descriptor | Signed directional change of the local structural flow |
-| Directed dependency | Granger/TE relation | Temporal predictive dependency, not definitive mechanistic causation |
-
-In short, BANKAI-MD does not ask only whether a structure is stable or flexible.
-It asks when a coordinated event begins, where it begins, and how it propagates
-through the coordinate trajectory.
-
-## Why BANKAI?
-
-**The problem:** At 0.01 ps resolution, thermal energy at 300K (kT ≈ 2.5 kJ/mol) causes atomic vibrations that completely bury biologically meaningful structural changes. Traditional tools either avoid this timescale entirely, or collapse the data into aggregate metrics (RMSD, radius of gyration) that erase the very signals you need.
-
-**BANKAI's answer:** Don't reduce — resolve. Analyze the full atomic coordinate tensor directly, and use physics-informed statistical filtering to separate signal from noise.
+At high temporal resolution, such as 0.01 ps, thermal fluctuations dominate raw
+coordinate motion. BANKAI-MD uses a multi-layer geometry-based statistical
+filtering pipeline to identify candidate cooperative events that are not directly
+returned by conventional time-averaged descriptors. The framework is therefore
+intended as a complementary event-centric analysis layer for MD trajectories.
 
 ## Key Features
 
