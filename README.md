@@ -88,7 +88,7 @@ Input: 0.01 ps GROMACS trajectory (full atomic coordinates, thermal noise domina
   │   • Q_lambda (topological charge): winding number of ΛF flow
   │   • Irreversible vs reversible change discrimination
   │
-  ├─ Layer 3: 3-Axis Anomaly Scoring ──── Physics-based validation
+  ├─ Layer 3: 3-Axis Anomaly Scoring ──── Geometric & statistical validation
   │   • Spatial: directional/cooperative vs random/isotropic
   │   • Synchronization: correlated (>0.6) vs uncorrelated (<0.3)
   │   • Temporal: Maxwell-Boltzmann deviation (>3σ)
