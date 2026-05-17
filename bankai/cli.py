@@ -155,10 +155,10 @@ def cmd_analyze(args):
         print("   Mode:          CPU")
     print()
 
-    from bankai.analysis.run_full_analysis import run_quantum_validation_pipeline
+    from bankai.analysis.run_full_analysis import run_geometric_validation_pipeline
 
     try:
-        results = run_quantum_validation_pipeline(
+        results = run_geometric_validation_pipeline(
             trajectory_path=args.trajectory,
             metadata_path=args.metadata,
             protein_indices_path=args.protein,
@@ -307,10 +307,10 @@ def cmd_example(args):
         print(f"   GPU:        {GPU_NAME}")
     print()
 
-    from bankai.analysis.run_full_analysis import run_quantum_validation_pipeline
+    from bankai.analysis.run_full_analysis import run_geometric_validation_pipeline
 
     try:
-        results = run_quantum_validation_pipeline(
+        results = run_geometric_validation_pipeline(
             trajectory_path=paths["trajectory"],
             metadata_path=paths["metadata"],
             protein_indices_path=paths["protein_indices"],

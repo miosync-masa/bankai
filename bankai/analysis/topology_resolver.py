@@ -370,7 +370,7 @@ def generate_resolved_report(results: dict, resolver: TopologyResolver) -> str:
     
     # 統計サマリー
     total_genesis = sum(len(r.origin.genesis_atoms) for r in results.values())
-    total_quantum = sum(r.n_quantum_atoms for r in results.values())
+    total_cooperative = sum(r.n_cooperative_atoms for r in results.values())
     total_links = sum(r.n_network_links for r in results.values())
     total_bridges = sum(r.n_residue_bridges for r in results.values())
     
@@ -378,7 +378,7 @@ def generate_resolved_report(results: dict, resolver: TopologyResolver) -> str:
 -----------------
 Events Analyzed: {len(results)}
 Genesis Atoms Identified: {total_genesis}
-Quantum Atoms Detected: {total_quantum}
+Cooperative Atoms Detected: {total_cooperative}
 Network Links Discovered: {total_links}
 Residue Bridges Found: {total_bridges}
 
@@ -451,8 +451,8 @@ DETAILED ANALYSIS
                         n2 = resolver.resolve(a2)
                         report += f"    {n1} ↔ {n2}\n"
         
-        # Quantum Signature
-        report += f"\nQuantum Signature: {result.strongest_signature}\n"
+        # Geometric Signature
+        report += f"\nGeometric Signature: {result.strongest_signature}\n"
         report += f"Max Confidence: {result.max_confidence:.3f}\n"
         
         # Drug Targets - 名前解決！
@@ -460,10 +460,10 @@ DETAILED ANALYSIS
             report += "\n🎯 Drug Target Atoms:\n"
             for atom_id in result.drug_target_atoms:
                 info = resolver.get_info(atom_id)
-                trace = result.quantum_atoms.get(atom_id)
+                trace = result.cooperative_atoms.get(atom_id)
                 if info and trace:
                     report += f"  • {info.full_name} (atom {atom_id})"
-                    report += f" — {trace.quantum_signature}"
+                    report += f" — {trace.geometric_signature}"
                     report += f", conf={trace.confidence:.3f}"
                     if trace.is_hub:
                         report += " [HUB]"
@@ -507,7 +507,7 @@ def save_resolved_json(results: dict, resolver: TopologyResolver, output_path: P
             "residue_id": result.residue_id,
             "residue_name": resolver.resolve_residue(result.residue_id),
             "event_type": result.event_type,
-            "n_quantum_atoms": result.n_quantum_atoms,
+            "n_cooperative_atoms": result.n_cooperative_atoms,
             "n_network_links": result.n_network_links,
             "n_residue_bridges": result.n_residue_bridges,
             "max_confidence": float(result.max_confidence),
@@ -527,13 +527,13 @@ def save_resolved_json(results: dict, resolver: TopologyResolver, output_path: P
         # Drug targets with names
         entry["drug_targets"] = []
         for atom_id in result.drug_target_atoms:
-            trace = result.quantum_atoms.get(atom_id)
+            trace = result.cooperative_atoms.get(atom_id)
             target = {
                 "atom_id": atom_id,
                 "atom_name": resolver.resolve(atom_id),
             }
             if trace:
-                target["signature"] = trace.quantum_signature
+                target["signature"] = trace.geometric_signature
                 target["confidence"] = float(trace.confidence)
                 target["is_hub"] = trace.is_hub
                 target["is_bridge"] = trace.is_bridge
@@ -586,7 +586,7 @@ def _is_sidechain(info: Optional[AtomInfo]) -> bool:
 
 
 # ============================================
-# Integration: run_quantum_validation_pipelineへの組み込み
+# Integration: run_geometric_validation_pipelineへの組み込み
 # ============================================
 
 def create_resolver_from_pipeline(
@@ -597,7 +597,7 @@ def create_resolver_from_pipeline(
     """
     パイプラインの引数からTopologyResolverを構築。
     
-    run_quantum_validation_pipeline() から呼ばれる想定:
+    run_geometric_validation_pipeline() から呼ばれる想定:
     
     ```python
     # run_full_analysis.py 内

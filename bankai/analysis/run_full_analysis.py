@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Lambda³ GPU Quantum Validation Pipeline - Version 4.0
-======================================================
+Lambda³ GPU Geometric Validation Pipeline - Version 4.0
+=======================================================
 Version: 4.0.0 - Complete Refactoring
 Date: 2024
 """
@@ -36,10 +36,10 @@ try:
     )
 
     # Version 4.0 imports
-    from bankai.quantum import (
-        QuantumAssessment,
-        QuantumSignature,
-        QuantumValidatorV4,
+    from bankai.geometric import (
+        GeometricAssessment,
+        GeometricSignature,
+        GeometricValidatorV4,
         StructuralEventPattern,
     )
     from bankai.visualization import Lambda3VisualizerGPU
@@ -54,7 +54,7 @@ logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S",
 )
-logger = logging.getLogger("quantum_validation_v4")
+logger = logging.getLogger("geometric_validation_v4")
 
 # ============================================
 # Label Mapping: Internal Enum → Paper Labels
@@ -62,12 +62,12 @@ logger = logging.getLogger("quantum_validation_v4")
 # ============================================
 
 SIGNATURE_LABELS = {
-    "quantum_entanglement": "Instantaneous\nSpatial Correlation",
-    "quantum_tunneling": "Barrier-Crossing\nDisplacement",
-    "quantum_coherence": "Sustained Structural\nCoordination",
-    "quantum_phase_transition": "Cooperative\nPhase Transition",
-    "quantum_info_transfer": "Causal Cascade\nPropagation",
-    "classical": "Thermal Baseline",
+    "instantaneous_correlation_signature": "Instantaneous\nSpatial Correlation",
+    "barrier_crossing_signature": "Barrier-Crossing\nDisplacement",
+    "sustained_coordination_signature": "Sustained Structural\nCoordination",
+    "cooperative_phase_signature": "Cooperative\nPhase Transition",
+    "causal_cascade_signature": "Causal Cascade\nPropagation",
+    "thermal_baseline": "Thermal Baseline",
 }
 
 PATTERN_LABELS = {
@@ -77,11 +77,11 @@ PATTERN_LABELS = {
 }
 
 SIGNATURE_COLORS = {
-    "quantum_entanglement": "#2196F3",
-    "quantum_tunneling": "#FF9800",
-    "quantum_coherence": "#4CAF50",
-    "quantum_phase_transition": "#9C27B0",
-    "quantum_info_transfer": "#F44336",
+    "instantaneous_correlation_signature": "#2196F3",
+    "barrier_crossing_signature": "#FF9800",
+    "sustained_coordination_signature": "#4CAF50",
+    "cooperative_phase_signature": "#9C27B0",
+    "causal_cascade_signature": "#F44336",
 }
 
 PATTERN_COLORS = {
@@ -93,7 +93,7 @@ PATTERN_COLORS = {
 # ============================================
 # メイン実行関数（Version 4.0）
 # ============================================
-def run_quantum_validation_pipeline(
+def run_geometric_validation_pipeline(
     trajectory_path: str,
     metadata_path: str,
     protein_indices_path: str,
@@ -101,7 +101,7 @@ def run_quantum_validation_pipeline(
     enable_two_stage: bool = True,
     enable_third_impact: bool = True,
     enable_visualization: bool = True,
-    output_dir: str = "./quantum_results_v4",
+    output_dir: str = "./geometric_results_v4",
     verbose: bool = False,
     atom_mapping_path: Optional[str] = None,  # 追加！
     third_impact_top_n: int = 10,  # 追加！
@@ -142,7 +142,7 @@ def run_quantum_validation_pipeline(
     from bankai.cli import print_banner
     print_banner()
     
-    logger.info("🚀 LAMBDA³ GPU QUANTUM VALIDATION PIPELINE v4.0")
+    logger.info("🚀 LAMBDA³ GPU GEOMETRIC VALIDATION PIPELINE v4.0")
     logger.info("   Lambda³ Integrated Edition")
     logger.info("=" * 70)
 
@@ -436,9 +436,9 @@ def run_quantum_validation_pipeline(
     # ========================================
     # Step 4: 量子検証（Version 4.0）
     # ========================================
-    logger.info("\n⚛️ Running Quantum Validation v4.0...")
+    logger.info("\n📐 Running Geometric Validation v4.0...")
 
-    quantum_assessments = []
+    geometric_assessments = []
 
     try:
         # 物理パラメータ取得
@@ -446,14 +446,14 @@ def run_quantum_validation_pipeline(
         dt_ps = metadata.get("time_step_ps", 100.0)
 
         # 量子検証器初期化（Version 4.0）
-        quantum_validator = QuantumValidatorV4(
+        geometric_validator = GeometricValidatorV4(
             trajectory=trajectory[:, protein_indices, :],
             topology=topology,
             dt_ps=dt_ps,
             temperature_K=temperature,
         )
 
-        logger.info("   Quantum validator v4.0 initialized")
+        logger.info("   Geometric validator v4.0 initialized")
         logger.info(f"   Temperature: {temperature:.1f} K")
         logger.info(f"   Time step: {dt_ps:.1f} ps")
 
@@ -479,21 +479,21 @@ def run_quantum_validation_pipeline(
 
         if events:
             # バッチ検証
-            quantum_assessments = quantum_validator.validate_events(
+            geometric_assessments = geometric_validator.validate_events(
                 events, lambda_result, network_results if network_results else None
             )
 
-            logger.info("   ✅ Quantum validation complete")
-            logger.info(f"   Events analyzed: {len(quantum_assessments)}")
+            logger.info("   ✅ Geometric validation complete")
+            logger.info(f"   Events analyzed: {len(geometric_assessments)}")
 
             # 統計表示
-            quantum_count = sum(1 for a in quantum_assessments if a.is_quantum)
+            cooperative_count = sum(1 for a in geometric_assessments if a.is_cooperative)
             logger.info(
-                f"   Quantum events: {quantum_count}/{len(quantum_assessments)}"
+                f"   Cooperative events: {cooperative_count}/{len(geometric_assessments)}"
             )
 
             # パターン別統計
-            pattern_counts = Counter(a.pattern.value for a in quantum_assessments)
+            pattern_counts = Counter(a.pattern.value for a in geometric_assessments)
             logger.info("\n   📊 Pattern Distribution:")
             for pattern, count in pattern_counts.items():
                 logger.info(f"     {pattern}: {count}")
@@ -501,16 +501,16 @@ def run_quantum_validation_pipeline(
             # シグネチャー別統計
             sig_counts = Counter(
                 a.signature.value
-                for a in quantum_assessments
-                if a.signature != QuantumSignature.NONE
+                for a in geometric_assessments
+                if a.signature != GeometricSignature.NONE
             )
             if sig_counts:
-                logger.info("\n   ⚛️ Quantum Signatures:")
+                logger.info("\n   📐 Geometric Signatures:")
                 for sig, count in sig_counts.items():
                     logger.info(f"     {sig}: {count}")
 
             # 信頼度統計
-            confidences = [a.confidence for a in quantum_assessments if a.is_quantum]
+            confidences = [a.confidence for a in geometric_assessments if a.is_cooperative]
             if confidences:
                 logger.info("\n   📈 Confidence Statistics:")
                 logger.info(f"     Mean: {np.mean(confidences):.3f}")
@@ -518,16 +518,16 @@ def run_quantum_validation_pipeline(
                 logger.info(f"     Min: {np.min(confidences):.3f}")
 
             # サマリー表示
-            quantum_validator.print_summary(quantum_assessments)
+            geometric_validator.print_summary(geometric_assessments)
 
             # 結果保存
-            save_quantum_assessments_v4(quantum_assessments, output_path, metadata)
+            save_geometric_assessments_v4(geometric_assessments, output_path, metadata)
 
         else:
             logger.warning("   No events to validate")
 
     except Exception as e:
-        logger.error(f"Quantum validation failed: {e}")
+        logger.error(f"Geometric validation failed: {e}")
         if verbose:
             import traceback
 
@@ -581,8 +581,8 @@ def run_quantum_validation_pipeline(
                 total_genesis = sum(
                     len(r.origin.genesis_atoms) for r in third_impact_results.values()
                 )
-                total_quantum_atoms = sum(
-                    r.n_quantum_atoms for r in third_impact_results.values()
+                total_cooperative_atoms = sum(
+                    r.n_cooperative_atoms for r in third_impact_results.values()
                 )
 
                 # v3.0: ネットワーク統計も追加
@@ -595,7 +595,7 @@ def run_quantum_validation_pipeline(
 
                 logger.info("   ✅ Third Impact v3.0 analysis complete")
                 logger.info(f"   Genesis atoms identified: {total_genesis}")
-                logger.info(f"   Total quantum atoms: {total_quantum_atoms}")
+                logger.info(f"   Total cooperative atoms: {total_cooperative_atoms}")
                 logger.info(f"   Network links: {total_network_links}")
                 logger.info(f"   Residue bridges: {total_bridges}")
 
@@ -691,12 +691,12 @@ def run_quantum_validation_pipeline(
             logger.info("   Lambda³ results visualized")
 
             # 量子評価の可視化
-            if quantum_assessments:
-                fig_quantum = visualize_quantum_assessments_v4(
-                    quantum_assessments,
-                    save_path=str(output_path / "quantum_assessments.png"),
+            if geometric_assessments:
+                fig_geometric = visualize_geometric_assessments_v4(
+                    geometric_assessments,
+                    save_path=str(output_path / "geometric_assessments.png"),
                 )
-                logger.info("   Quantum assessments visualized")
+                logger.info("   Geometric assessments visualized")
 
             # ネットワークの可視化
             if two_stage_result:
@@ -716,7 +716,7 @@ def run_quantum_validation_pipeline(
     logger.info("\n📝 Generating comprehensive report...")
 
     report = generate_comprehensive_report_v4(
-        lambda_result, quantum_assessments, two_stage_result, metadata, protein_indices
+        lambda_result, geometric_assessments, two_stage_result, metadata, protein_indices
     )
 
     report_path = output_path / "analysis_report_v4.md"
@@ -747,7 +747,7 @@ def run_quantum_validation_pipeline(
             lambda_result=lambda_result,
             sorted_events=sorted_events,
             two_stage_result=two_stage_result if enable_two_stage else None,
-            quantum_assessments=quantum_assessments,  # v4.0: quantum_eventsではなくassessments
+            geometric_assessments=geometric_assessments,
             metadata=metadata,
             output_dir=str(output_path),
             verbose=verbose,
@@ -778,15 +778,15 @@ def run_quantum_validation_pipeline(
         logger.info(
             f"     - {two_stage_result.global_network_stats.get('total_causal_links', 0)} causal links"
         )
-    if quantum_assessments:
-        quantum_count = sum(1 for a in quantum_assessments if a.is_quantum)
-        logger.info(f"     - {quantum_count} quantum events confirmed")
+    if geometric_assessments:
+        cooperative_count = sum(1 for a in geometric_assessments if a.is_cooperative)
+        logger.info(f"     - {cooperative_count} cooperative events confirmed")
 
     logger.info("=" * 70)
 
     return {
         "lambda_result": lambda_result,
-        "quantum_assessments": quantum_assessments,
+        "geometric_assessments": geometric_assessments,
         "two_stage_result": two_stage_result,
         "output_dir": output_path,
         "success": True,
@@ -796,8 +796,8 @@ def run_quantum_validation_pipeline(
 # ============================================
 # 補助関数群（Version 4.0）
 # ============================================
-def save_quantum_assessments_v4(
-    assessments: list[QuantumAssessment], output_path: Path, metadata: dict
+def save_geometric_assessments_v4(
+    assessments: list[GeometricAssessment], output_path: Path, metadata: dict
 ):
     """量子評価結果の保存（Version 4.0）"""
 
@@ -807,7 +807,7 @@ def save_quantum_assessments_v4(
         data = {
             "pattern": assessment.pattern.value,
             "signature": assessment.signature.value,
-            "is_quantum": assessment.is_quantum,
+            "is_cooperative": assessment.is_cooperative,
             "confidence": float(assessment.confidence),
             "explanation": assessment.explanation,
             "criteria_met": assessment.criteria_met,
@@ -846,7 +846,7 @@ def save_quantum_assessments_v4(
 
     # サマリー統計
     total = len(assessments)
-    quantum_count = sum(1 for a in assessments if a.is_quantum)
+    cooperative_count = sum(1 for a in assessments if a.is_cooperative)
 
     output_data = {
         "metadata": {
@@ -857,28 +857,28 @@ def save_quantum_assessments_v4(
         },
         "summary": {
             "total_events": total,
-            "quantum_events": quantum_count,
-            "quantum_ratio": quantum_count / total if total > 0 else 0,
+            "cooperative_events": cooperative_count,
+            "cooperative_ratio": cooperative_count / total if total > 0 else 0,
             "pattern_distribution": dict(Counter(a.pattern.value for a in assessments)),
             "signature_distribution": dict(
                 Counter(
                     a.signature.value
                     for a in assessments
-                    if a.signature != QuantumSignature.NONE
+                    if a.signature != GeometricSignature.NONE
                 )
             ),
         },
         "assessments": assessment_data,
     }
 
-    with open(output_path / "quantum_assessments_v4.json", "w") as f:
+    with open(output_path / "geometric_assessments_v4.json", "w") as f:
         json.dump(output_data, f, indent=2)
 
-    logger.info(f"   💾 Saved {len(assessment_data)} quantum assessments")
+    logger.info(f"   💾 Saved {len(assessment_data)} geometric assessments")
 
 
 
-def visualize_quantum_assessments_v4(
+def visualize_geometric_assessments_v4(
     assessments: list, save_path: Optional[str] = None
 ) -> plt.Figure:
     """
@@ -939,7 +939,7 @@ def visualize_quantum_assessments_v4(
     # 3. Cooperative Anomaly vs Thermal
     # ─────────────────────────────────────
     ax3 = axes[0, 2]
-    n_anomaly = sum(1 for a in assessments if a.is_quantum)
+    n_anomaly = sum(1 for a in assessments if a.is_cooperative)
     n_thermal = len(assessments) - n_anomaly
     ax3.pie(
         [n_anomaly, n_thermal],
@@ -961,7 +961,7 @@ def visualize_quantum_assessments_v4(
     # 4. Detection Confidence Distribution
     # ─────────────────────────────────────
     ax4 = axes[1, 0]
-    confidences = [a.confidence for a in assessments if a.is_quantum]
+    confidences = [a.confidence for a in assessments if a.is_cooperative]
     if confidences:
         ax4.hist(
             confidences, bins=20, alpha=0.7,
@@ -1001,7 +1001,7 @@ def visualize_quantum_assessments_v4(
     for pattern_val in ["instantaneous", "transition", "cascade"]:
         pattern_assessments = [a for a in assessments if a.pattern.value == pattern_val]
         if pattern_assessments:
-            rate = sum(1 for a in pattern_assessments if a.is_quantum) / len(pattern_assessments)
+            rate = sum(1 for a in pattern_assessments if a.is_cooperative) / len(pattern_assessments)
             pattern_rates[pattern_val] = rate * 100
 
     if pattern_rates:
@@ -1188,7 +1188,7 @@ def visualize_residue_network(
 
 def generate_comprehensive_report_v4(
     lambda_result: Any,
-    quantum_assessments: list[QuantumAssessment],
+    geometric_assessments: list[GeometricAssessment],
     two_stage_result: Optional[Any],
     metadata: dict,
     protein_indices: np.ndarray,
@@ -1224,44 +1224,44 @@ def generate_comprehensive_report_v4(
 """
 
     # 量子検証結果（Version 4.0）
-    if quantum_assessments:
-        total = len(quantum_assessments)
-        quantum_count = sum(1 for a in quantum_assessments if a.is_quantum)
+    if geometric_assessments:
+        total = len(geometric_assessments)
+        cooperative_count = sum(1 for a in geometric_assessments if a.is_cooperative)
 
         report += f"""
-## Quantum Validation Results v4.0
+## Geometric Validation Results v4.0
 
 ### Overview
 - **Total events analyzed**: {total}
-- **Quantum events confirmed**: {quantum_count} ({quantum_count / total * 100:.1f}%)
+- **Cooperative events confirmed**: {cooperative_count} ({cooperative_count / total * 100:.1f}%)
 
 ### Pattern Analysis
 """
         # パターン別統計
         for pattern in StructuralEventPattern:
             pattern_assessments = [
-                a for a in quantum_assessments if a.pattern == pattern
+                a for a in geometric_assessments if a.pattern == pattern
             ]
             if pattern_assessments:
                 n_pattern = len(pattern_assessments)
-                n_quantum = sum(1 for a in pattern_assessments if a.is_quantum)
-                report += f"- **{pattern.value}**: {n_quantum}/{n_pattern} quantum ({n_quantum / n_pattern * 100:.1f}%)\n"
+                n_cooperative = sum(1 for a in pattern_assessments if a.is_cooperative)
+                report += f"- **{pattern.value}**: {n_cooperative}/{n_pattern} cooperative ({n_cooperative / n_pattern * 100:.1f}%)\n"
 
         # シグネチャー分布
         sig_counts = Counter(
             a.signature.value
-            for a in quantum_assessments
-            if a.signature != QuantumSignature.NONE
+            for a in geometric_assessments
+            if a.signature != GeometricSignature.NONE
         )
         if sig_counts:
             report += """
-### Quantum Signatures Detected
+### Geometric Signatures Detected
 """
             for sig, count in sorted(sig_counts.items()):
                 report += f"- **{sig}**: {count}\n"
 
         # 信頼度統計
-        confidences = [a.confidence for a in quantum_assessments if a.is_quantum]
+        confidences = [a.confidence for a in geometric_assessments if a.is_cooperative]
         if confidences:
             report += f"""
 ### Confidence Statistics
@@ -1273,7 +1273,7 @@ def generate_comprehensive_report_v4(
         # Lambda異常性統計
         lambda_zscores = [
             a.lambda_anomaly.lambda_zscore
-            for a in quantum_assessments
+            for a in geometric_assessments
             if a.lambda_anomaly and a.lambda_anomaly.lambda_zscore > 0
         ]
         if lambda_zscores:
@@ -1288,14 +1288,14 @@ def generate_comprehensive_report_v4(
     report += f"""
 ## Conclusions
 
-analysis successfully identified structural changes and evaluated their quantum origins:
+analysis successfully identified structural changes and classified their geometric signatures:
 
 1. **Structural dynamics**: {len(lambda_result.critical_events)} critical structural events detected
 """
 
-    if quantum_assessments:
-        quantum_count = sum(1 for a in quantum_assessments if a.is_quantum)
-        report += f"""2. **Quantum validation**: {quantum_count} events showed quantum signatures
+    if geometric_assessments:
+        cooperative_count = sum(1 for a in geometric_assessments if a.is_cooperative)
+        report += f"""2. **Geometric validation**: {cooperative_count} events showed cooperative geometric signatures
 3. **Pattern distribution**: Events classified into instantaneous, transition, and cascade patterns
 """
 
@@ -1306,14 +1306,14 @@ analysis successfully identified structural changes and evaluated their quantum 
     report += """
 ## Key Improvements in v4.0
 
-- Lambda³ structure anomaly as primary input for quantum validation
+- Lambda³ structure anomaly as primary input for geometric validation
 - Clear 3-pattern classification (instantaneous/transition/cascade)
 - Trajectory-based atomic evidence integration
-- Realistic and adjustable quantum criteria
+- Realistic and adjustable cooperative-event criteria
 - No automatic classical assignment for long events
 
 ---
-*Generated by Lambda³ GPU Quantum Validation Pipeline v4.0*
+*Generated by Lambda³ GPU Geometric Validation Pipeline v4.0*
 *Lambda³ Integrated Edition - Complete Refactoring*
 """
 
@@ -1329,7 +1329,7 @@ def main():
     """コマンドラインインターフェース（Version 4.0）"""
 
     parser = argparse.ArgumentParser(
-        description="Lambda³ GPU Quantum Validation Pipeline v4.0",
+        description="Lambda³ GPU Geometric Validation Pipeline v4.0",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
@@ -1375,8 +1375,8 @@ Examples:
     parser.add_argument(
         "--output",
         "-o",
-        default="./quantum_results_v4",
-        help="Output directory (default: ./quantum_results_v4)",
+        default="./geometric_results_v4",
+        help="Output directory (default: ./geometric_results_v4)",
     )
     parser.add_argument(
         "--no-two-stage", action="store_true", help="Skip two-stage residue analysis"
@@ -1391,7 +1391,7 @@ Examples:
 
     # パイプライン実行
     try:
-        results = run_quantum_validation_pipeline(
+        results = run_geometric_validation_pipeline(
             trajectory_path=args.trajectory,
             metadata_path=args.metadata,
             protein_indices_path=args.protein,

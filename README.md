@@ -154,9 +154,9 @@ os.environ['LD_LIBRARY_PATH'] = '/usr/local/cuda-12.2/lib64:' + os.environ.get('
 import warnings
 warnings.filterwarnings('ignore')
 
-from bankai.analysis.run_full_analysis import run_quantum_validation_pipeline
+from bankai.analysis.run_full_analysis import run_geometric_validation_pipeline
 
-results = run_quantum_validation_pipeline(
+results = run_geometric_validation_pipeline(
     trajectory_path='/content/demo_gromacs/trajectory_stable.npy',
     metadata_path='/content/demo_gromacs/metadata_stable.json',
     protein_indices_path='/content/demo_gromacs/protein_stable.npy',
@@ -164,7 +164,7 @@ results = run_quantum_validation_pipeline(
     enable_two_stage=True,
     enable_third_impact=True,
     enable_visualization=True,
-    output_dir='./gromacs_results_v4',
+    output_dir='./gromacs_geometric_results_v4',
     verbose=True,
     atom_mapping_path='/content/demo_gromacs/residue_atom_mapping.json',
     third_impact_top_n=10
@@ -290,8 +290,8 @@ bankai/
 │   ├── lambda_structures_gpu.py    # Λ-structure tensor computation
 │   ├── md_features_gpu.py          # MD feature extraction
 │   └── tensor_operations_gpu.py    # Core tensor math
-├── quantum/             # Quantum-level validation
-│   └── quantum_validation_gpu.py   # Quantum effect detection
+├── geometric/           # Geometric anomaly validation
+│   └── geometric_validation_gpu.py # Geometric signature classification
 ├── visualization/       # Plotting & interactive viz
 │   ├── plot_results_gpu.py         # Static plots (matplotlib)
 │   └── causality_viz_gpu.py        # Causal network viz (plotly)

@@ -3,7 +3,7 @@ Residue Network Analysis (GPU Version) - v4.0 Design Unified
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 残基間ネットワーク解析のGPU実装 - 3パターン設計統一版！
-quantum_validation_v4.pyの設計思想に完全準拠💕
+geometric_validation_v4.pyの設計思想に完全準拠💕
 
 Version: 4.0-unified
 by 環ちゃん - Design Unified Edition
@@ -50,7 +50,7 @@ class NetworkLink:
         "causal"  # 'causal', 'sync', 'async', 'instantaneous', 'transition', 'cascade'
     )
     confidence: float = 1.0
-    quantum_signature: Optional[str] = None  # 'entanglement', 'tunneling', 'jump', etc.
+    geometric_signature: Optional[str] = None  # 'entanglement', 'tunneling', 'jump', etc.
 
 
 @dataclass
@@ -296,7 +296,7 @@ class ResidueNetworkGPU(GPUBackend):
             # 2. INSTANTANEOUS判定（単一フレーム）
             elif n_frames == 1:
                 logger.info(
-                    "   ⚡ INSTANTANEOUS pattern detected - Quantum-like analysis"
+                    "   ⚡ INSTANTANEOUS pattern detected - Cooperative anomaly analysis"
                 )
                 return self._analyze_instantaneous_pattern(
                     residue_anomaly_scores, residue_coupling, residue_coms
@@ -331,13 +331,13 @@ class ResidueNetworkGPU(GPUBackend):
         if n_frames < 10:
             analysis_mode = "short_timeseries"
             logger.info(f"      Analysis mode: {analysis_mode}")
-            quantum_signature = "short_transition"
+            geometric_signature = "short_transition"
         elif n_frames < 50:
             analysis_mode = "medium_timeseries"
-            quantum_signature = "medium_transition"
+            geometric_signature = "medium_transition"
         else:
             analysis_mode = "long_timeseries"
-            quantum_signature = "extended_transition"
+            geometric_signature = "extended_transition"
 
         # 適応的ウィンドウ（修正：最小値を保証）
         if self.adaptive_window_kernel and n_frames >= 10:
@@ -393,7 +393,7 @@ class ResidueNetworkGPU(GPUBackend):
             {
                 "event_type": "TRANSITION",
                 "pattern": "transition",
-                "quantum_signature": quantum_signature,
+                "geometric_signature": geometric_signature,
                 "analysis_mode": analysis_mode,
                 "n_frames": n_frames,
                 "n_residues": len(residue_ids),
@@ -574,7 +574,7 @@ class ResidueNetworkGPU(GPUBackend):
                     sync_rate=1.0,  # 完全同期
                     link_type="instantaneous",
                     confidence=1.0,
-                    quantum_signature="parallel_coordination",  # 並列協調
+                    geometric_signature="parallel_coordination",  # 並列協調
                 )
                 sync_links.append(link)
 
@@ -601,7 +601,7 @@ class ResidueNetworkGPU(GPUBackend):
                 "n_async": len(async_bonds),
                 "event_type": "INSTANTANEOUS",
                 "pattern": "parallel_network",  # 並列ネットワーク
-                "quantum_signature": "parallel_coordination",
+                "geometric_signature": "parallel_coordination",
                 "n_frames": 1,
                 "n_high_anomaly": len(high_anomaly_residues),
             },
@@ -625,16 +625,16 @@ class ResidueNetworkGPU(GPUBackend):
 
         # フレーム数によるサブパターン分類
         if n_frames == 2:
-            quantum_signature = "tunneling"
-            analysis_mode = "quantum_tunneling"
+            geometric_signature = "tunneling"
+            analysis_mode = "barrier_crossing"
         elif n_frames == 3:
-            quantum_signature = "jump"
-            analysis_mode = "quantum_jump"
+            geometric_signature = "jump"
+            analysis_mode = "jump_signature"
         elif n_frames < 10:
-            quantum_signature = "short_transition"
+            geometric_signature = "short_transition"
             analysis_mode = "short_timeseries"
         else:
-            quantum_signature = None
+            geometric_signature = None
             analysis_mode = "classical"
 
         logger.info(f"      Analysis mode: {analysis_mode}")
@@ -654,13 +654,13 @@ class ResidueNetworkGPU(GPUBackend):
 
         # ネットワーク構築
         with self.timer("build_network"):
-            if analysis_mode in ["quantum_tunneling", "quantum_jump"]:
-                networks = self._build_quantum_transition_network(
+            if analysis_mode in ["barrier_crossing", "jump_signature"]:
+                networks = self._build_cooperative_transition_network(
                     residue_anomaly_scores,
                     residue_coupling,
                     spatial_constraints,
                     n_frames,
-                    quantum_signature,
+                    geometric_signature,
                 )
             elif analysis_mode == "short_timeseries":
                 networks = self._build_short_transition_network(
@@ -684,7 +684,7 @@ class ResidueNetworkGPU(GPUBackend):
             {
                 "event_type": "TRANSITION",
                 "pattern": "transition",
-                "quantum_signature": quantum_signature,
+                "geometric_signature": geometric_signature,
                 "analysis_mode": analysis_mode,
                 "n_frames": n_frames,
             }
@@ -768,7 +768,7 @@ class ResidueNetworkGPU(GPUBackend):
                             sync_rate=0.0,  # 非同期
                             link_type="cascade",
                             confidence=0.8,
-                            quantum_signature="information_transfer",
+                            geometric_signature="information_transfer",
                         )
                         causal_links.append(link)
                         async_bonds.append(link)
@@ -785,7 +785,7 @@ class ResidueNetworkGPU(GPUBackend):
             "n_async": len(async_bonds),
             "event_type": "CASCADE",
             "pattern": "cascade",
-            "quantum_signature": "information_transfer",
+            "geometric_signature": "information_transfer",
             "n_initiators": len(initiators),
             "cascade_depth": max([link.lag for link in causal_links])
             if causal_links
@@ -809,15 +809,15 @@ class ResidueNetworkGPU(GPUBackend):
     # TRANSITION サブパターン用メソッド
     # ========================================
 
-    def _build_quantum_transition_network(
+    def _build_cooperative_transition_network(
         self,
         anomaly_scores: dict[int, np.ndarray],
         residue_coupling: np.ndarray,
         spatial_constraints: dict,
         n_frames: int,
-        quantum_signature: str,
+        geometric_signature: str,
     ) -> dict:
-        """量子遷移（2-3フレーム）のネットワーク構築"""
+        """協調遷移（2-3フレーム）のネットワーク構築"""
         causal_links = []
         sync_links = []
         async_bonds = []
@@ -850,7 +850,7 @@ class ResidueNetworkGPU(GPUBackend):
                             lag=0,
                             sync_rate=0.8,
                             link_type="transition",
-                            quantum_signature=quantum_signature,
+                            geometric_signature=geometric_signature,
                             distance=spatial_constraints[(res_i, res_j)],
                         )
                         sync_links.append(link)
@@ -874,7 +874,7 @@ class ResidueNetworkGPU(GPUBackend):
                             lag=1,
                             sync_rate=0.5,
                             link_type="transition",
-                            quantum_signature=quantum_signature,
+                            geometric_signature=geometric_signature,
                             distance=spatial_constraints[(res_i, res_j)],
                         )
                         sync_links.append(link)
@@ -1092,7 +1092,7 @@ class ResidueNetworkGPU(GPUBackend):
                         lag=0,
                         sync_rate=1.0,
                         link_type="cascade",
-                        quantum_signature="synchronous_cascade",
+                        geometric_signature="synchronous_cascade",
                         distance=spatial_constraints[(res_i, res_j)],
                     )
                     sync_links.append(link)
@@ -1481,9 +1481,9 @@ class ResidueNetworkGPU(GPUBackend):
             f"   Event type: {result.network_stats.get('event_type', 'unknown')}"
         )
 
-        if result.network_stats.get("quantum_signature"):
+        if result.network_stats.get("geometric_signature"):
             logger.info(
-                f"   Quantum signature: {result.network_stats['quantum_signature']}"
+                f"   Geometric signature: {result.network_stats['geometric_signature']}"
             )
 
         logger.info(f"   Causal links: {result.n_causal_links}")

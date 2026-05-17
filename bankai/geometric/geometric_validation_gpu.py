@@ -1,18 +1,17 @@
 """
-Quantum Validation Module v5.0 - Three-Axis Geometric Anomaly Classification
-=============================================================================
+Geometric Validation Module v5.0 - Three-Axis Geometric Anomaly Classification
+==============================================================================
 
 This module classifies structural events detected by the BANKAI-MD / Lambda³
 framework into geometric anomaly signatures using three orthogonal axes.
 
-The term "quantum" in this module refers to the PROVENANCE of the information
-being decoded, not the METHOD of decoding:
-  - Classical force fields (AMBER, CHARMM, OPLS) encode quantum-mechanical
-    interaction geometries as parameterized constraints
-  - Classical MD propagates these constraints into coordinate trajectories
-  - This module decodes the geometric consequences of those constraints
+The signature taxonomy here is a *geometric classification* of frame-to-frame
+coordinate change patterns. It makes no claim about the physical origin of
+detected events: higher-resolution analyses may reveal underlying classical
+mechanisms. Labels describe coordinate-level events that are not resolvable
+by time-averaged classical descriptors at conventional analysis resolutions.
 
-What we detect (and what the force field encoded):
+What we detect (geometric consequences of force-field-encoded constraints):
   - Conjugated aromatic cooperativity    ← π-electron planarity constraints
   - Carboxylate symmetric displacement   ← resonance charge delocalization
   - Stacking interface dynamics          ← QM-derived dispersion parameters
@@ -29,7 +28,7 @@ Paper reference:
   Iizumi, M. (2025). BANKAI-MD: Discrete Geometric Feature Extraction for
   Sub-Picosecond Cooperative Event Detection in Molecular Dynamics Trajectories.
 
-See also: README in this directory for full scientific rationale.
+See also: README in this directory for the API reference.
 """
 
 import logging
@@ -39,10 +38,10 @@ from typing import Any, Optional
 
 import numpy as np
 
-logger = logging.getLogger("quantum_validation_v5")
+logger = logging.getLogger("geometric_validation_v5")
 
 # ============================================
-# Enums (外部互換性のため維持)
+# Enums
 # ============================================
 
 class StructuralEventPattern(Enum):
@@ -51,32 +50,28 @@ class StructuralEventPattern(Enum):
     TRANSITION = "transition"        # multi-frame continuous transition
     CASCADE = "cascade"              # network-propagated causal cascade
 
-class QuantumSignature(Enum):
+class GeometricSignature(Enum):
     """
     Geometric anomaly signatures detected from classical MD coordinates.
-    
-    Labels use quantum-mechanical metaphors because the detected patterns
-    originate from force-field parameters derived from QM calculations.
-    See: quantum_validation_gpu.py README for full rationale.
-    
+
     Paper mapping (Iizumi, 2025 - BANKAI-MD):
-      ENTANGLEMENT      → Spatially instantaneous correlation (r>0.8, >5Å)
-      TUNNELING          → Barrier-crossing displacement (Q_λ sign reversal)
-      COHERENCE          → Sustained structural coordination (>300 ps)
-      PHASE_TRANSITION   → Cooperative phase-like transition (spatial+sync)
-      INFORMATION_TRANSFER → Causal cascade propagation (async bonds)
-      NONE               → Thermal baseline (Z < 2.0)
+      INSTANTANEOUS_CORRELATION → Spatially instantaneous correlation (r>0.8, >5Å)
+      BARRIER_CROSSING          → Barrier-crossing displacement (Q_λ sign reversal)
+      SUSTAINED_COORDINATION    → Sustained structural coordination (>300 ps)
+      COOPERATIVE_PHASE         → Cooperative phase-like transition (spatial+sync)
+      CAUSAL_CASCADE            → Causal cascade propagation (async bonds)
+      NONE                      → Thermal baseline (Z < 2.0)
     """
-    ENTANGLEMENT = "quantum_entanglement"       # geometric: instantaneous spatial correlation
-    TUNNELING = "quantum_tunneling"             # geometric: barrier-crossing displacement
-    COHERENCE = "quantum_coherence"             # geometric: sustained coordination
-    PHASE_TRANSITION = "quantum_phase_transition"  # geometric: cooperative transition
-    INFORMATION_TRANSFER = "quantum_info_transfer"  # geometric: cascade propagation
-    NONE = "classical"                          # thermal baseline
+    INSTANTANEOUS_CORRELATION = "instantaneous_correlation_signature"
+    BARRIER_CROSSING = "barrier_crossing_signature"
+    SUSTAINED_COORDINATION = "sustained_coordination_signature"
+    COOPERATIVE_PHASE = "cooperative_phase_signature"
+    CAUSAL_CASCADE = "causal_cascade_signature"
+    NONE = "thermal_baseline"
 
 
 # ============================================
-# Data Classes (簡略化版)
+# Data Classes
 # ============================================
 
 
@@ -88,7 +83,6 @@ class LambdaAnomaly:
     lambda_zscore: float = 0.0  # 全体分布からのZ-score
     rho_t_spike: float = 0.0  # テンション密度
     sigma_s_value: float = 0.0  # 構造同期率
-    # 削除: coordination, statistical_rarity, thermal_comparison
 
 
 @dataclass
@@ -103,20 +97,20 @@ class AtomicEvidence:
 
 
 @dataclass
-class QuantumAssessment:
-    """量子性評価結果"""
+class GeometricAssessment:
+    """Geometric anomaly assessment result"""
 
     pattern: StructuralEventPattern
-    signature: QuantumSignature
+    signature: GeometricSignature
     confidence: float = 0.0
-    is_quantum: bool = False
+    is_cooperative: bool = False
 
     lambda_anomaly: Optional[LambdaAnomaly] = None
     atomic_evidence: Optional[AtomicEvidence] = None
     criteria_met: list[str] = field(default_factory=list)
     explanation: str = ""
 
-    # CASCADE用（互換性維持）
+    # CASCADE-specific (preserved field name for downstream stats)
     bell_inequality: Optional[float] = None
     async_bonds_used: list[dict] = field(default_factory=list)
 
@@ -135,9 +129,9 @@ class AnomalyAxes:
 # ============================================
 
 
-class QuantumValidatorV4:  # クラス名は互換性のため維持
+class GeometricValidatorV4:
     """
-    Lambda³統合型量子判定器（簡略化版）
+    Lambda³統合型 geometric anomaly validator.
     3軸判定: 空間・同期・時間
     """
 
@@ -170,22 +164,22 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
             "fast_transition_factor": 0.1,
             "coherence_duration": 300.0,  # ps
             # 判定閾値
-            "quantum_confidence": 0.3,
+            "event_confidence": 0.3,
         }
 
         if config:
             self.thresholds.update(config)
 
-        logger.info("Quantum Validator v5.0 initialized")
+        logger.info("Geometric Validator v5.0 initialized")
 
     # ========================================
-    # Main Entry Point (インターフェース維持)
+    # Main Entry Point
     # ========================================
 
     def validate_event(
         self, event: dict, lambda_result: Any, network_result: Optional[Any] = None
-    ) -> QuantumAssessment:
-        """イベントの量子性を判定"""
+    ) -> GeometricAssessment:
+        """イベントの geometric anomaly を判定"""
 
         # パターン分類
         pattern = self._classify_pattern(event, network_result)
@@ -210,11 +204,11 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
         confidence = self._calculate_confidence(axes, pattern)
 
         # Assessment作成
-        assessment = QuantumAssessment(
+        assessment = GeometricAssessment(
             pattern=pattern,
             signature=signature,
             confidence=confidence,
-            is_quantum=(confidence >= self.thresholds["quantum_confidence"]),
+            is_cooperative=(confidence >= self.thresholds["event_confidence"]),
             lambda_anomaly=lambda_anomaly,
             atomic_evidence=atomic_evidence,
         )
@@ -223,7 +217,7 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
         assessment.criteria_met = self._generate_criteria(axes, pattern)
         assessment.explanation = self._generate_explanation(assessment)
 
-        # CASCADE特有（互換性）
+        # CASCADE特有
         if pattern == StructuralEventPattern.CASCADE and network_result:
             self._add_cascade_info(assessment, network_result)
 
@@ -475,7 +469,7 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
 
     def _determine_signature(
         self, pattern: StructuralEventPattern, axes: AnomalyAxes
-    ) -> QuantumSignature:
+    ) -> GeometricSignature:
         """パターンと3軸異常からシグネチャーを判定"""
 
         # 閾値
@@ -488,29 +482,29 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
         # INSTANTANEOUS（瞬間的）
         if pattern == StructuralEventPattern.INSTANTANEOUS:
             if spatial_high and sync_high:
-                return QuantumSignature.PHASE_TRANSITION
+                return GeometricSignature.COOPERATIVE_PHASE
             elif spatial_high:
-                return QuantumSignature.TUNNELING
+                return GeometricSignature.BARRIER_CROSSING
             elif sync_high:
-                return QuantumSignature.ENTANGLEMENT
+                return GeometricSignature.INSTANTANEOUS_CORRELATION
 
         # TRANSITION（遷移）
         elif pattern == StructuralEventPattern.TRANSITION:
             if temporal_high and spatial_high:
-                return QuantumSignature.TUNNELING
+                return GeometricSignature.BARRIER_CROSSING
             elif sync_high and temporal_high:
-                return QuantumSignature.COHERENCE
+                return GeometricSignature.SUSTAINED_COORDINATION
             elif spatial_high and sync_high:
-                return QuantumSignature.PHASE_TRANSITION
+                return GeometricSignature.COOPERATIVE_PHASE
 
         # CASCADE（カスケード）
         elif pattern == StructuralEventPattern.CASCADE:
             if sync_high:
-                return QuantumSignature.INFORMATION_TRANSFER
+                return GeometricSignature.CAUSAL_CASCADE
             elif spatial_high and temporal_high:
-                return QuantumSignature.PHASE_TRANSITION
+                return GeometricSignature.COOPERATIVE_PHASE
 
-        return QuantumSignature.NONE
+        return GeometricSignature.NONE
 
     # ========================================
     # Confidence Calculation
@@ -560,24 +554,24 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
 
         return criteria
 
-    def _generate_explanation(self, assessment: QuantumAssessment) -> str:
+    def _generate_explanation(self, assessment: GeometricAssessment) -> str:
         """説明文を生成"""
-        if not assessment.is_quantum:
-            return f"Classical {assessment.pattern.value} process (confidence: {assessment.confidence:.1%})"
+        if not assessment.is_cooperative:
+            return f"Thermal-baseline {assessment.pattern.value} (confidence: {assessment.confidence:.1%})"
 
         explanations = {
-            QuantumSignature.ENTANGLEMENT: "Quantum entanglement via instantaneous correlation",
-            QuantumSignature.TUNNELING: "Quantum tunneling through energy barrier",
-            QuantumSignature.COHERENCE: "Sustained quantum coherence",
-            QuantumSignature.PHASE_TRANSITION: "Quantum phase transition",
-            QuantumSignature.INFORMATION_TRANSFER: "Non-local quantum information transfer",
+            GeometricSignature.INSTANTANEOUS_CORRELATION: "Instantaneous spatial correlation signature",
+            GeometricSignature.BARRIER_CROSSING: "Barrier-crossing displacement signature",
+            GeometricSignature.SUSTAINED_COORDINATION: "Sustained structural coordination signature",
+            GeometricSignature.COOPERATIVE_PHASE: "Cooperative phase-like transition signature",
+            GeometricSignature.CAUSAL_CASCADE: "Causal cascade propagation signature",
         }
 
-        base = explanations.get(assessment.signature, "Quantum behavior detected")
+        base = explanations.get(assessment.signature, "Cooperative geometric event detected")
         return f"{base} (confidence: {assessment.confidence:.1%})"
 
-    def _add_cascade_info(self, assessment: QuantumAssessment, network_result: Any):
-        """CASCADE固有情報を追加（互換性）"""
+    def _add_cascade_info(self, assessment: GeometricAssessment, network_result: Any):
+        """CASCADE固有情報を追加"""
         if hasattr(network_result, "async_strong_bonds"):
             bonds = network_result.async_strong_bonds[:5]
             assessment.async_bonds_used = [
@@ -589,13 +583,13 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
                 for b in bonds
             ]
 
-            # 簡易Bell不等式
+            # 簡易Bell不等式（カスケード強度指標として保持）
             if bonds:
                 max_strength = max(b.strength for b in bonds)
                 assessment.bell_inequality = 2.0 + max_strength * 0.8
 
     # ========================================
-    # Batch Processing (インターフェース維持)
+    # Batch Processing
     # ========================================
 
     def validate_events(
@@ -603,7 +597,7 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
         events: list[dict],
         lambda_result: Any,
         network_results: Optional[list[Any]] = None,
-    ) -> list[QuantumAssessment]:
+    ) -> list[GeometricAssessment]:
         """複数イベントの一括処理"""
         assessments = []
 
@@ -620,10 +614,10 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
             except Exception as e:
                 logger.warning(f"Failed to process event {i}: {e}")
                 assessments.append(
-                    QuantumAssessment(
+                    GeometricAssessment(
                         pattern=StructuralEventPattern.INSTANTANEOUS,
-                        signature=QuantumSignature.NONE,
-                        is_quantum=False,
+                        signature=GeometricSignature.NONE,
+                        is_cooperative=False,
                         explanation=f"Processing failed: {e}",
                     )
                 )
@@ -631,38 +625,38 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
         return assessments
 
     # ========================================
-    # Summary and Reporting (インターフェース維持)
+    # Summary and Reporting
     # ========================================
 
-    def generate_summary(self, assessments: list[QuantumAssessment]) -> dict:
+    def generate_summary(self, assessments: list[GeometricAssessment]) -> dict:
         """サマリー生成"""
         total = len(assessments)
-        quantum_count = sum(1 for a in assessments if a.is_quantum)
+        cooperative_count = sum(1 for a in assessments if a.is_cooperative)
 
         pattern_stats = {}
         for pattern in StructuralEventPattern:
             count = sum(1 for a in assessments if a.pattern == pattern)
-            quantum = sum(
-                1 for a in assessments if a.pattern == pattern and a.is_quantum
+            cooperative = sum(
+                1 for a in assessments if a.pattern == pattern and a.is_cooperative
             )
             pattern_stats[pattern.value] = {
                 "total": count,
-                "quantum": quantum,
-                "ratio": quantum / count if count > 0 else 0,
+                "cooperative": cooperative,
+                "ratio": cooperative / count if count > 0 else 0,
             }
 
         signature_stats = {}
-        for sig in QuantumSignature:
+        for sig in GeometricSignature:
             count = sum(1 for a in assessments if a.signature == sig)
             if count > 0:
                 signature_stats[sig.value] = count
 
-        confidences = [a.confidence for a in assessments if a.is_quantum]
+        confidences = [a.confidence for a in assessments if a.is_cooperative]
 
         return {
             "total_events": total,
-            "quantum_events": quantum_count,
-            "quantum_ratio": quantum_count / total if total > 0 else 0,
+            "cooperative_events": cooperative_count,
+            "cooperative_ratio": cooperative_count / total if total > 0 else 0,
             "pattern_statistics": pattern_stats,
             "signature_distribution": signature_stats,
             "confidence_stats": {
@@ -673,34 +667,34 @@ class QuantumValidatorV4:  # クラス名は互換性のため維持
             },
         }
 
-    def print_summary(self, assessments: list[QuantumAssessment]):
+    def print_summary(self, assessments: list[GeometricAssessment]):
         """サマリー表示"""
         summary = self.generate_summary(assessments)
 
         print("\n" + "=" * 70)
-        print("🌌 QUANTUM VALIDATION SUMMARY v5.0")
+        print("📊 GEOMETRIC VALIDATION SUMMARY v5.0")
         print("=" * 70)
         print("\n📊 Overall Statistics:")
         print(f"   Total events: {summary['total_events']}")
         print(
-            f"   Quantum events: {summary['quantum_events']} ({summary['quantum_ratio']:.1%})"
+            f"   Cooperative events: {summary['cooperative_events']} ({summary['cooperative_ratio']:.1%})"
         )
 
         print("\n🎯 Pattern Analysis:")
         for pattern, stats in summary["pattern_statistics"].items():
             if stats["total"] > 0:
                 print(
-                    f"   {pattern}: {stats['quantum']}/{stats['total']} quantum ({stats['ratio']:.1%})"
+                    f"   {pattern}: {stats['cooperative']}/{stats['total']} cooperative ({stats['ratio']:.1%})"
                 )
 
-        print("\n⚛️ Quantum Signatures:")
+        print("\n📐 Geometric Signatures:")
         for sig, count in summary["signature_distribution"].items():
-            if sig != "classical":
+            if sig != "thermal_baseline":
                 print(f"   {sig}: {count}")
 
 
 # ============================================
-# Convenience Functions (互換性維持)
+# Convenience Functions
 # ============================================
 
 
@@ -709,7 +703,7 @@ def validate_lambda_events(
     trajectory: Optional[np.ndarray] = None,
     network_results: Optional[list[Any]] = None,
     **kwargs,
-) -> list[QuantumAssessment]:
+) -> list[GeometricAssessment]:
 
     events = []
     if hasattr(lambda_result, "critical_events"):
@@ -723,7 +717,7 @@ def validate_lambda_events(
                     }
                 )
 
-    validator = QuantumValidatorV4(trajectory=trajectory, **kwargs)
+    validator = GeometricValidatorV4(trajectory=trajectory, **kwargs)
     assessments = validator.validate_events(events, lambda_result, network_results)
     validator.print_summary(assessments)
 
@@ -735,13 +729,11 @@ def validate_lambda_events(
 # ============================================
 
 if __name__ == "__main__":
-    # Example: テスト用のダミーデータ
-    print("Quantum Validator v4.0.1 (FIXED) - Test Run")
+    print("Geometric Validator v5.0 - Test Run")
 
     # ダミーイベント
     test_event = {"frame_start": 100, "frame_end": 100, "type": "critical"}
 
-    # ダミーLambda結果（修正版のキー名）
     class DummyLambdaResult:
         def __init__(self):
             self.lambda_structures = {
@@ -750,15 +742,11 @@ if __name__ == "__main__":
                 "sigma_s": np.random.rand(1000),
             }
 
-    # バリデーター作成
-    validator = QuantumValidatorV4(dt_ps=100.0, temperature_K=300.0)
-
-    # 検証実行
+    validator = GeometricValidatorV4(dt_ps=100.0, temperature_K=300.0)
     assessment = validator.validate_event(test_event, DummyLambdaResult())
 
-    # 結果表示
     print(f"\nPattern: {assessment.pattern.value}")
-    print(f"Quantum: {assessment.is_quantum}")
+    print(f"Cooperative: {assessment.is_cooperative}")
     print(f"Signature: {assessment.signature.value}")
     print(f"Confidence: {assessment.confidence:.1%}")
     print(f"Explanation: {assessment.explanation}")

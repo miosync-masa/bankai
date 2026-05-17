@@ -3,7 +3,7 @@
 Third Impact Analytics v3.0 - GPU Atomic Network Edition
 ========================================================
 
-原子レベル量子痕跡の高速検出 + 高度なネットワーク解析
+原子レベル協調イベント痕跡の高速検出 + 高度なネットワーク解析
 residue_networkの賢い判定を原子レベルで実現！！
 
 - 単一フレーム：瞬間的協調ネットワーク
@@ -42,8 +42,8 @@ logger = logging.getLogger("bankai.analysis.third_impact")
 
 
 @dataclass
-class AtomicQuantumTrace:
-    """原子レベル量子痕跡（ネットワーク情報付き）"""
+class AtomicCooperativeTrace:
+    """原子レベル協調イベント痕跡（ネットワーク情報付き）"""
 
     atom_id: int
     residue_id: int
@@ -52,8 +52,8 @@ class AtomicQuantumTrace:
     displacement_zscore: float = 0.0
     lambda_change: float = 0.0
 
-    # 量子シグネチャー
-    quantum_signature: str = "unknown"
+    # 幾何シグネチャー
+    geometric_signature: str = "unknown"
     confidence: float = 0.0
 
     # ネットワーク特性（NEW!）
@@ -130,13 +130,13 @@ class ThirdImpactResult:
     origin: EventOrigin = field(default_factory=EventOrigin)
 
     # 原子痕跡
-    quantum_atoms: dict[int, AtomicQuantumTrace] = field(default_factory=dict)
+    cooperative_atoms: dict[int, AtomicCooperativeTrace] = field(default_factory=dict)
 
     # 原子ネットワーク（NEW!）
     atomic_network: Optional[AtomicNetworkResult] = None
 
     # 統計
-    n_quantum_atoms: int = 0
+    n_cooperative_atoms: int = 0
     n_network_links: int = 0
     n_residue_bridges: int = 0
     strongest_signature: str = ""
@@ -531,7 +531,7 @@ class AtomicNetworkGPU:
 class ThirdImpactAnalyzer:
     """
     Third Impact Analytics v3.0
-    原子レベル量子痕跡 + GPU高速ネットワーク解析
+    原子レベル協調イベント痕跡 + GPU高速ネットワーク解析
     """
 
     def __init__(
@@ -635,11 +635,11 @@ class ThirdImpactAnalyzer:
                     )
 
                 # ネットワーク解析（NEW!）
-                if self.atomic_network and result.quantum_atoms:
+                if self.atomic_network and result.cooperative_atoms:
                     logger.info("   🌐 Analyzing atomic network...")
                     network_result = self.atomic_network.analyze_network(
                         trajectory=trajectory,
-                        anomaly_atoms=list(result.quantum_atoms.keys()),
+                        anomaly_atoms=list(result.cooperative_atoms.keys()),
                         residue_mapping=self.residue_mapping,
                         start_frame=start_frame,
                         end_frame=end_frame,
@@ -654,7 +654,7 @@ class ThirdImpactAnalyzer:
                     result.n_residue_bridges = len(network_result.residue_bridges)
 
                     # ネットワーク情報を原子痕跡に反映
-                    self._update_quantum_traces_with_network(result)
+                    self._update_cooperative_traces_with_network(result)
 
                 # 創薬ターゲット特定
                 result.drug_target_atoms = self._identify_drug_targets(result)
@@ -711,7 +711,7 @@ class ThirdImpactAnalyzer:
             z_score = (distances[atom_id] - mean_d) / (std_d + 1e-10)
 
             if z_score > self.sigma_threshold:
-                trace = AtomicQuantumTrace(
+                trace = AtomicCooperativeTrace(
                     atom_id=atom_id, residue_id=residue_id, displacement_zscore=z_score
                 )
 
@@ -724,21 +724,21 @@ class ThirdImpactAnalyzer:
                     trace.lambda_change = float(lambda_change)
 
                 # シグネチャー分類
-                trace.quantum_signature = self._classify_signature(
+                trace.geometric_signature = self._classify_signature(
                     z_score, trace.lambda_change
                 )
                 trace.confidence = min(z_score / 5.0, 1.0)
 
-                result.quantum_atoms[atom_id] = trace
+                result.cooperative_atoms[atom_id] = trace
                 result.origin.genesis_atoms.append(atom_id)
 
         # 統計更新
-        result.n_quantum_atoms = len(result.quantum_atoms)
-        if result.quantum_atoms:
-            confidences = [t.confidence for t in result.quantum_atoms.values()]
+        result.n_cooperative_atoms = len(result.cooperative_atoms)
+        if result.cooperative_atoms:
+            confidences = [t.confidence for t in result.cooperative_atoms.values()]
             result.max_confidence = max(confidences)
 
-            signatures = [t.quantum_signature for t in result.quantum_atoms.values()]
+            signatures = [t.geometric_signature for t in result.cooperative_atoms.values()]
             if signatures:
                 result.strongest_signature = Counter(signatures).most_common(1)[0][0]
 
@@ -773,7 +773,7 @@ class ThirdImpactAnalyzer:
         )
 
         result.origin.genesis_atoms = genesis_result.origin.genesis_atoms
-        result.quantum_atoms = genesis_result.quantum_atoms
+        result.cooperative_atoms = genesis_result.cooperative_atoms
 
         # 第一波の追跡（簡易版）
         max_propagation_frames = min(2, end_frame - start_frame)
@@ -800,24 +800,24 @@ class ThirdImpactAnalyzer:
             result.origin.first_wave_atoms.extend(new_atoms)
 
             # 新規異常原子も追加
-            for atom_id, trace in wave_result.quantum_atoms.items():
-                if atom_id not in result.quantum_atoms:
-                    result.quantum_atoms[atom_id] = trace
+            for atom_id, trace in wave_result.cooperative_atoms.items():
+                if atom_id not in result.cooperative_atoms:
+                    result.cooperative_atoms[atom_id] = trace
 
         # 統計更新
-        result.n_quantum_atoms = len(result.quantum_atoms)
-        if result.quantum_atoms:
-            confidences = [t.confidence for t in result.quantum_atoms.values()]
+        result.n_cooperative_atoms = len(result.cooperative_atoms)
+        if result.cooperative_atoms:
+            confidences = [t.confidence for t in result.cooperative_atoms.values()]
             result.max_confidence = max(confidences)
 
-            signatures = [t.quantum_signature for t in result.quantum_atoms.values()]
+            signatures = [t.geometric_signature for t in result.cooperative_atoms.values()]
             if signatures:
                 result.strongest_signature = Counter(signatures).most_common(1)[0][0]
 
         return result
 
-    def _update_quantum_traces_with_network(self, result: ThirdImpactResult):
-        """ネットワーク情報で量子痕跡を更新"""
+    def _update_cooperative_traces_with_network(self, result: ThirdImpactResult):
+        """ネットワーク情報で協調イベント痕跡を更新"""
         if not result.atomic_network:
             return
 
@@ -842,8 +842,8 @@ class ThirdImpactAnalyzer:
             for atom_pair in bridge.bridge_atoms:
                 bridge_atoms.update(atom_pair)
 
-        # 量子痕跡を更新
-        for atom_id, trace in result.quantum_atoms.items():
+        # 協調イベント痕跡を更新
+        for atom_id, trace in result.cooperative_atoms.items():
             trace.connectivity_degree = degree_count.get(atom_id, 0)
             trace.is_hub = atom_id in hub_atoms
             trace.is_bridge = atom_id in bridge_atoms
@@ -853,15 +853,15 @@ class ThirdImpactAnalyzer:
                 result.origin.network_initiators.append(atom_id)
 
     def _classify_signature(self, z_score: float, lambda_change: float) -> str:
-        """量子シグネチャーの分類"""
+        """幾何シグネチャーの分類"""
         if z_score > 5.0:
-            return "quantum_jump"
+            return "jump_signature"
         elif z_score > 4.0 and abs(lambda_change) > 0.1:
             return "tunneling"
         elif z_score > 3.5:
             return "entanglement"
         elif z_score > 3.0:
-            return "quantum_anomaly"
+            return "cooperative_anomaly_signature"
         else:
             return "thermal"
 
@@ -870,17 +870,17 @@ class ThirdImpactAnalyzer:
         targets = []
 
         # ハブ原子を最優先
-        for atom_id, trace in result.quantum_atoms.items():
+        for atom_id, trace in result.cooperative_atoms.items():
             if trace.is_hub and trace.confidence > 0.7:
                 targets.append(atom_id)
 
         # ブリッジ原子も重要
-        for atom_id, trace in result.quantum_atoms.items():
+        for atom_id, trace in result.cooperative_atoms.items():
             if trace.is_bridge and atom_id not in targets:
                 targets.append(atom_id)
 
         # 高信頼度の起源原子
-        for atom_id, trace in result.quantum_atoms.items():
+        for atom_id, trace in result.cooperative_atoms.items():
             if trace.confidence > 0.8 and atom_id not in targets:
                 targets.append(atom_id)
 
@@ -917,14 +917,14 @@ class ThirdImpactAnalyzer:
         print("=" * 60)
 
         total_genesis = sum(len(r.origin.genesis_atoms) for r in results.values())
-        total_quantum = sum(r.n_quantum_atoms for r in results.values())
+        total_cooperative = sum(r.n_cooperative_atoms for r in results.values())
         total_links = sum(r.n_network_links for r in results.values())
         total_bridges = sum(r.n_residue_bridges for r in results.values())
 
         print("\n📊 Statistics:")
         print(f"  - Events analyzed: {len(results)}")
         print(f"  - Genesis atoms: {total_genesis}")
-        print(f"  - Quantum atoms: {total_quantum}")
+        print(f"  - Cooperative atoms: {total_cooperative}")
         print(f"  - Network links: {total_links}")
         print(f"  - Residue bridges: {total_bridges}")
 
@@ -1023,7 +1023,7 @@ def save_results_json(results: dict[str, ThirdImpactResult], output_path: Path):
             "event_name": result.event_name,
             "residue_id": result.residue_id,
             "event_type": result.event_type,
-            "n_quantum_atoms": result.n_quantum_atoms,
+            "n_cooperative_atoms": result.n_cooperative_atoms,
             "n_network_links": result.n_network_links,
             "n_residue_bridges": result.n_residue_bridges,
             "genesis_atoms": result.origin.genesis_atoms,
@@ -1103,7 +1103,7 @@ def generate_impact_report(results: dict[str, ThirdImpactResult]) -> str:
 
     # 統計サマリー
     total_genesis = sum(len(r.origin.genesis_atoms) for r in results.values())
-    total_quantum = sum(r.n_quantum_atoms for r in results.values())
+    total_cooperative = sum(r.n_cooperative_atoms for r in results.values())
     total_links = sum(r.n_network_links for r in results.values())
     total_bridges = sum(r.n_residue_bridges for r in results.values())
 
@@ -1111,7 +1111,7 @@ def generate_impact_report(results: dict[str, ThirdImpactResult]) -> str:
 -----------------
 Events Analyzed: {len(results)}
 Genesis Atoms Identified: {total_genesis}
-Quantum Atoms Detected: {total_quantum}
+Cooperative Atoms Detected: {total_cooperative}
 Network Links Discovered: {total_links}
 Residue Bridges Found: {total_bridges}
 
@@ -1142,7 +1142,7 @@ DETAILED ANALYSIS
                     report += f"(strength: {bridge.total_strength:.3f})\n"
                     report += f"    Atoms: {bridge.bridge_atoms[:2]}\n"
 
-        report += f"\nQuantum Signature: {result.strongest_signature}\n"
+        report += f"\nGeometric Signature: {result.strongest_signature}\n"
         report += f"Max Confidence: {result.max_confidence:.3f}\n"
 
         if result.drug_target_atoms:

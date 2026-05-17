@@ -35,7 +35,7 @@ def _resolve_res_pair(from_id, to_id, resolver=None):
 def generate_maximum_report_from_results(
     lambda_result,
     two_stage_result=None,
-    quantum_events=None,
+    cooperative_events=None,
     metadata=None,
     output_dir="./maximum_report",
     verbose=True,
@@ -45,14 +45,14 @@ def generate_maximum_report_from_results(
     """
     # 既存の実装をそのまま維持
     return _generate_v3_report(
-        lambda_result, two_stage_result, quantum_events, metadata, output_dir, verbose
+        lambda_result, two_stage_result, cooperative_events, metadata, output_dir, verbose
     )
 
 
 def generate_maximum_report_from_results_v4(
     lambda_result,
     two_stage_result=None,
-    quantum_assessments=None,
+    geometric_assessments=None,
     sorted_events=None,  # 🔴 NEW: スコア順イベントリスト [(start, end, score), ...]
     metadata=None,
     output_dir="./maximum_report_v4",
@@ -79,7 +79,7 @@ def generate_maximum_report_from_results_v4(
     hub_counts = Counter()
     all_hub_residues = []
     total = 0
-    quantum_count = 0
+    cooperative_count = 0
 
     output_path = Path(output_dir)
     output_path.mkdir(exist_ok=True)
@@ -735,57 +735,57 @@ def generate_maximum_report_from_results_v4(
     # ========================================
     # 4. 量子評価の完全解析（Version 4.0新機能）
     # ========================================
-    if quantum_assessments:
+    if geometric_assessments:
         if verbose:
-            print("\n⚛️ Extracting all quantum assessment details (v4.0)...")
+            print("\n📐 Extracting all geometric assessment details (v4.0)...")
 
-        report += "\n## ⚛️ Quantum Assessment Analysis v4.0 (Complete)\n"
+        report += "\n## 📐 Geometric Assessment Analysis v4.0 (Complete)\n"
 
-        total = len(quantum_assessments)
-        quantum_count = sum(
-            1 for a in quantum_assessments if getattr(a, "is_quantum", False)
+        total = len(geometric_assessments)
+        cooperative_count = sum(
+            1 for a in geometric_assessments if getattr(a, "is_cooperative", False)
         )
 
-        percent = quantum_count / total * 100 if total > 0 else 0
+        percent = cooperative_count / total * 100 if total > 0 else 0
         report += f"""
 ### Overview
 - **Total events analyzed**: {total}
-- **Quantum events confirmed**: {quantum_count} ({percent:.1f}%)
+- **Cooperative events confirmed**: {cooperative_count} ({percent:.1f}%)
 """
 
         # パターン分布（Version 4.0の3パターン分類）
-        if total > 0 and hasattr(quantum_assessments[0], "pattern"):
+        if total > 0 and hasattr(geometric_assessments[0], "pattern"):
             pattern_counts = Counter(
-                getattr(a, "pattern").value for a in quantum_assessments
+                getattr(a, "pattern").value for a in geometric_assessments
             )
             report += "\n### Pattern Distribution (3-Pattern Classification)\n"
             for pattern, count in pattern_counts.items():
-                quantum_in_pattern = sum(
+                cooperative_in_pattern = sum(
                     1
-                    for a in quantum_assessments
+                    for a in geometric_assessments
                     if getattr(a, "pattern").value == pattern
-                    and getattr(a, "is_quantum", False)
+                    and getattr(a, "is_cooperative", False)
                 )
                 report += f"- **{pattern}**: {count} events, "
-                percent = quantum_in_pattern / count * 100 if count > 0 else 0
-                report += f"{quantum_in_pattern} quantum ({percent:.1f}%)\n"
+                percent = cooperative_in_pattern / count * 100 if count > 0 else 0
+                report += f"{cooperative_in_pattern} cooperative ({percent:.1f}%)\n"
 
         # シグネチャー分布（Version 4.0）
-        if total > 0 and hasattr(quantum_assessments[0], "signature"):
+        if total > 0 and hasattr(geometric_assessments[0], "signature"):
             sig_counts = Counter(
                 getattr(a, "signature").value
-                for a in quantum_assessments
+                for a in geometric_assessments
                 if getattr(a, "signature").value != "classical"
             )
             if sig_counts:
-                report += "\n### Quantum Signature Distribution\n"
+                report += "\n### Geometric Signature Distribution\n"
                 for sig, count in sig_counts.most_common():
                     report += f"- **{sig}**: {count}\n"
 
         # Lambda異常性統計（Version 4.0新機能）
         lambda_anomalies = [
             getattr(a, "lambda_anomaly")
-            for a in quantum_assessments
+            for a in geometric_assessments
             if hasattr(a, "lambda_anomaly") and getattr(a, "lambda_anomaly") is not None
         ]
         if lambda_anomalies:
@@ -824,7 +824,7 @@ def generate_maximum_report_from_results_v4(
         # 原子レベル証拠統計（Version 4.0新機能）
         atomic_evidences = [
             getattr(a, "atomic_evidence")
-            for a in quantum_assessments
+            for a in geometric_assessments
             if hasattr(a, "atomic_evidence")
             and getattr(a, "atomic_evidence") is not None
         ]
@@ -865,8 +865,8 @@ def generate_maximum_report_from_results_v4(
         # 信頼度統計
         confidences = [
             getattr(a, "confidence", 0)
-            for a in quantum_assessments
-            if getattr(a, "is_quantum", False)
+            for a in geometric_assessments
+            if getattr(a, "is_cooperative", False)
         ]
         if confidences:
             report += "\n### Confidence Statistics\n"
@@ -878,7 +878,7 @@ def generate_maximum_report_from_results_v4(
         # Bell不等式（カスケードイベント）
         bell_values = [
             getattr(a, "bell_inequality")
-            for a in quantum_assessments
+            for a in geometric_assessments
             if hasattr(a, "bell_inequality")
             and getattr(a, "bell_inequality") is not None
         ]
@@ -892,15 +892,15 @@ def generate_maximum_report_from_results_v4(
             report += f"- Tsirelson bound: {2 * np.sqrt(2):.3f}\n"
 
         # 全量子イベントの詳細（TOP 20）
-        report += "\n### Top Quantum Events (Detailed v4.0)\n"
+        report += "\n### Top Cooperative Events (Detailed v4.0)\n"
 
-        quantum_events = sorted(
-            [a for a in quantum_assessments if getattr(a, "is_quantum", False)],
+        cooperative_events = sorted(
+            [a for a in geometric_assessments if getattr(a, "is_cooperative", False)],
             key=lambda x: getattr(x, "confidence", 0),
             reverse=True,
         )
 
-        for i, assessment in enumerate(quantum_events[:20], 1):
+        for i, assessment in enumerate(cooperative_events[:20], 1):
             report += f"\n#### Event {i}\n"
             report += f"- **Pattern**: {getattr(assessment, 'pattern').value}\n"
             report += f"- **Signature**: {getattr(assessment, 'signature').value}\n"
@@ -1056,22 +1056,22 @@ def generate_maximum_report_from_results_v4(
         )
 
     # 量子性の分析（Version 4.0）
-    if quantum_assessments:
-        if quantum_count > 0:
+    if geometric_assessments:
+        if cooperative_count > 0:
             # パターン別の量子性
             for pattern in ["instantaneous", "transition", "cascade"]:
                 pattern_events = [
                     a
-                    for a in quantum_assessments
+                    for a in geometric_assessments
                     if getattr(a, "pattern").value == pattern
                 ]
                 if pattern_events:
                     q_count = sum(
-                        1 for a in pattern_events if getattr(a, "is_quantum", False)
+                        1 for a in pattern_events if getattr(a, "is_cooperative", False)
                     )
                     if q_count > 0:
                         insights.append(
-                            f"✓ {pattern}: {q_count}/{len(pattern_events)} quantum "
+                            f"✓ {pattern}: {q_count}/{len(pattern_events)} cooperative "
                             f"({q_count / len(pattern_events) * 100:.1f}%)"
                         )
 
@@ -1079,7 +1079,7 @@ def generate_maximum_report_from_results_v4(
             if "sig_counts" in locals():
                 top_sig = sig_counts.most_common(1)[0]
                 insights.append(
-                    f"✓ Most common quantum signature: {top_sig[0]} ({top_sig[1]} events)"
+                    f"✓ Most common geometric signature: {top_sig[0]} ({top_sig[1]} events)"
                 )
 
         # Lambda異常の重要性
@@ -1199,11 +1199,11 @@ def generate_maximum_report_from_results_v4(
         )
 
     # 量子イベントベース（Version 4.0）
-    if quantum_assessments and quantum_count > 0:
+    if geometric_assessments and cooperative_count > 0:
         # パターン別推奨
         if "pattern_counts" in locals() and pattern_counts.get("instantaneous", 0) > 5:
             recommendations.append(
-                "Instantaneous transitions detected - consider quantum tunneling in drug design"
+                "Instantaneous transitions detected - barrier-crossing displacements may indicate drug-design targets"
             )
         if "pattern_counts" in locals() and pattern_counts.get("cascade", 0) > 10:
             recommendations.append(
@@ -1212,13 +1212,13 @@ def generate_maximum_report_from_results_v4(
 
         # シグネチャー別推奨
         if "sig_counts" in locals():
-            if sig_counts.get("quantum_entanglement", 0) > 0:
+            if sig_counts.get("instantaneous_correlation_signature", 0) > 0:
                 recommendations.append(
-                    "Quantum entanglement signatures - non-local correlations present"
+                    "Instantaneous correlation signatures - spatially non-local correlations present"
                 )
-            if sig_counts.get("quantum_tunneling", 0) > 0:
+            if sig_counts.get("barrier_crossing_signature", 0) > 0:
                 recommendations.append(
-                    "Tunneling events detected - consider proton transfer mechanisms"
+                    "Barrier-crossing events detected - inspect for proton-transfer-like mechanisms"
                 )
 
     # Lambda異常ベース（Version 4.0）
@@ -1279,7 +1279,7 @@ def generate_maximum_report_from_results_v4(
 
     # Version 4.0の新しい洞察
     report += "\n\n### Version 4.0.3 Improvements (RESTORED + Bootstrap + Pathways)\n"
-    report += "- Lambda structure anomaly as primary quantum indicator\n"
+    report += "- Lambda structure anomaly as primary cooperative-event indicator\n"
     report += "- 3-pattern classification (instantaneous/transition/cascade)\n"
     report += "- Atomic-level evidence integration\n"
     report += "- Fixed ResidueEvent attribute access (event_score)\n"
@@ -1288,7 +1288,7 @@ def generate_maximum_report_from_results_v4(
     report += "- **RESTORED: Statistical significance testing (95% CI)**\n"
     report += "- **RESTORED: Bias and standard error estimation**\n"
     report += "- **RESTORED: Event-based propagation pathway analysis**\n"
-    report += "- **FIXED: quantum_events → quantum_assessments compatibility**\n"
+    report += "- **FIXED: assessment list parameter accepts geometric_assessments**\n"
     report += "- **FIXED: Event key matching (top_XX_score_Y.YY format)**\n"
 
     # フッター
@@ -1325,10 +1325,10 @@ def generate_maximum_report_from_results_v4(
     }
 
     # Version 4.0の量子評価サマリー
-    if quantum_assessments:
-        json_data["quantum_v4"] = {
+    if geometric_assessments:
+        json_data["geometric_v4"] = {
             "total": total,
-            "quantum": quantum_count,
+            "cooperative": cooperative_count,
             "patterns": dict(pattern_counts) if "pattern_counts" in locals() else {},
             "signatures": dict(sig_counts) if "sig_counts" in locals() else {},
             "mean_confidence": np.mean(confidences) if confidences else 0,
@@ -1374,8 +1374,8 @@ def generate_maximum_report_from_results_v4(
         print(f"   📊 Data saved to: {json_path}")
         print(f"   📏 Report length: {len(report):,} characters")
         print(f"   🎯 Lambda events: {len(all_events)}")
-        if quantum_assessments:
-            print(f"   ⚛️ Quantum events: {quantum_count}/{total}")
+        if geometric_assessments:
+            print(f"   📐 Cooperative events: {cooperative_count}/{total}")
         if all_confidence_results:
             n_sig = sum(
                 1 for r in all_confidence_results if r.get("is_significant", False)
@@ -1462,7 +1462,7 @@ def _build_propagation_paths(causal_network, initiators, max_paths=3, max_hops=6
 
 
 def _generate_v3_report(
-    lambda_result, two_stage_result, quantum_events, metadata, output_dir, verbose
+    lambda_result, two_stage_result, cooperative_events, metadata, output_dir, verbose
 ):
     """Version 3.0互換レポート生成（簡略実装）"""
     # 実際のV3実装は省略（必要に応じて実装）
