@@ -1,42 +1,67 @@
-解析対象の構造条件
-PDB ID: 6GOD
-解像度: 1.35 Å（超高解像度）
-変異: G12D（Glycine 12 → Aspartic acid）
-結合状態: 本来はGDP結合型＋Mg2+イオン
-実際の解析条件（重要）
+# Structural Analysis Conditions
 
-アポ型（リガンドなし）で解析
+## Target Structure
+- **PDB ID:** 6GOD  
+- **Resolution:** 1.35 Å (ultra-high resolution)  
+- **Mutation:** G12D (Glycine 12 → Aspartic acid)  
+- **Native Binding State:** GDP-bound form with Mg<sup>2+</sup> ion  
 
-GDPとMg2+イオンを除外
-理由：GROMACSでリガンドパラメータ生成が複雑
-影響：GDP結合による構造安定化効果は見えない
+---
 
+# Actual Simulation Conditions (Important)
 
-残基範囲：1-167
+## Apo-State Analysis
+The structure was analyzed in the **apo form** (ligand-free state).
 
-本来169残基だが、C末端（168-169）が結晶構造で不完全
-Lys168、Lys169の側鎖原子が欠損
-コア領域は全て含まれているため、G12D解析には問題なし
+### Excluded Components
+- GDP ligand removed  
+- Mg<sup>2+</sup> ion removed  
 
+### Reason
+Ligand parameter generation in GROMACS would significantly increase system preparation complexity.
 
-水和条件
+### Implication
+Structural stabilization effects induced by GDP binding are not represented in this simulation.
 
-TIP3P水モデル
-立方体ボックス（タンパク質表面から1.0 nm）
-Na+/Cl-イオンで中和
+---
 
+# Residue Range
+- **Analyzed residues:** 1–167  
 
-MD条件
+Although the native protein contains 169 residues, the C-terminal residues (Lys168 and Lys169) were incomplete in the crystal structure.
 
-力場：AMBER99SB-ILDN
-温度：300K（NPT平衡化後）
-時間刻み：0.01ps（超高時間分解能）
-総時間：1ns（100,000フレーム）
+### Missing Atoms
+- Side-chain atoms of Lys168 and Lys169 were absent.
 
+### Impact on Analysis
+The core structural region is fully preserved; therefore, the omission does not affect the G12D structural analysis.
 
+---
 
-解析上の留意点
+# Solvation Conditions
+- **Water model:** TIP3P  
+- **Simulation box:** Cubic box with 1.0 nm padding from the protein surface  
+- **Ion conditions:** Na<sup>+</sup>/Cl<sup>−</sup> ions added for charge neutralization  
 
-GDP非結合状態 = 本来の活性型/不活性型の議論はできない
-ただし G12D変異そのものの構造的影響（内在的不安定性、局所的歪み）は評価可能
-アポ型での異常が見つかれば、GDP結合型でも同様の問題がある可能性が高い
+---
+
+# Molecular Dynamics Conditions
+- **Force field:** AMBER99SB-ILDN  
+- **Temperature:** 300 K (after NPT equilibration)  
+- **Time step:** 0.01 ps (ultra-high temporal resolution)  
+- **Total simulation time:** 1 ns  
+- **Trajectory size:** 100,000 frames  
+
+---
+
+# Important Considerations for Interpretation
+
+Because the simulation was performed in the GDP-free apo state, discussions regarding canonical active/inactive conformations are not applicable.
+
+However, the simulation is still suitable for evaluating:
+
+- Intrinsic structural instability caused by the G12D mutation  
+- Local conformational distortions  
+- Mutation-induced dynamic perturbations  
+
+If abnormal structural behavior is observed even in the apo state, similar instability may also persist in the GDP-bound state.
