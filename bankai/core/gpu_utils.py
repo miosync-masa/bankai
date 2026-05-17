@@ -1,11 +1,5 @@
 """
 GPU Utilities and Base Classes - Refactored Version
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-GPUとCPUを賢く切り替える基底クラスと便利なユーティリティ集だよ〜！💕
-環ちゃんがリファクタリングして、メモリマネージャのバグも修正したよ！
-
-by 環ちゃん
 """
 
 import logging
